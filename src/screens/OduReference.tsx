@@ -4,7 +4,7 @@ import { OduName, Yo } from '../components/OduName';
 import { ScreenTitle } from '../components/ScreenTitle';
 import { Sign } from '../components/Sign';
 import { PRINCIPAL_ODU } from '../data/odu';
-import { ALL_ODU, MEJI_ODU, searchOdu, signText, type Odu } from '../logic/odu';
+import { ALL_ODU, MEJI_ODU, searchOdu, type Odu } from '../logic/odu';
 
 function OduGrid({ items }: { items: readonly Odu[] }) {
   const { settings, openStudy } = useApp();
@@ -19,9 +19,6 @@ function OduGrid({ items }: { items: readonly Odu[] }) {
               <span className="visually-hidden">Study </span>
               <OduName id={o.id} />
             </strong>
-            <span className="sign-text muted" aria-hidden="true">
-              {signText(o.marks)}
-            </span>
           </button>
         </li>
       ))}

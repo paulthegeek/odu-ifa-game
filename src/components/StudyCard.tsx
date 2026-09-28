@@ -4,7 +4,7 @@
  */
 import { useEffect, useRef } from 'react';
 import { useApp } from '../app/AppContext';
-import { getOdu, signText } from '../logic/odu';
+import { getOdu } from '../logic/odu';
 import { getStudyEntries } from '../logic/study';
 import { OduName, Yo } from './OduName';
 import { Sign } from './Sign';
@@ -33,10 +33,6 @@ export function StudyCard({ oduId, headingLevel = 3 }: { oduId: string; headingL
               ))}
             </p>
           )}
-          <p className="sign-text" style={{ margin: 0 }}>
-            <span className="visually-hidden">Marks, right leg then left leg: </span>
-            {signText(odu.marks)}
-          </p>
         </div>
       </div>
 
