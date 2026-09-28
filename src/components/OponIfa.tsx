@@ -1,6 +1,6 @@
 /**
- * Ọpọ́n Ifá drawing: a round tray with a carved border and a small Èṣù face
- * at the top (the orientation marker), with marks drawn in ìyẹ̀rọ̀sùn.
+ * Ọpọ́n Ifá drawing: a round tray with a carved border (left uncarved at the
+ * top as the orientation marker), with marks drawn in ìyẹ̀rọ̀sùn.
  * Single mark = one vertical stroke; double mark = two parallel strokes.
  */
 import type { Cell } from '../logic/build';
@@ -27,7 +27,7 @@ export function TrayMark({ cell, x, y }: { cell: Cell; x: number; y: number }) {
   );
 }
 
-/** Radial notches around the border, leaving room for the face at the top. */
+/** Radial notches around the border, leaving the top uncarved. */
 function Carving() {
   const notches = [];
   for (let i = 0; i < 48; i++) {
@@ -49,25 +49,11 @@ function Carving() {
   return <>{notches}</>;
 }
 
-/** A simple, respectful Èṣù face marking the top of the tray. */
-function EsuFace() {
-  const y = C - (INNER + OUTER) / 2;
-  return (
-    <g>
-      <circle className="tray-face" cx={C} cy={y} r={11} />
-      <circle className="tray-face-eye" cx={C - 4} cy={y - 2} r={1.8} />
-      <circle className="tray-face-eye" cx={C + 4} cy={y - 2} r={1.8} />
-      <path className="tray-face-line" d={`M ${C - 4} ${y + 5} L ${C + 4} ${y + 5}`} />
-    </g>
-  );
-}
-
 function OponArt({ cells }: { cells: readonly Cell[] }) {
   return (
     <>
       <circle className="tray-rim" cx={C} cy={C} r={OUTER} />
       <Carving />
-      <EsuFace />
       <circle className="tray-powder" cx={C} cy={C} r={INNER} />
       <circle className="tray-inner-edge" cx={C} cy={C} r={INNER} />
       {cells.map((cell, i) => {

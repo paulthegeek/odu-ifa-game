@@ -596,20 +596,6 @@ html[data-large='true'] .sign-stage {
   stroke-width: calc(6px * var(--stroke-scale, 1));
   stroke-linecap: round;
 }
-.tray-face {
-  fill: var(--wood-light);
-  stroke: var(--wood-dark);
-  stroke-width: 2px;
-}
-.tray-face-line {
-  fill: none;
-  stroke: var(--wood-dark);
-  stroke-width: 2px;
-  stroke-linecap: round;
-}
-.tray-face-eye {
-  fill: var(--wood-dark);
-}
 
 /* Editable positions (Build mode) sit over the drawing. */
 .position-btn {
