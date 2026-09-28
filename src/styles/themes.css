@@ -1,0 +1,173 @@
+/*
+ * Theme tokens. Every colour in the app — including the SVG sign drawings and
+ * charts — comes from these variables, so nothing stays bright in Dark or Night.
+ *
+ * <html data-theme="light|dark|night" data-contrast="high">
+ * The theme is set before first paint by the inline script in index.html.
+ */
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f6f1e7;
+  --surface: #fffcf6;
+  --surface-2: #ede4d3;
+  --text: #25211d;
+  --text-muted: #574e44;
+  --border: #857766;
+  --accent: #2e3868;
+  --on-accent: #fffcf6;
+  --accent-soft: #dfe1ef;
+  --focus: #2e3868;
+  --focus-halo: #fffcf6;
+  --correct: #2c6636;
+  --incorrect: #8f3a1c;
+  --correct-bg: #e3efe2;
+  --incorrect-bg: #f6e4dc;
+
+  /* Sign drawings */
+  --sign-bg: #ede4d3;
+  --wood: #8a5a2e;
+  --wood-dark: #4f3218;
+  --wood-light: #b8834e;
+  --powder: #f0c64a;
+  --mark: #2e1c0c;
+  --cord: #4f3218;
+  --seed-rim: #7a4f28;
+  --seed-inner: #fbf0d7;
+  --seed-shell: #3f2814;
+  --seed-ridge: #d9b27a;
+  --seed-outline: #2e1c0c;
+  --empty-slot: #6d6153;
+  --diff: #8f3a1c;
+
+  /* Charts */
+  --chart-line: #2e3868;
+  --chart-grid: #d3c8b5;
+  --heat: #2e3868;
+
+  --shadow: 0 1px 2px rgb(40 30 20 / 0.12), 0 2px 8px rgb(40 30 20 / 0.08);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #1c1b29;
+  --surface: #252435;
+  --surface-2: #2f2e43;
+  --text: #ebe5d9;
+  --text-muted: #bfb7a8;
+  --border: #7b7693;
+  --accent: #b7c0ee;
+  --on-accent: #1c1b29;
+  --accent-soft: #2b2f4c;
+  --focus: #d7ddff;
+  --focus-halo: #1c1b29;
+  --correct: #8fcf9c;
+  --incorrect: #efa487;
+  --correct-bg: #22382a;
+  --incorrect-bg: #402a24;
+
+  --sign-bg: #2f2e43;
+  --wood: #6a4727;
+  --wood-dark: #3a2817;
+  --wood-light: #8d6641;
+  --powder: #c9a543;
+  --mark: #24160a;
+  --cord: #c4a27a;
+  --seed-rim: #7a5530;
+  --seed-inner: #e3d0a8;
+  --seed-shell: #4a3119;
+  --seed-ridge: #d9b88a;
+  --seed-outline: #d9c4a0;
+  --empty-slot: #a39db8;
+  --diff: #efa487;
+
+  --chart-line: #b7c0ee;
+  --chart-grid: #45435c;
+  --heat: #b7c0ee;
+
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+}
+
+/* Night: dimmer and warmer than Dark. No bright whites or blues. */
+:root[data-theme='night'] {
+  color-scheme: dark;
+  --bg: #110c08;
+  --surface: #19120c;
+  --surface-2: #211810;
+  --text: #cf9e5c;
+  --text-muted: #b08756;
+  --border: #8c6a45;
+  --accent: #b88a4e;
+  --on-accent: #110c08;
+  --accent-soft: #2e2114;
+  --focus: #d8a868;
+  --focus-halo: #110c08;
+  --correct: #a3a868;
+  --incorrect: #c57e58;
+  --correct-bg: #1f1f10;
+  --incorrect-bg: #26150d;
+
+  --sign-bg: #211810;
+  --wood: #4a3019;
+  --wood-dark: #1e1208;
+  --wood-light: #6a4526;
+  --powder: #8f6a2c;
+  --mark: #120b05;
+  --cord: #a8804e;
+  --seed-rim: #5e3e1f;
+  --seed-inner: #c49a60;
+  --seed-shell: #2c1c0e;
+  --seed-ridge: #b48852;
+  --seed-outline: #b88a4e;
+  --empty-slot: #8a6a44;
+  --diff: #c57e58;
+
+  --chart-line: #b88a4e;
+  --chart-grid: #3a2a1a;
+  --heat: #b88a4e;
+
+  --shadow: none;
+}
+
+/* High contrast: pure black / white, thick strokes. Overrides any theme. */
+:root[data-contrast='high'] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --text: #000000;
+  --text-muted: #000000;
+  --border: #000000;
+  --accent: #000000;
+  --on-accent: #ffffff;
+  --accent-soft: #ffffff;
+  --focus: #000000;
+  --focus-halo: #ffffff;
+  --correct: #000000;
+  --incorrect: #000000;
+  --correct-bg: #ffffff;
+  --incorrect-bg: #ffffff;
+
+  --sign-bg: #ffffff;
+  --wood: #000000;
+  --wood-dark: #000000;
+  --wood-light: #ffffff;
+  --powder: #ffffff;
+  --mark: #000000;
+  --cord: #000000;
+  --seed-rim: #000000;
+  --seed-inner: #ffffff;
+  --seed-shell: #000000;
+  --seed-ridge: #ffffff;
+  --seed-outline: #000000;
+  --empty-slot: #000000;
+  --diff: #000000;
+
+  --chart-line: #000000;
+  --chart-grid: #767676;
+  --heat: #000000;
+
+  --shadow: none;
+  --stroke-scale: 1.6;
+}
