@@ -18,13 +18,13 @@ export default defineConfig({
       manifest: {
         name: 'Odù Practice',
         short_name: 'Odù Practice',
-        description: 'Practise recognising Odù Ifá signs on the opẹ̀lẹ̀ and ọpọ́n Ifá.',
+        description: 'Practice recognizing Odù Ifá signs on the opẹ̀lẹ̀ and ọpọ́n Ifá.',
         lang: 'en',
         start_url: BASE,
         scope: BASE,
         display: 'standalone',
-        theme_color: '#2b2a3d',
-        background_color: '#f7f2e8',
+        theme_color: '#161915',
+        background_color: '#f4f2e4',
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },

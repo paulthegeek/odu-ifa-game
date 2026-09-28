@@ -36,7 +36,7 @@ export function Play({ config, onFinish }: { config: RoundConfig; onFinish: (s: 
   return (
     <div>
       <ScreenTitle>
-        Read the sign{config.practice ? ': practise my misses' : ''}
+        Read the sign{config.practice ? ': practice my misses' : ''}
         {untimed && !config.practice ? ' (untimed practice)' : ''}
       </ScreenTitle>
       <RoundBar state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />

@@ -97,7 +97,7 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
   return (
     <div>
       <ScreenTitle>
-        Build the sign{config.practice ? ': practise my misses' : ''}
+        Build the sign{config.practice ? ': practice my misses' : ''}
         {untimed && !config.practice ? ' (untimed practice)' : ''}
       </ScreenTitle>
       <RoundBar state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />

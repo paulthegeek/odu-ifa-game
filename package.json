@@ -2,7 +2,7 @@
   "name": "odu-ifa-game",
   "private": true,
   "version": "1.0.0",
-  "description": "A practice game for recognising Odù Ifá signs on the opẹ̀lẹ̀ and ọpọ́n Ifá.",
+  "description": "A practice game for recognizing Odù Ifá signs on the opẹ̀lẹ̀ and ọpọ́n Ifá.",
   "type": "module",
   "engines": {
     "node": ">=24"

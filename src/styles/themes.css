@@ -1,5 +1,5 @@
 /*
- * Theme tokens. Every colour in the app — including the SVG sign drawings and
+ * Theme tokens. Every color in the app — including the SVG sign drawings and
  * charts — comes from these variables, so nothing stays bright in Dark or Night.
  *
  * <html data-theme="light|dark|night" data-contrast="high">
@@ -9,24 +9,24 @@
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f6f1e7;
-  --surface: #fffcf6;
-  --surface-2: #ede4d3;
-  --text: #25211d;
-  --text-muted: #574e44;
-  --border: #857766;
-  --accent: #2e3868;
-  --on-accent: #fffcf6;
-  --accent-soft: #dfe1ef;
-  --focus: #2e3868;
-  --focus-halo: #fffcf6;
-  --correct: #2c6636;
+  --bg: #f4f2e4;
+  --surface: #fffdf4;
+  --surface-2: #e8e5cc;
+  --text: #1f231b;
+  --text-muted: #4c5142;
+  --border: #7a7d65;
+  --accent: #2f5a2b;
+  --on-accent: #fffdf4;
+  --accent-soft: #dfe9d0;
+  --focus: #2f5a2b;
+  --focus-halo: #fffdf4;
+  --correct: #1d6650;
   --incorrect: #8f3a1c;
-  --correct-bg: #e3efe2;
+  --correct-bg: #d9ece3;
   --incorrect-bg: #f6e4dc;
 
   /* Sign drawings */
-  --sign-bg: #ede4d3;
+  --sign-bg: #e8e5cc;
   --wood: #8a5a2e;
   --wood-dark: #4f3218;
   --wood-light: #b8834e;
@@ -42,32 +42,32 @@
   --diff: #8f3a1c;
 
   /* Charts */
-  --chart-line: #2e3868;
-  --chart-grid: #d3c8b5;
-  --heat: #2e3868;
+  --chart-line: #2f5a2b;
+  --chart-grid: #d4d1b4;
+  --heat: #2f5a2b;
 
   --shadow: 0 1px 2px rgb(40 30 20 / 0.12), 0 2px 8px rgb(40 30 20 / 0.08);
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #1c1b29;
-  --surface: #252435;
-  --surface-2: #2f2e43;
-  --text: #ebe5d9;
-  --text-muted: #bfb7a8;
-  --border: #7b7693;
-  --accent: #b7c0ee;
-  --on-accent: #1c1b29;
-  --accent-soft: #2b2f4c;
-  --focus: #d7ddff;
-  --focus-halo: #1c1b29;
-  --correct: #8fcf9c;
+  --bg: #161915;
+  --surface: #1e221c;
+  --surface-2: #282e24;
+  --text: #e8e6d9;
+  --text-muted: #b5b5a2;
+  --border: #737a64;
+  --accent: #b0d494;
+  --on-accent: #161915;
+  --accent-soft: #2a3a24;
+  --focus: #d3ebbf;
+  --focus-halo: #161915;
+  --correct: #7fd1b0;
   --incorrect: #efa487;
-  --correct-bg: #22382a;
+  --correct-bg: #1c382e;
   --incorrect-bg: #402a24;
 
-  --sign-bg: #2f2e43;
+  --sign-bg: #282e24;
   --wood: #6a4727;
   --wood-dark: #3a2817;
   --wood-light: #8d6641;
@@ -79,36 +79,36 @@
   --seed-shell: #4a3119;
   --seed-ridge: #d9b88a;
   --seed-outline: #d9c4a0;
-  --empty-slot: #a39db8;
+  --empty-slot: #a3a892;
   --diff: #efa487;
 
-  --chart-line: #b7c0ee;
-  --chart-grid: #45435c;
-  --heat: #b7c0ee;
+  --chart-line: #b0d494;
+  --chart-grid: #394132;
+  --heat: #b0d494;
 
   --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
 }
 
-/* Night: dimmer and warmer than Dark. No bright whites or blues. */
+/* Night: dim olive (Moss), dimmer than Dark. No bright whites or blues. */
 :root[data-theme='night'] {
   color-scheme: dark;
-  --bg: #110c08;
-  --surface: #19120c;
-  --surface-2: #211810;
-  --text: #cf9e5c;
-  --text-muted: #b08756;
-  --border: #8c6a45;
-  --accent: #b88a4e;
-  --on-accent: #110c08;
-  --accent-soft: #2e2114;
-  --focus: #d8a868;
-  --focus-halo: #110c08;
-  --correct: #a3a868;
-  --incorrect: #c57e58;
-  --correct-bg: #1f1f10;
+  --bg: #0c0e08;
+  --surface: #12150c;
+  --surface-2: #191d11;
+  --text: #b8b27c;
+  --text-muted: #979163;
+  --border: #6e6d49;
+  --accent: #a6a262;
+  --on-accent: #0c0e08;
+  --accent-soft: #23261a;
+  --focus: #c4bf7a;
+  --focus-halo: #0c0e08;
+  --correct: #94b572;
+  --incorrect: #c9825a;
+  --correct-bg: #1a2210;
   --incorrect-bg: #26150d;
 
-  --sign-bg: #211810;
+  --sign-bg: #191d11;
   --wood: #4a3019;
   --wood-dark: #1e1208;
   --wood-light: #6a4526;
@@ -119,13 +119,13 @@
   --seed-inner: #c49a60;
   --seed-shell: #2c1c0e;
   --seed-ridge: #b48852;
-  --seed-outline: #b88a4e;
-  --empty-slot: #8a6a44;
-  --diff: #c57e58;
+  --seed-outline: #a6a262;
+  --empty-slot: #8a8858;
+  --diff: #c9825a;
 
-  --chart-line: #b88a4e;
-  --chart-grid: #3a2a1a;
-  --heat: #b88a4e;
+  --chart-line: #a6a262;
+  --chart-grid: #2c2f1c;
+  --heat: #a6a262;
 
   --shadow: none;
 }

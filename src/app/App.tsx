@@ -34,7 +34,7 @@ import type { RoundConfig } from './useRound';
 
 type Screen = 'setup' | 'round' | 'results' | 'progress' | 'reference' | 'help' | 'a11y';
 
-const THEME_COLORS: Record<string, string> = { light: '#f6f1e7', dark: '#1c1b29', night: '#110c08' };
+const THEME_COLORS: Record<string, string> = { light: '#f4f2e4', dark: '#161915', night: '#0c0e08' };
 
 function resolveTheme(choice: Settings['theme']): 'light' | 'dark' | 'night' {
   if (choice !== 'system') return choice;
@@ -84,17 +84,17 @@ export function App() {
   useDocumentSettings(settings);
 
   useEffect(() => {
-    let cancelled = false;
+    let canceled = false;
     void openProgressStore().then(async (store) => {
       const data = await store.load();
-      if (cancelled) return;
+      if (canceled) return;
       storeRef.current = store;
       progressRef.current = data;
       setProgress(data);
       setPersistent(store.persistent);
     });
     return () => {
-      cancelled = true;
+      canceled = true;
     };
   }, []);
 

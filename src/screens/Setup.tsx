@@ -80,9 +80,9 @@ export function Setup({
         onStart();
       }}
     >
-      <ScreenTitle>Practise reading Odù</ScreenTitle>
+      <ScreenTitle>Practice reading Odù</ScreenTitle>
       <p className="muted">
-        Choose how you want to practise, then begin. New to reading signs?{' '}
+        Choose how you want to practice, then begin. New to reading signs?{' '}
         <button type="button" className="btn btn-link" onClick={onHelp}>
           How to read a sign
         </button>

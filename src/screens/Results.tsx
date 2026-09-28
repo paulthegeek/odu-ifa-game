@@ -62,7 +62,7 @@ export function Results({
           Play again
         </button>
         <button type="button" className="btn" onClick={onPracticeMisses} disabled={missedIds.length === 0}>
-          Practise my misses
+          Practice my misses
         </button>
         <button type="button" className="btn" onClick={onProgress}>
           View progress

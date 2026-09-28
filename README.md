@@ -1,6 +1,6 @@
 # Odù Practice
 
-A study aid for learning to recognise Odù Ifá signs quickly and accurately, on the **opẹ̀lẹ̀** and the **ọpọ́n Ifá**.
+A study aid for learning to recognize Odù Ifá signs quickly and accurately, on the **opẹ̀lẹ̀** and the **ọpọ́n Ifá**.
 
 - **Read the sign**: see a sign and choose its name.
 - **Build the sign**: see a name and build its sign.
@@ -57,7 +57,7 @@ Study content is in [`src/data/ese.ts`](src/data/ese.ts), separate from the Odù
 1. Find the entry for the Odù. Entries for the 16 Méjì are already there. For an Ọmọ Odù, add a new entry with its id (`<right>_<left>`, e.g. `osa_irete`).
 2. Fill in `meaning`, a short English summary.
 3. Add one or more `snippets`. Each snippet needs:
-   - `yoruba`: full orthography, NFC-normalised
+   - `yoruba`: full orthography, NFC-normalized
    - `english`: the translation
    - `source`: e.g. `"Book title, p. 42"` or `"from [teacher/house], oral teaching"`
 4. Set `reviewed: true` once the entry has been checked. **Entries with `reviewed: false` are never shown.** Odù without reviewed content show "Study notes for this Odù haven't been added yet."

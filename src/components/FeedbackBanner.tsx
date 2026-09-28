@@ -1,7 +1,7 @@
 import type { Feedback } from '../app/useRound';
 import { OduName } from './OduName';
 
-/** Brief feedback with icon and text, never colour alone. Not a live region (announced separately). */
+/** Brief feedback with icon and text, never color alone. Not a live region (announced separately). */
 export function FeedbackBanner({ feedback }: { feedback: Feedback | null }) {
   if (!feedback) return <div className="feedback" aria-hidden="true" />;
   if (feedback.kind === 'correct') {

@@ -26,8 +26,8 @@ export function OduTileGrid({
   const practiced = MEJI_ODU.filter((o) => (stats.get(o.id)?.attempts ?? 0) > 0);
   const summary =
     practiced.length === 0
-      ? 'You have not practised any of the 16 Méjì with these filters yet.'
-      : `You have practised ${practiced.length} of the 16 Méjì.`;
+      ? 'You have not practiced any of the 16 Méjì with these filters yet.'
+      : `You have practiced ${practiced.length} of the 16 Méjì.`;
 
   const chart = (
     <ul className="tile-grid">
@@ -49,7 +49,7 @@ export function OduTileGrid({
                   </span>
                 </>
               ) : (
-                <span className="muted">Not yet practised</span>
+                <span className="muted">Not yet practiced</span>
               )}
             </button>
           </li>
@@ -76,7 +76,7 @@ export function OduTileGrid({
               <th scope="row">
                 <OduName id={o.id} />
               </th>
-              <td>{s?.attempts ? pct(s.accuracy) : 'Not yet practised'}</td>
+              <td>{s?.attempts ? pct(s.accuracy) : 'Not yet practiced'}</td>
               <td>{s?.attempts ?? 0}</td>
             </tr>
           );

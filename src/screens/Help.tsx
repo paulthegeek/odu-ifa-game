@@ -40,7 +40,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
           </li>
           <li>
             On the <span lang="yo">opẹ̀lẹ̀</span>, an <strong>open</strong> seed (hollow inner side up, pale
-            centre) is a {openMark}. A <strong>closed</strong> seed (outer shell up, with a ridge) is a{' '}
+            center) is a {openMark}. A <strong>closed</strong> seed (outer shell up, with a ridge) is a{' '}
             {closedMark}.
           </li>
           <li>Turn on “Show marks” in setup to see I / II beside each seed while you learn.</li>

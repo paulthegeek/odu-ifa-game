@@ -1,6 +1,6 @@
 /**
  * 16 × 16 accuracy grid: right leg as rows, left leg as columns.
- * Accuracy is shown by shade AND pattern (never colour alone); cells with no
+ * Accuracy is shown by shade AND pattern (never color alone); cells with no
  * attempts are dashed outlines. Rows/columns are numbered by seniority, with a key.
  */
 import { useId, type ReactNode } from 'react';
@@ -20,7 +20,7 @@ const band = (s: OduStat | undefined): Band =>
   !s || s.attempts === 0 ? 'none' : s.accuracy < 0.5 ? 'low' : s.accuracy < 0.8 ? 'mid' : 'high';
 
 const BAND_TEXT: Record<Band, string> = {
-  none: 'Not yet practised',
+  none: 'Not yet practiced',
   low: 'Below 50%',
   mid: '50–79%',
   high: '80% and above',
@@ -94,8 +94,8 @@ export function OduHeatGrid({
   }
   const summary =
     practiced === 0
-      ? 'You have not practised any of the 256 Odù with these filters yet.'
-      : `You have practised ${practiced} of 256 Odù; ${strong} are at 80% accuracy or above.`;
+      ? 'You have not practiced any of the 256 Odù with these filters yet.'
+      : `You have practiced ${practiced} of 256 Odù; ${strong} are at 80% accuracy or above.`;
 
   const chart = (
     <div className="stack">
@@ -134,7 +134,7 @@ export function OduHeatGrid({
             return (
               <g key={`${r.id}-${l.id}`}>
                 <Cell b={b} x={LABEL + li * (CELL + GAP)} y={LABEL + ri * (CELL + GAP)} patternId={pid} />
-                <title>{`Right ${r.name}, left ${l.name}: ${s?.attempts ? `${pct(s.accuracy)} of ${s.attempts}` : 'not yet practised'}`}</title>
+                <title>{`Right ${r.name}, left ${l.name}: ${s?.attempts ? `${pct(s.accuracy)} of ${s.attempts}` : 'not yet practiced'}`}</title>
               </g>
             );
           }),
@@ -167,7 +167,7 @@ export function OduHeatGrid({
 
   const table = (
     <table className="data-table">
-      <caption className="visually-hidden">Accuracy for all practised Odù</caption>
+      <caption className="visually-hidden">Accuracy for all practiced Odù</caption>
       <thead>
         <tr>
           <th scope="col">Odù</th>
@@ -178,7 +178,7 @@ export function OduHeatGrid({
       <tbody>
         {practicedRows.length === 0 ? (
           <tr>
-            <td colSpan={3}>Not yet practised</td>
+            <td colSpan={3}>Not yet practiced</td>
           </tr>
         ) : (
           practicedRows.map(({ id, s }) => (

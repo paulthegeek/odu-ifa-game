@@ -1,7 +1,7 @@
 import type { Mode } from '../logic/game';
 import { geometryFor } from './signGeometry';
 
-/** "Left leg" / "Right leg (read first)" captions, centred under each column of the drawing. */
+/** "Left leg" / "Right leg (read first)" captions, centered under each column of the drawing. */
 export function LegCaptions({ mode }: { mode: Mode }) {
   const g = geometryFor(mode);
   return (

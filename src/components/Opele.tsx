@@ -2,7 +2,7 @@
  * Opẹ̀lẹ̀ drawing: two strands of four half-pods joined at the top.
  * Open seed (concave side up) shows a pale hollow inside a rim;
  * closed seed (convex side up) is a solid shell with a ridge down the middle.
- * The two states differ in shape and shading, not only colour.
+ * The two states differ in shape and shading, not only color.
  */
 import { OPELE_MAPPING } from '../data/config';
 import type { Cell } from '../logic/build';
