@@ -5,7 +5,7 @@ import { Sign } from '../components/Sign';
 import { StudyCard } from '../components/StudyCard';
 import { describeDiff, diffMarks } from '../logic/build';
 import { roundDuration, seenOdu, type RoundState } from '../logic/game';
-import { getOdu, signText } from '../logic/odu';
+import { getOdu } from '../logic/odu';
 
 const MODE_NAME = { opele: 'Opẹ̀lẹ̀', opon: 'Ọpọ́n Ifá' } as const;
 const SET_NAME = { meji: '16 Méjì', all: 'All 256', weak: 'My weak Odù' } as const;
@@ -115,15 +115,9 @@ export function Results({
                         </figure>
                       )}
                     </div>
-                    <div>
+                    <div className="miss-text">
                       <p className="miss-name">
-                        <strong>
-                          <OduName id={m.oduId} />
-                        </strong>
-                      </p>
-                      <p className="sign-text">
-                        <span className="visually-hidden">Marks, right leg then left leg: </span>
-                        {signText(target.marks)}
+                        <OduName id={m.oduId} />
                       </p>
                       <p className="miss-given">
                         {direction === 'build' ? 'Your sign is ' : 'You chose '}

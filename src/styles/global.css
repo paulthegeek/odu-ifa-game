@@ -1516,12 +1516,25 @@ html[data-large='true'] .sign[data-size='large'] {
   font-size: 0.8rem;
   color: var(--text-muted);
 }
-.miss-name,
-.miss-item .sign-text {
+.miss-text {
+  display: grid;
+  gap: 0.35rem;
+  align-self: center;
+}
+.miss-name {
   margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
 .miss-given {
-  margin: 0.25rem 0 0;
+  margin: 0;
+  color: var(--text-muted);
+}
+.miss-given [lang='yo'] {
+  color: var(--text);
+  font-weight: 600;
 }
 .sign-text {
   font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -1529,7 +1542,7 @@ html[data-large='true'] .sign[data-size='large'] {
   white-space: nowrap;
 }
 .diff-list {
-  margin: 0.25rem 0 0;
+  margin: 0.15rem 0 0;
   padding-left: 1.2rem;
 }
 .diff-list li::marker {
