@@ -7,7 +7,13 @@ import { StudyDialog } from '../components/StudyCard';
 import { WEAK_SET_MIN_ANSWERS } from '../data/config';
 import { ThemeToggle } from '../components/ThemeToggle';
 import type { OduSet } from '../logic/distractors';
-import { personalBestKey, roundDuration, type RoundSettings, type RoundState } from '../logic/game';
+import {
+  personalBestKey,
+  roundDuration,
+  type Mode,
+  type RoundSettings,
+  type RoundState,
+} from '../logic/game';
 import { ALL_ODU, MEJI_ODU } from '../logic/odu';
 import {
   emptyProgress,
@@ -29,7 +35,7 @@ import { Play } from '../screens/Play';
 import { Progress } from '../screens/Progress';
 import { Results, type RoundOutcome } from '../screens/Results';
 import { Setup } from '../screens/Setup';
-import { AppContext, type AppContextValue } from './AppContext';
+import { AppContext, type AppContextValue, type StudyOptions } from './AppContext';
 import type { RoundConfig } from './useRound';
 
 type Screen = 'setup' | 'round' | 'results' | 'progress' | 'reference' | 'help' | 'a11y';
@@ -74,7 +80,7 @@ export function App() {
   const [returnTo, setReturnTo] = useState<Screen>('setup');
   const [round, setRound] = useState<{ config: RoundConfig; key: number } | null>(null);
   const [outcome, setOutcome] = useState<RoundOutcome | null>(null);
-  const [studyId, setStudyId] = useState<string | null>(null);
+  const [study, setStudy] = useState<{ id: string; mode?: Mode } | null>(null);
   const [message, setMessage] = useState('');
   const [progress, setProgress] = useState<ProgressData>(emptyProgress);
   const storeRef = useRef<ProgressStore>(memoryStore());
@@ -121,9 +127,14 @@ export function App() {
     announceTimer.current = window.setTimeout(() => setMessage(text), 50);
   }, []);
 
+  const openStudy = useCallback(
+    (id: string, options?: StudyOptions) => setStudy({ id, mode: options?.mode }),
+    [],
+  );
+
   const ctx: AppContextValue = useMemo(
-    () => ({ settings, updateSettings, announce, openStudy: setStudyId }),
-    [settings, updateSettings, announce],
+    () => ({ settings, updateSettings, announce, openStudy }),
+    [settings, updateSettings, announce, openStudy],
   );
 
   const go = (next: Screen) => {
@@ -306,7 +317,7 @@ export function App() {
       <div className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
         {message}
       </div>
-      <StudyDialog oduId={studyId} onClose={() => setStudyId(null)} />
+      <StudyDialog oduId={study?.id ?? null} mode={study?.mode} onClose={() => setStudy(null)} />
     </AppContext.Provider>
   );
 }

@@ -4,12 +4,22 @@
  */
 import { useEffect, useRef } from 'react';
 import { useApp } from '../app/AppContext';
+import type { Mode } from '../logic/game';
 import { getOdu } from '../logic/odu';
 import { getStudyEntries } from '../logic/study';
 import { OduName, Yo } from './OduName';
 import { Sign } from './Sign';
 
-export function StudyCard({ oduId, headingLevel = 3 }: { oduId: string; headingLevel?: 2 | 3 }) {
+export function StudyCard({
+  oduId,
+  headingLevel = 3,
+  mode,
+}: {
+  oduId: string;
+  headingLevel?: 2 | 3;
+  /** Overrides the global mode, e.g. from the Odù reference. */
+  mode?: Mode;
+}) {
   const { settings } = useApp();
   const odu = getOdu(oduId);
   const entries = getStudyEntries(oduId);
@@ -17,7 +27,7 @@ export function StudyCard({ oduId, headingLevel = 3 }: { oduId: string; headingL
   return (
     <article className="study-card">
       <div className="study-head">
-        <Sign mode={settings.mode} cells={odu.marks} size="medium" showMarks={settings.showMarks} />
+        <Sign mode={mode ?? settings.mode} cells={odu.marks} size="medium" showMarks={settings.showMarks} />
         <div>
           <H style={{ margin: 0 }}>
             <OduName id={oduId} />
@@ -66,7 +76,15 @@ export function StudyCard({ oduId, headingLevel = 3 }: { oduId: string; headingL
 }
 
 /** Study card in a native modal dialog. */
-export function StudyDialog({ oduId, onClose }: { oduId: string | null; onClose: () => void }) {
+export function StudyDialog({
+  oduId,
+  mode,
+  onClose,
+}: {
+  oduId: string | null;
+  mode?: Mode;
+  onClose: () => void;
+}) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -88,7 +106,7 @@ export function StudyDialog({ oduId, onClose }: { oduId: string | null; onClose:
               Close
             </button>
           </div>
-          <StudyCard oduId={oduId} />
+          <StudyCard oduId={oduId} mode={mode} />
         </div>
       )}
     </dialog>

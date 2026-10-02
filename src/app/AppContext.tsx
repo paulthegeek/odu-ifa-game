@@ -1,5 +1,11 @@
 import { createContext, useContext } from 'react';
+import type { Mode } from '../logic/game';
 import type { Settings } from '../logic/storage';
+
+export interface StudyOptions {
+  /** Draw the sign in this mode instead of the global setting. */
+  readonly mode?: Mode;
+}
 
 export interface AppContextValue {
   readonly settings: Settings;
@@ -7,7 +13,7 @@ export interface AppContextValue {
   /** Speak a message through the polite live region. */
   readonly announce: (message: string) => void;
   /** Open the study card for an Odù. */
-  readonly openStudy: (oduId: string) => void;
+  readonly openStudy: (oduId: string, options?: StudyOptions) => void;
 }
 
 export const AppContext = createContext<AppContextValue | null>(null);
