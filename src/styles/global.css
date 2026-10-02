@@ -492,17 +492,28 @@ html[data-contrast='high'] .nav-item[aria-current='page'] .nav-icon {
   cursor: inherit;
 }
 .choice-check {
-  display: none;
+  flex: none;
   width: 1rem;
   height: 1rem;
   stroke-width: 3;
+  opacity: 0;
+  transform: scale(0.5);
 }
 .choice-text {
   display: flex;
   flex-direction: column;
 }
 .choice-label {
+  display: grid;
   font-weight: inherit;
+}
+/* A hidden bold copy reserves the selected width, so selecting never reflows. */
+.choice-label > * {
+  grid-area: 1 / 1;
+}
+.choice-label-sizer {
+  visibility: hidden;
+  font-weight: 700;
 }
 .choice-detail {
   font-size: 0.8rem;
@@ -519,7 +530,8 @@ html[data-contrast='high'] .nav-item[aria-current='page'] .nav-icon {
   color: inherit;
 }
 .choice:has(.choice-input:checked) .choice-check {
-  display: block;
+  opacity: 1;
+  transform: none;
 }
 .choice:has(.choice-input:focus-visible) {
   outline: 3px solid var(--focus);
@@ -533,6 +545,16 @@ html[data-contrast='high'] .nav-item[aria-current='page'] .nav-icon {
   cursor: not-allowed;
 }
 /* Chips keep their details for screen readers only; hints carry them visibly. */
+.choices[data-variant='chips'] .choice {
+  padding-inline: 1.7rem;
+}
+.choices[data-variant='chips'] .choice-check {
+  position: absolute;
+  left: 1rem;
+}
+.choices[data-variant='chips'] .choice:has(.choice-input:checked) {
+  padding-inline: 2.4rem 1rem;
+}
 .choices[data-variant='chips'] .choice-detail {
   position: absolute;
   width: 1px;
@@ -543,6 +565,8 @@ html[data-contrast='high'] .nav-item[aria-current='page'] .nav-icon {
 }
 
 .choices[data-variant='segmented'] .choices-options {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
@@ -560,8 +584,38 @@ html[data-contrast='high'] .nav-item[aria-current='page'] .nav-icon {
   border-radius: 11px;
   background: transparent;
 }
-.choices[data-variant='segmented'] .choice:has(.choice-input:checked) {
+/* One thumb slides under the options; it marks the choice, so the check stays hidden. */
+.choices-thumb {
+  position: absolute;
+  z-index: -1;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px - (var(--count) - 1) * 4px) / var(--count));
+  transform: translateX(calc(var(--index) * (100% + 4px)));
+  border-radius: 11px;
   background: var(--accent);
+}
+.choices[data-variant='segmented'] .choice:has(.choice-input:checked) {
+  background: transparent;
+}
+.choices[data-variant='segmented'] .choice-check {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@media (forced-colors: active) {
+  .choices-thumb {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+  .choices[data-variant='segmented'] .choice:has(.choice-input:checked) {
+    forced-color-adjust: none;
+    color: HighlightText;
+  }
 }
 
 .choices[data-variant='list'] .choices-options {
@@ -810,17 +864,8 @@ dialog.study-dialog::backdrop {
   color: var(--text-muted);
 }
 
-/* The filled segment marks the mode, so the check icon stays hidden. */
 .mode-switch {
   width: 100%;
-}
-.mode-switch .choice-check {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }
 
 .home-actions {
@@ -1804,11 +1849,24 @@ table.data-table {
   .feedback,
   .btn,
   .big-btn,
-  .choice,
   .nav-item {
     transition:
       background-color 120ms ease,
       color 120ms ease;
+  }
+  .choice {
+    transition:
+      background-color 240ms ease,
+      color 240ms ease,
+      padding 240ms cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  .choice-check {
+    transition:
+      opacity 240ms ease,
+      transform 240ms cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  .choices-thumb {
+    transition: transform 240ms cubic-bezier(0.3, 0.7, 0.4, 1);
   }
   .btn:active:not(:disabled),
   .big-btn:active {
