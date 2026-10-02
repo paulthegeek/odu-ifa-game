@@ -16,7 +16,7 @@ import { EXTENDED_TIME_MULTIPLIER, ROUND_LENGTHS, WEAK_SET_MIN_ANSWERS } from '.
 import type { Direction, Mode } from '../logic/game';
 import { getOdu } from '../logic/odu';
 import type { Settings } from '../logic/storage';
-import { eyebrow } from '../components/ui';
+import { button, card, eyebrow, hint, linkButton } from '../components/ui';
 import { cn } from '../lib/cn';
 
 const MODE_NAME: Record<Mode, string> = { opon: 'Ọpọ́n Ifá', opele: 'Opẹ̀lẹ̀' };
@@ -52,22 +52,27 @@ function StartButton({
   return (
     <button
       type="button"
-      className="big-btn"
-      data-primary={primary || undefined}
+      className={cn(
+        'mb-[4px] flex min-h-28 cursor-pointer flex-col items-start justify-between gap-3 rounded-card border-2 border-line bg-surface p-4 text-left text-fg shadow-edge-lg hover:bg-stage',
+        'motion-safe:transition-[background-color,color] motion-safe:duration-120 motion-safe:ease-[ease] motion-safe:active:translate-y-[2px] motion-safe:active:shadow-pressed',
+        primary &&
+          'border-accent bg-accent text-on-accent shadow-edge-accent hover:bg-accent motion-safe:active:shadow-pressed-accent',
+        '@wide/app:min-h-[5.75rem] @wide/app:flex-row @wide/app:items-center @wide/app:gap-4 @wide/app:px-[1.4rem] @wide/app:py-0',
+      )}
       aria-labelledby={`${id}-t`}
       aria-describedby={`${id}-d`}
       onClick={onClick}
     >
       <Icon name={icon} className="size-[1.6rem]" />
-      <span className="big-btn-text">
-        <span id={`${id}-t`} className="big-btn-title">
+      <span className="@wide/app:flex-1">
+        <span id={`${id}-t`} className="block text-[1.2rem] font-bold">
           {title}
         </span>
-        <span id={`${id}-d`} className="big-btn-sub">
+        <span id={`${id}-d`} className={cn('block text-[0.875rem]', primary ? 'text-inherit' : 'text-muted')}>
           {sub}
         </span>
       </span>
-      <Icon name="arrow-right" className="big-btn-arrow" />
+      <Icon name="arrow-right" className="hidden @wide/app:block" />
     </button>
   );
 }
@@ -88,7 +93,7 @@ function RoundSettingsFields({
 }) {
   const { settings: s, updateSettings } = useApp();
   return (
-    <div className="settings-fields">
+    <div className="grid gap-5">
       <Choices
         legend="Odù set"
         name="set"
@@ -107,7 +112,7 @@ function RoundSettingsFields({
         ]}
         hint={
           !weakReady && (
-            <p className="hint" id="weak-hint">
+            <p className={hint} id="weak-hint">
               “My weak Odù” opens after {WEAK_SET_MIN_ANSWERS} recorded answers, so there’s enough data to
               find your weak spots. You have {answerCount} so far.
             </p>
@@ -123,9 +128,9 @@ function RoundSettingsFields({
         onChange={(length) => updateSettings({ length })}
         options={ROUND_LENGTHS.map((l) => ({ value: l, label: lengthText(l) }))}
         hint={
-          <p className="hint">
+          <p className={hint}>
             Timing: {TIMING_SHORT[s.timing]}.{' '}
-            <button type="button" className="btn-link" onClick={onSettings}>
+            <button type="button" className={linkButton} onClick={onSettings}>
               Change in Settings
             </button>
           </p>
@@ -182,16 +187,20 @@ export function Home({
   );
 
   return (
-    <div className="home">
-      <div className="home-intro">
-        <ScreenTitle className="home-title">Start a round</ScreenTitle>
-        <p className="muted home-lede">Pick a mode, then read a sign or build one.</p>
+    <div className="grid gap-4 @wide/app:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] @wide/app:grid-rows-[auto_1fr] @wide/app:gap-x-9 @wide/app:gap-y-5 @wide/app:[grid-template-areas:'stage_intro'_'stage_actions']">
+      {/* On phones the stage says it all; the intro stays for screen readers. */}
+      <div className="@max-wide/app:sr-only @wide/app:pt-2 @wide/app:[grid-area:intro]">
+        <ScreenTitle className="m-0">Start a round</ScreenTitle>
+        <p className="mt-2 mb-0 text-muted">Pick a mode, then read a sign or build one.</p>
       </div>
 
-      <section className="stage-card" aria-label="Mode">
+      <section
+        className="flex flex-col items-center gap-3 rounded-stage border border-card-border bg-stage px-2 pt-5 pb-3 @wide/app:justify-center @wide/app:gap-5 @wide/app:self-start @wide/app:p-6 @wide/app:[grid-area:stage]"
+        aria-label="Mode"
+      >
         <Choices
           variant="segmented"
-          className="mode-switch"
+          className="w-full @wide/app:w-[min(100%,20rem)]"
           legend="Mode"
           legendHidden
           name="mode"
@@ -202,7 +211,7 @@ export function Home({
             { value: 'opele', label: <span lang="yo">Opẹ̀lẹ̀</span> },
           ]}
         />
-        <div className="stage-sign">
+        <div className="flex w-full items-center justify-center">
           <Sign
             mode={s.mode}
             cells={STAGE_SIGN}
@@ -216,16 +225,19 @@ export function Home({
             }
           />
         </div>
-        <div className="stage-text">
-          <p className="stage-mode" lang="yo">
+        <div className="text-center">
+          <p
+            className="m-0 font-serif text-[1.85rem] leading-[1.3] font-semibold @wide/app:text-[2.1rem]"
+            lang="yo"
+          >
             {MODE_NAME[s.mode]}
           </p>
-          <p className="stage-caption">{MODE_CAPTION[s.mode]}</p>
+          <p className="m-0 text-[0.9rem] text-muted">{MODE_CAPTION[s.mode]}</p>
         </div>
       </section>
 
-      <div className="home-actions">
-        <div className="start-actions">
+      <div className="grid gap-4 @wide/app:content-start @wide/app:gap-5 @wide/app:[grid-area:actions]">
+        <div className="grid grid-cols-2 gap-3 @wide/app:grid-cols-1 @wide/app:gap-[0.9rem] large:grid-cols-1">
           <StartButton
             primary
             icon="eye"
@@ -237,7 +249,7 @@ export function Home({
         </div>
 
         {wide ? (
-          <section className="round-settings card" aria-labelledby={settingsId}>
+          <section className={card()} aria-labelledby={settingsId}>
             <h2 id={settingsId} className="sr-only">
               Round settings
             </h2>
@@ -245,15 +257,15 @@ export function Home({
           </section>
         ) : (
           <>
-            <div className="settings-summary">
-              <p>
+            <div className="flex items-center justify-between gap-2 rounded-ctl border border-card-border bg-stage py-[0.35rem] pr-[0.35rem] pl-4">
+              <p className="m-0 text-[0.9rem]">
                 <strong>{SET_SHORT[set]}</strong>
-                <span className="muted">
+                <span className="text-muted">
                   {' '}
                   · {lengthText(s.length)} · {TIMING_SHORT[s.timing]}
                 </span>
               </p>
-              <button type="button" className="btn btn-small" onClick={() => setSheetOpen(true)}>
+              <button type="button" className={button({ size: 'small' })} onClick={() => setSheetOpen(true)}>
                 Edit<span className="sr-only"> round settings</span>
               </button>
             </div>
