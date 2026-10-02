@@ -2,20 +2,21 @@ import { useState } from 'react';
 import { useApp } from '../app/AppContext';
 import { Choices } from '../components/Choices';
 import { OduName, Yo } from '../components/OduName';
-import { ScreenTitle } from '../components/ScreenTitle';
+import { PageHead } from '../components/PageHead';
 import { Sign } from '../components/Sign';
 import { PRINCIPAL_ODU } from '../data/odu';
 import type { Mode } from '../logic/game';
 import { ALL_ODU, MEJI_ODU, searchOdu, type Odu } from '../logic/odu';
+import { filterLabel, filters, oduButton, oduList, page } from '../components/ui';
 
 function OduGrid({ items, mode }: { items: readonly Odu[]; mode: Mode }) {
   const { openStudy } = useApp();
-  if (items.length === 0) return <p className="muted">No Odù match.</p>;
+  if (items.length === 0) return <p className="text-muted">No Odù match.</p>;
   return (
-    <ul className="odu-list">
+    <ul className={oduList}>
       {items.map((o) => (
         <li key={o.id}>
-          <button type="button" onClick={() => openStudy(o.id, { mode })}>
+          <button type="button" className={oduButton()} onClick={() => openStudy(o.id, { mode })}>
             <Sign mode={mode} cells={o.marks} size="small" decorative />
             <strong>
               <span className="sr-only">Study </span>
@@ -39,13 +40,10 @@ export function OduReference() {
   const filtered = searchOdu(query, rightLeg ? ALL_ODU.filter((o) => o.right.id === rightLeg) : ALL_ODU);
 
   return (
-    <div className="page">
-      <header className="page-head">
-        <ScreenTitle>Odù reference</ScreenTitle>
-        <p className="muted">Choose an Odù to open its study card.</p>
-      </header>
+    <div className={page}>
+      <PageHead title="Odù reference">Choose an Odù to open its study card.</PageHead>
 
-      <div className="toolbar">
+      <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
         <Choices
           variant="segmented"
           legend="Draw signs as"
@@ -74,8 +72,8 @@ export function OduReference() {
         <OduGrid items={MEJI_ODU} mode={mode} />
       ) : (
         <>
-          <div className="filters">
-            <label>
+          <div className={filters}>
+            <label className={filterLabel}>
               Right leg
               <select value={rightLeg} onChange={(e) => setRightLeg(e.target.value)}>
                 <option value="">All</option>
@@ -86,12 +84,12 @@ export function OduReference() {
                 ))}
               </select>
             </label>
-            <label>
+            <label className={filterLabel}>
               Search
               <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} />
             </label>
           </div>
-          <p className="muted" aria-live="polite">
+          <p className="text-muted" aria-live="polite">
             {filtered.length} of 256 Odù
             {rightLeg && (
               <>

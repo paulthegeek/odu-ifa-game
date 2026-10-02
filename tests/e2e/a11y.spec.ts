@@ -61,7 +61,7 @@ for (const theme of THEMES) {
       for (const key of ['1', 'B', '3']) await answerWithKey(page, key);
       await page.getByRole('button', { name: 'End round' }).click();
       await expect(page.getByRole('heading', { level: 1, name: 'Round complete' })).toBeVisible();
-      await expect(page.locator('.big-score', { hasText: /correct of 3/ })).toBeVisible();
+      await expect(page.getByTestId('final-score').filter({ hasText: /correct of 3/ })).toBeVisible();
       await expectNoA11yViolations(page, `results (${theme.name})`);
 
       await page.getByRole('button', { name: 'View progress' }).click();

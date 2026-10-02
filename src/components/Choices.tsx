@@ -75,7 +75,7 @@ export function Choices<T extends string | number>({
     : undefined;
   return (
     <fieldset className={cn('min-w-0', className)}>
-      <legend className={legendHidden ? 'sr-only' : cn('mb-2', eyebrow, legendClassName)}>{legend}</legend>
+      <legend className={legendHidden ? 'sr-only' : cn(eyebrow, 'mb-2', legendClassName)}>{legend}</legend>
       <div className={OPTIONS[variant]} style={thumbStyle}>
         {thumb && (
           <span

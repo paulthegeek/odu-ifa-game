@@ -5,7 +5,8 @@ import { OduTileGrid } from '../components/charts/OduTileGrid';
 import { ScoreChart } from '../components/charts/ScoreChart';
 import { pct } from '../components/charts/ChartFrame';
 import { OduName } from '../components/OduName';
-import { ScreenTitle } from '../components/ScreenTitle';
+import { PageHead } from '../components/PageHead';
+import { page } from '../components/ui';
 import type { Direction, Mode } from '../logic/game';
 import {
   mixUps,
@@ -133,11 +134,8 @@ export function Progress({
   );
 
   return (
-    <div className="page">
-      <header className="page-head">
-        <ScreenTitle>Your progress</ScreenTitle>
-        <p className="muted">Scores, accuracy and mix-ups from rounds on this device.</p>
-      </header>
+    <div className={page}>
+      <PageHead title="Your progress">Scores, accuracy and mix-ups from rounds on this device.</PageHead>
       {!persistent && (
         <p className="notice">
           Storage isn’t available in this browser, so progress will only last until you close this page.

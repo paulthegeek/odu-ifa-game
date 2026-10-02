@@ -55,10 +55,29 @@ export const panel =
   'rounded-stage border border-card-border bg-stage px-5 pt-5 pb-6 [&>h2:first-child]:mt-0';
 
 /** Small uppercase label above a heading or group. */
-export const eyebrow = 'text-[0.8rem] font-bold tracking-[0.06em] text-muted uppercase';
+export const eyebrow = 'm-0 text-[0.8rem] font-bold tracking-[0.06em] text-muted uppercase';
 
 /** Secondary help text under a control. */
 export const hint = 'mt-[0.4rem] mb-0 text-[0.9rem] text-muted';
 
 /** 1rem between children. (Not space-y-4: that sets bottom margins, which fights heading margins.) */
 export const stack = '[&>*+*]:mt-4';
+
+/** A full-width screen: a column of sections. */
+export const page = 'grid max-w-5xl gap-5';
+
+/** Highlighted note, e.g. missing content or unavailable storage. */
+export const notice = 'm-0 rounded-ctl border border-card-border bg-accent-soft px-4 py-3 text-fg';
+
+/** A row of labeled selects or inputs. */
+export const filters = 'flex flex-wrap items-end gap-3';
+export const filterLabel = 'grid gap-[0.2rem] text-[0.9rem] font-semibold';
+
+/** Grid of Odù buttons that open study cards. */
+export const oduList = 'm-0 grid list-none grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))] gap-3 p-0';
+export function oduButton({ nested = false }: { nested?: boolean } = {}) {
+  return cn(
+    'flex size-full min-h-[44px] cursor-pointer flex-col items-center justify-center gap-2 rounded-card border-2 border-card-border bg-stage px-[0.6rem] py-[0.85rem] text-fg hover:border-accent',
+    nested && 'bg-surface',
+  );
+}

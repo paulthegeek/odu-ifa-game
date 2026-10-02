@@ -77,7 +77,7 @@ describe('Odù reference: sign mode', () => {
   it('opens the study card in the page mode', () => {
     render({ mode: 'opele' });
     act(() => modeRadio('opon').click());
-    act(() => container.querySelector<HTMLButtonElement>('.odu-list button')!.click());
+    act(() => container.querySelector<HTMLButtonElement>('ul button')!.click());
     expect(onOpenStudy).toHaveBeenCalledWith(MEJI_ODU[0]!.id, { mode: 'opon' });
   });
 

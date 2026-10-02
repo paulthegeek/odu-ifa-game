@@ -1,6 +1,7 @@
 import { useApp } from '../app/AppContext';
 import { Choices } from '../components/Choices';
-import { ScreenTitle } from '../components/ScreenTitle';
+import { PageHead } from '../components/PageHead';
+import { page } from '../components/ui';
 import { Switch } from '../components/Switch';
 import { ThemeChoices } from '../components/ThemeToggle';
 import { EXTENDED_TIME_MULTIPLIER } from '../data/config';
@@ -19,11 +20,8 @@ export function Settings() {
   );
 
   return (
-    <div className="page">
-      <header className="page-head">
-        <ScreenTitle>Settings</ScreenTitle>
-        <p className="muted">These settings are saved on this device.</p>
-      </header>
+    <div className={page}>
+      <PageHead title="Settings">These settings are saved on this device.</PageHead>
 
       <section className="card" aria-labelledby="appearance-h">
         <h2 id="appearance-h">Appearance</h2>
