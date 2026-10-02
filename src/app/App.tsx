@@ -35,6 +35,7 @@ import { Play } from '../screens/Play';
 import { Progress } from '../screens/Progress';
 import { Results, type RoundOutcome } from '../screens/Results';
 import { Settings as SettingsScreen } from '../screens/Settings';
+import { cn } from '../lib/cn';
 import { AppBar, type Tab } from './AppBar';
 import { AppContext, type AppContextValue, type StudyOptions } from './AppContext';
 import type { RoundConfig } from './useRound';
@@ -249,13 +250,26 @@ export function App() {
 
   return (
     <AppContext.Provider value={ctx}>
-      <a className="skip-link" href="#main">
+      <a
+        className="absolute -top-12 left-2 z-50 rounded-full bg-accent px-4 py-2 text-on-accent focus:top-2"
+        href="#main"
+      >
         Skip to content
       </a>
-      <div className="shell" data-round={inRound}>
+      {/* Phones: top bar + fixed bottom tab bar. Wide screens: left sidebar. */}
+      <div
+        className={cn('min-h-dvh md:grid md:grid-cols-[15.5rem_minmax(0,1fr)]', inRound && 'md:grid-cols-1')}
+      >
         {!inRound && <AppBar active={activeTab} onNavigate={go} onHelp={() => go('help')} />}
 
-        <main id="main" tabIndex={-1} className="main">
+        <main
+          id="main"
+          tabIndex={-1}
+          className={cn(
+            '@container/app mx-auto w-full max-w-6xl px-4 pt-2 pb-[calc(5.5rem+env(safe-area-inset-bottom))] focus:outline-none md:px-11 md:pt-9 md:pb-12',
+            inRound && 'max-w-none p-0 md:p-0',
+          )}
+        >
           {screen === 'home' && (
             <Home
               answerCount={answerCount}
@@ -308,7 +322,7 @@ export function App() {
         </main>
       </div>
 
-      <div className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {message}
       </div>
       <StudyDialog oduId={study?.id ?? null} mode={study?.mode} onClose={() => setStudy(null)} />

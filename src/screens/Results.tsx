@@ -153,7 +153,7 @@ export function Results({
             {seen.map((id) => (
               <li key={id}>
                 <button type="button" onClick={() => openStudy(id)}>
-                  <span className="visually-hidden">Study </span>
+                  <span className="sr-only">Study </span>
                   <OduName id={id} />
                 </button>
               </li>

@@ -221,7 +221,7 @@ export function Home({
 
         {wide ? (
           <section className="round-settings card" aria-labelledby={settingsId}>
-            <h2 id={settingsId} className="visually-hidden">
+            <h2 id={settingsId} className="sr-only">
               Round settings
             </h2>
             {fields}
@@ -237,7 +237,7 @@ export function Home({
                 </span>
               </p>
               <button type="button" className="btn btn-small" onClick={() => setSheetOpen(true)}>
-                Edit<span className="visually-hidden"> round settings</span>
+                Edit<span className="sr-only"> round settings</span>
               </button>
             </div>
             <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} title="Round settings">

@@ -121,7 +121,7 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
         <section className="round-dock" aria-labelledby="dock-heading">
           <h2 id="dock-heading" className="dock-heading target-name">
             <span className="dock-eyebrow">Build</span>
-            <span className="visually-hidden">: </span>
+            <span className="sr-only">: </span>
             <OduName id={state.currentId} />
           </h2>
           <div className="btn-row">

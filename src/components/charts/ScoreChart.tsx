@@ -95,7 +95,7 @@ export function ScoreChart({ rounds, controls }: { rounds: readonly RoundRecord[
 
   const table = (
     <table className="data-table">
-      <caption className="visually-hidden">Round scores</caption>
+      <caption className="sr-only">Round scores</caption>
       <thead>
         <tr>
           <th scope="col">Date</th>

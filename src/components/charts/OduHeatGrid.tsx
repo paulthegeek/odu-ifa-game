@@ -167,7 +167,7 @@ export function OduHeatGrid({
 
   const table = (
     <table className="data-table">
-      <caption className="visually-hidden">Accuracy for all practiced Odù</caption>
+      <caption className="sr-only">Accuracy for all practiced Odù</caption>
       <thead>
         <tr>
           <th scope="col">Odù</th>

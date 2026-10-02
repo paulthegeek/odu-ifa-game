@@ -36,13 +36,13 @@ export function RoundHud({
             {MODE_NAME[settings.mode]}
           </span>
           <span aria-hidden="true"> · </span>
-          <span className="visually-hidden">: </span>
+          <span className="sr-only">: </span>
           {task}
           {practice ? ': practice my misses' : ''}
           {untimed && !practice ? ' (untimed practice)' : ''}
           <span className="hud-set">
             <span aria-hidden="true"> · </span>
-            <span className="visually-hidden">, </span>
+            <span className="sr-only">, </span>
             {SET_NAME[settings.set]}
           </span>
         </ScreenTitle>
@@ -55,7 +55,7 @@ export function RoundHud({
             {state.score}
             <span className="score-of">/{state.attempted}</span>
           </span>
-          <span className="visually-hidden">
+          <span className="sr-only">
             Score {state.score}, {state.attempted} answered
           </span>
         </p>

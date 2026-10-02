@@ -253,7 +253,7 @@ export function Progress({
               ref={fileRef}
               type="file"
               accept="application/json,.json"
-              className="visually-hidden"
+              className="sr-only"
               onChange={(e) => void onFile(e.target.files?.[0])}
             />
           </label>

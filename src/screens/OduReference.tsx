@@ -18,7 +18,7 @@ function OduGrid({ items, mode }: { items: readonly Odu[]; mode: Mode }) {
           <button type="button" onClick={() => openStudy(o.id, { mode })}>
             <Sign mode={mode} cells={o.marks} size="small" decorative />
             <strong>
-              <span className="visually-hidden">Study </span>
+              <span className="sr-only">Study </span>
               <OduName id={o.id} />
             </strong>
           </button>

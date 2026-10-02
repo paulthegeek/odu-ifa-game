@@ -60,7 +60,7 @@ export function OduTileGrid({
 
   const table = (
     <table className="data-table">
-      <caption className="visually-hidden">Accuracy for the 16 Méjì</caption>
+      <caption className="sr-only">Accuracy for the 16 Méjì</caption>
       <thead>
         <tr>
           <th scope="col">Odù</th>

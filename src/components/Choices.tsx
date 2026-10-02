@@ -45,7 +45,7 @@ export function Choices<T extends string | number>({
     : undefined;
   return (
     <fieldset className={className ? `choices ${className}` : 'choices'} data-variant={variant}>
-      <legend className={legendHidden ? 'visually-hidden' : 'choices-legend'}>{legend}</legend>
+      <legend className={legendHidden ? 'sr-only' : 'choices-legend'}>{legend}</legend>
       <div className="choices-options" style={thumbStyle}>
         {thumb && <span className="choices-thumb" aria-hidden="true" />}
         {options.map((o) => (
