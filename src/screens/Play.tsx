@@ -9,7 +9,9 @@ import { RoundHud } from '../components/RoundHud';
 import { Sign } from '../components/Sign';
 import type { RoundState } from '../logic/game';
 import { getOdu } from '../logic/odu';
-import { STAGE_FIT } from './roundLayout';
+import { hint } from '../components/ui';
+import { cn } from '../lib/cn';
+import { DOCK, DOCK_HEADING, ROUND, ROUND_BODY, ROUND_STAGE, STAGE_FIT } from './roundLayout';
 
 export function Play({ config, onFinish }: { config: RoundConfig; onFinish: (s: RoundState) => void }) {
   const { settings } = useApp();
@@ -34,10 +36,10 @@ export function Play({ config, onFinish }: { config: RoundConfig; onFinish: (s: 
   }, [state.choices, answer]);
 
   return (
-    <div className="round">
+    <div className={ROUND}>
       <RoundHud config={config} state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />
-      <div className="round-body">
-        <div className="round-stage">
+      <div className={ROUND_BODY}>
+        <div className={ROUND_STAGE}>
           <Sign
             mode={mode}
             cells={odu.marks}
@@ -47,13 +49,13 @@ export function Play({ config, onFinish }: { config: RoundConfig; onFinish: (s: 
           />
           <LegCaptions mode={mode} className={STAGE_FIT} />
         </div>
-        <section className="round-dock" aria-labelledby="dock-heading">
-          <h2 id="dock-heading" className="dock-heading">
+        <section className={DOCK} aria-labelledby="dock-heading">
+          <h2 id="dock-heading" className={DOCK_HEADING}>
             Name this Odù
           </h2>
           <AnswerChoices choices={state.choices} disabled={!!feedback} onChoose={(id) => answer(id)} />
           <FeedbackBanner feedback={feedback} />
-          <p className="hint key-hint">Press 1–4 or A–D to answer.</p>
+          <p className={cn(hint, 'm-0 hidden @wide/app:block')}>Press 1–4 or A–D to answer.</p>
         </section>
       </div>
     </div>

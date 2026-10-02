@@ -8,7 +8,7 @@ test('Read: keyboard answers score and appear in results', async ({ page }) => {
   await expect(answers).toHaveCount(4);
   await answerWithKey(page, '1');
   await answerWithKey(page, 'D');
-  await expect(page.locator('.score-pill')).toContainText('2 answered');
+  await expect(page.getByTestId('score')).toContainText('2 answered');
   await page.getByRole('button', { name: 'End round' }).click();
   await expect(page.locator('.big-score', { hasText: /correct of 2/ })).toBeVisible();
   await expect(page.getByText('Untimed practice — not counted toward personal bests.')).toBeVisible();
@@ -50,7 +50,7 @@ test('Build: positions start empty, Check needs all 8, keyboard works', async ({
   await expect(check).toBeEnabled();
 
   await page.keyboard.press('Enter');
-  await expect(page.locator('.score-pill')).toContainText('1 answered');
+  await expect(page.getByTestId('score')).toContainText('1 answered');
   await page.getByRole('button', { name: 'End round' }).click();
   await expect(page.locator('.big-score', { hasText: /correct of 1/ })).toBeVisible();
 });
