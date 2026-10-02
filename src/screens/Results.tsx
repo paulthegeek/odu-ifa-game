@@ -124,7 +124,7 @@ export function Results({
                         <OduName id={m.givenId} />
                       </p>
                       {diffs.length > 0 && (
-                        <ul className="diff-list">
+                        <ul className="diff-list list-disc">
                           {diffs.map((d) => (
                             <li key={d.index}>{describeDiff(d)}</li>
                           ))}

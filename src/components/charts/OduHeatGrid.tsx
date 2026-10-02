@@ -150,7 +150,7 @@ export function OduHeatGrid({
       </ul>
       <details>
         <summary>Key: rows are the right leg, columns the left leg</summary>
-        <ol className="heat-key">
+        <ol className="heat-key list-decimal">
           {PRINCIPAL_ODU.map((p) => (
             <li key={p.id}>
               <Yo>{p.name}</Yo>

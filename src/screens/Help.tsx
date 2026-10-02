@@ -17,7 +17,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
 
       <section className="card">
         <h2>Reading order</h2>
-        <ul>
+        <ul className="my-[1em] list-disc ps-[40px]">
           <li>A sign has two legs, each with four marks, read from top to bottom.</li>
           <li>
             Signs are drawn from the diviner’s point of view. The <strong>right leg</strong> is on your right
@@ -36,7 +36,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
 
       <section className="card">
         <h2>Single and double marks</h2>
-        <ul>
+        <ul className="my-[1em] list-disc ps-[40px]">
           <li>
             On the <span lang="yo">ọpọ́n Ifá</span>, a single mark is one stroke (I) and a double mark is two
             parallel strokes (II).

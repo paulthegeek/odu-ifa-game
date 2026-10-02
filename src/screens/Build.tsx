@@ -147,7 +147,7 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
           <FeedbackBanner feedback={feedback} />
           <details>
             <summary>Keyboard and touch help</summary>
-            <ul className="hint">
+            <ul className="hint list-disc ps-[40px]">
               <li>
                 Tap a position to cycle:{' '}
                 {['empty', cellWord(1, mode), cellWord(2, mode), 'empty'].join(' → ')}.

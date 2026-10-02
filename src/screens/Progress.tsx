@@ -209,7 +209,7 @@ export function Progress({
             Odù appear here once you have answered them at least {WEAKEST_MIN_ATTEMPTS} times.
           </p>
         ) : (
-          <ol>
+          <ol className="my-[1em] list-decimal ps-[40px]">
             {weakest.map((s) => (
               <li key={s.oduId}>
                 <button type="button" className="btn btn-link" onClick={() => openStudy(s.oduId)}>
@@ -227,7 +227,7 @@ export function Progress({
         {mix.length === 0 ? (
           <p className="muted">No mix-ups recorded yet.</p>
         ) : (
-          <ul>
+          <ul className="my-[1em] list-disc ps-[40px]">
             {mix.map((m) => (
               <li key={`${m.targetId}>${m.givenId}`}>
                 You chose <OduName id={m.givenId} /> when it was <OduName id={m.targetId} /> — {m.count}{' '}
