@@ -95,11 +95,16 @@ To regenerate the PNG app icons from `public/favicon.svg`, run `pnpm icons`.
 ```
 src/data/        Odù data, study content, configuration (editable)
 src/logic/       naming, distractors, rounds, build checking, progress, storage (pure, unit-tested)
-src/components/  sign drawings (SVG), answer choices, study card, charts
+src/components/  sign drawings (SVG), answer choices, study card, charts; ui.ts holds shared class recipes
+src/lib/         cn() for joining Tailwind classes
 src/screens/     Home, Play, Build, Results, Progress, Odù reference, Help, Settings
-src/styles/      theme tokens (Light, Dark, Night, High-contrast) and global styles
+src/styles/      Tailwind entry (app.css) and theme tokens (Light, Dark, Night, High-contrast)
 tests/unit/      Vitest
 tests/e2e/       Playwright + axe
 ```
+
+### Styling
+
+Components are styled with [Tailwind CSS](https://tailwindcss.com) v4 utility classes. Colors are CSS variables in `src/styles/themes.css`, exposed to Tailwind as `bg-surface`, `text-muted`, `border-border` and so on, so every theme works without `dark:` variants. Use `@wide/app:` for layouts that depend on the width of the main column, and `large:`, `roomy:` and `hc:` for the large-text, spacing and high-contrast settings. The SVG parts of the sign drawings and charts keep named classes in `app.css`.
 
 Progress is stored in IndexedDB and settings in localStorage. Nothing leaves the device unless you export it from the Progress screen.

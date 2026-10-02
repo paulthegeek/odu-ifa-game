@@ -39,7 +39,7 @@ export async function expectNoA11yViolations(page: Page, label: string) {
 export async function answerWithKey(page: Page, key: string) {
   await page.keyboard.press(key);
   // Wait for feedback to clear and the next sign to appear.
-  await expect(page.locator('.feedback[data-kind]')).toHaveCount(0, { timeout: 3000 });
+  await expect(page.locator('[data-testid=feedback][data-kind]')).toHaveCount(0, { timeout: 3000 });
 }
 
 /** Start a round from Home with the big Read or Build button. */

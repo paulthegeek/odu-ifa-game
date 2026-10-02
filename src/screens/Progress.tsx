@@ -1,11 +1,23 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useApp } from '../app/AppContext';
 import { OduHeatGrid } from '../components/charts/OduHeatGrid';
 import { OduTileGrid } from '../components/charts/OduTileGrid';
 import { ScoreChart } from '../components/charts/ScoreChart';
 import { pct } from '../components/charts/ChartFrame';
 import { OduName } from '../components/OduName';
-import { ScreenTitle } from '../components/ScreenTitle';
+import { PageHead } from '../components/PageHead';
+import {
+  button,
+  card,
+  filterLabel,
+  filters as filterRow,
+  linkButton,
+  notice,
+  page,
+  panel,
+  stack,
+} from '../components/ui';
+import { cn } from '../lib/cn';
 import type { Direction, Mode } from '../logic/game';
 import {
   mixUps,
@@ -37,6 +49,25 @@ function seriesLabel(key: string): string {
   ]
     .filter(Boolean)
     .join(' · ');
+}
+
+const BUTTON_ROW = 'flex flex-wrap gap-3';
+
+function messageClass(kind?: 'error' | 'success') {
+  return cn(
+    'rounded-ctl border-2 border-border bg-surface px-4 py-3',
+    kind === 'error' && 'border-dashed border-incorrect',
+    kind === 'success' && 'border-correct',
+  );
+}
+
+function Stat({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="rounded-ctl border border-card-border bg-stage px-4 py-[0.85rem]">
+      <dt className="text-[0.85rem] text-muted">{label}</dt>
+      <dd className="m-0 font-serif text-[1.6rem] font-semibold">{children}</dd>
+    </div>
+  );
 }
 
 const secs = (ms: number | null) => (ms === null ? '—' : `${(ms / 1000).toFixed(1)} s`);
@@ -108,8 +139,8 @@ export function Progress({
   };
 
   const filters = (
-    <div className="filters">
-      <label>
+    <div className={filterRow}>
+      <label className={filterLabel}>
         Mode
         <select value={modeFilter} onChange={(e) => setModeFilter(e.target.value as Mode | '')}>
           <option value="">Both</option>
@@ -121,7 +152,7 @@ export function Progress({
           </option>
         </select>
       </label>
-      <label>
+      <label className={filterLabel}>
         Direction
         <select value={dirFilter} onChange={(e) => setDirFilter(e.target.value as Direction | '')}>
           <option value="">Both</option>
@@ -133,53 +164,35 @@ export function Progress({
   );
 
   return (
-    <div className="page">
-      <header className="page-head">
-        <ScreenTitle>Your progress</ScreenTitle>
-        <p className="muted">Scores, accuracy and mix-ups from rounds on this device.</p>
-      </header>
+    <div className={page}>
+      <PageHead title="Your progress">Scores, accuracy and mix-ups from rounds on this device.</PageHead>
       {!persistent && (
-        <p className="notice">
+        <p className={notice}>
           Storage isn’t available in this browser, so progress will only last until you close this page.
         </p>
       )}
 
       <section aria-labelledby="ov-h">
         <h2 id="ov-h">Overview</h2>
-        <dl className="stat-grid">
-          <div className="stat">
-            <dt>Rounds played</dt>
-            <dd>{ov.rounds}</dd>
-          </div>
-          <div className="stat">
-            <dt>Total answers</dt>
-            <dd>{ov.answers}</dd>
-          </div>
-          <div className="stat">
-            <dt>Accuracy</dt>
-            <dd>{ov.accuracy === null ? '—' : pct(ov.accuracy)}</dd>
-          </div>
-          <div className="stat">
-            <dt>Average response</dt>
-            <dd>{secs(ov.avgMs)}</dd>
-          </div>
-          <div className="stat">
-            <dt>Practice streak</dt>
-            <dd>
-              {ov.streak} {ov.streak === 1 ? 'day' : 'days'}
-            </dd>
-          </div>
+        <dl className="m-0 grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-3">
+          <Stat label="Rounds played">{ov.rounds}</Stat>
+          <Stat label="Total answers">{ov.answers}</Stat>
+          <Stat label="Accuracy">{ov.accuracy === null ? '—' : pct(ov.accuracy)}</Stat>
+          <Stat label="Average response">{secs(ov.avgMs)}</Stat>
+          <Stat label="Practice streak">
+            {ov.streak} {ov.streak === 1 ? 'day' : 'days'}
+          </Stat>
         </dl>
       </section>
 
-      <section aria-labelledby="score-h" className="panel stack">
+      <section aria-labelledby="score-h" className={cn(panel, stack)}>
         <h2 id="score-h">Scores</h2>
         <ScoreChart
           rounds={activeKey ? scoreSeries(data.rounds, activeKey) : []}
           controls={
             keys.length > 0 && (
-              <div className="filters">
-                <label>
+              <div className={filterRow}>
+                <label className={filterLabel}>
                   Settings
                   <select value={activeKey} onChange={(e) => setSeriesKey(e.target.value)}>
                     {keys.map((k) => (
@@ -195,24 +208,24 @@ export function Progress({
         />
       </section>
 
-      <section aria-labelledby="acc-h" className="panel stack">
+      <section aria-labelledby="acc-h" className={cn(panel, stack)}>
         <h2 id="acc-h">Accuracy by Odù</h2>
         {filters}
         <OduTileGrid stats={stats} />
         <OduHeatGrid stats={stats} />
       </section>
 
-      <section aria-labelledby="weak-h" className="panel">
+      <section aria-labelledby="weak-h" className={panel}>
         <h2 id="weak-h">Weakest Odù</h2>
         {weakest.length === 0 ? (
-          <p className="muted">
+          <p className="text-muted">
             Odù appear here once you have answered them at least {WEAKEST_MIN_ATTEMPTS} times.
           </p>
         ) : (
-          <ol>
+          <ol className="my-[1em] list-decimal ps-[40px]">
             {weakest.map((s) => (
               <li key={s.oduId}>
-                <button type="button" className="btn btn-link" onClick={() => openStudy(s.oduId)}>
+                <button type="button" className={linkButton} onClick={() => openStudy(s.oduId)}>
                   <OduName id={s.oduId} />
                 </button>{' '}
                 — {pct(s.accuracy)} of {s.attempts}, average {secs(s.avgMs)}
@@ -222,12 +235,12 @@ export function Progress({
         )}
       </section>
 
-      <section aria-labelledby="mix-h" className="panel">
+      <section aria-labelledby="mix-h" className={panel}>
         <h2 id="mix-h">Common mix-ups</h2>
         {mix.length === 0 ? (
-          <p className="muted">No mix-ups recorded yet.</p>
+          <p className="text-muted">No mix-ups recorded yet.</p>
         ) : (
-          <ul>
+          <ul className="my-[1em] list-disc ps-[40px]">
             {mix.map((m) => (
               <li key={`${m.targetId}>${m.givenId}`}>
                 You chose <OduName id={m.givenId} /> when it was <OduName id={m.targetId} /> — {m.count}{' '}
@@ -238,48 +251,48 @@ export function Progress({
         )}
       </section>
 
-      <section aria-labelledby="data-h" className="card stack">
+      <section aria-labelledby="data-h" className={cn(card(), stack)}>
         <h2 id="data-h">Your data</h2>
-        <p className="muted">
+        <p className="text-muted">
           Progress is stored only on this device. Export it to keep a backup or move it to another device.
         </p>
-        <div className="btn-row">
-          <button type="button" className="btn" onClick={doExport}>
+        <div className={BUTTON_ROW}>
+          <button type="button" className={button()} onClick={doExport}>
             Export progress
           </button>
-          <label className="btn">
+          <label className={button()}>
             Import progress
             <input
               ref={fileRef}
               type="file"
               accept="application/json,.json"
-              className="visually-hidden"
+              className="sr-only"
               onChange={(e) => void onFile(e.target.files?.[0])}
             />
           </label>
-          <button type="button" className="btn btn-danger" onClick={() => setConfirmReset(true)}>
+          <button
+            type="button"
+            className={button({ variant: 'danger' })}
+            onClick={() => setConfirmReset(true)}
+          >
             Reset progress
           </button>
         </div>
 
         <div aria-live="polite">
-          {message && (
-            <p className="message" data-kind={message.kind}>
-              {message.text}
-            </p>
-          )}
+          {message && <p className={messageClass(message.kind)}>{message.text}</p>}
         </div>
 
         {pendingImport && (
-          <div className="message" role="alertdialog" aria-labelledby="imp-h" aria-describedby="imp-d">
+          <div className={messageClass()} role="alertdialog" aria-labelledby="imp-h" aria-describedby="imp-d">
             <h3 id="imp-h">Replace your progress?</h3>
             <p id="imp-d">
               The file has {describe(pendingImport)}. It will replace the {describe(data)} on this device.
             </p>
-            <div className="btn-row">
+            <div className={BUTTON_ROW}>
               <button
                 type="button"
-                className="btn btn-primary"
+                className={button({ variant: 'primary' })}
                 onClick={() => {
                   void onReplace(pendingImport).then(() => {
                     setPendingImport(null);
@@ -289,7 +302,7 @@ export function Progress({
               >
                 Replace with imported file
               </button>
-              <button type="button" className="btn" onClick={() => setPendingImport(null)}>
+              <button type="button" className={button()} onClick={() => setPendingImport(null)}>
                 Cancel
               </button>
             </div>
@@ -298,8 +311,7 @@ export function Progress({
 
         {confirmReset && (
           <div
-            className="message"
-            data-kind="error"
+            className={messageClass('error')}
             role="alertdialog"
             aria-labelledby="rst-h"
             aria-describedby="rst-d"
@@ -310,10 +322,10 @@ export function Progress({
               bests on this device. Your display and accessibility settings are kept. Consider exporting
               first.
             </p>
-            <div className="btn-row">
+            <div className={BUTTON_ROW}>
               <button
                 type="button"
-                className="btn btn-danger"
+                className={button({ variant: 'danger' })}
                 onClick={() => {
                   void onReset().then(() => {
                     setConfirmReset(false);
@@ -323,7 +335,7 @@ export function Progress({
               >
                 Delete my progress
               </button>
-              <button type="button" className="btn" onClick={() => setConfirmReset(false)} autoFocus>
+              <button type="button" className={button()} onClick={() => setConfirmReset(false)} autoFocus>
                 Cancel
               </button>
             </div>

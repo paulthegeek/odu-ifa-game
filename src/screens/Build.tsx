@@ -19,6 +19,9 @@ import {
 } from '../logic/build';
 import { mirrorActive, type RoundState } from '../logic/game';
 import { getOdu } from '../logic/odu';
+import { button, eyebrow, hint } from '../components/ui';
+import { cn } from '../lib/cn';
+import { DOCK, DOCK_HEADING, ROUND, ROUND_BODY, ROUND_STAGE, STAGE_FIT } from './roundLayout';
 
 export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s: RoundState) => void }) {
   const { settings, announce } = useApp();
@@ -94,15 +97,16 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
   const ready = canCheck(cells);
 
   return (
-    <div className="round">
+    <div className={ROUND}>
       <RoundHud config={config} state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />
-      <div className="round-body">
-        <div className="round-stage">
+      <div className={ROUND_BODY}>
+        <div className={ROUND_STAGE}>
           <Sign
             mode={mode}
             cells={cells}
             size="large"
             showMarks={settings.showMarks}
+            className={STAGE_FIT}
             editable={{
               labels: cells.map((c, i) => positionLabel(i, c, mode)),
               activeIndex: active,
@@ -116,21 +120,26 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
               buttonRefs,
             }}
           />
-          <LegCaptions mode={mode} />
+          <LegCaptions mode={mode} className={STAGE_FIT} />
         </div>
-        <section className="round-dock" aria-labelledby="dock-heading">
-          <h2 id="dock-heading" className="dock-heading target-name">
-            <span className="dock-eyebrow">Build</span>
-            <span className="visually-hidden">: </span>
+        <section className={DOCK} aria-labelledby="dock-heading">
+          <h2 id="dock-heading" className={cn(DOCK_HEADING, 'text-[1.75rem]')}>
+            <span className={cn(eyebrow, 'block font-sans')}>Build</span>
+            <span className="sr-only">: </span>
             <OduName id={state.currentId} />
           </h2>
-          <div className="btn-row">
-            <button type="button" className="btn btn-primary" disabled={!ready || !!feedback} onClick={check}>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              className={button({ variant: 'primary' })}
+              disabled={!ready || !!feedback}
+              onClick={check}
+            >
               Check
             </button>
             <button
               type="button"
-              className="btn"
+              className={button()}
               onClick={() => {
                 setCells(emptyCells());
                 announce('Cleared. All positions empty.');
@@ -140,14 +149,14 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
               Clear
             </button>
           </div>
-          <p className="hint" aria-live="off">
+          <p className={hint} aria-live="off">
             {ready ? 'All 8 positions filled.' : `${filled} of 8 positions filled.`}
             {mirror && ' Mirror legs is on: each mark is copied to the other leg.'}
           </p>
           <FeedbackBanner feedback={feedback} />
           <details>
             <summary>Keyboard and touch help</summary>
-            <ul className="hint">
+            <ul className={cn(hint, 'list-disc ps-[40px]')}>
               <li>
                 Tap a position to cycle:{' '}
                 {['empty', cellWord(1, mode), cellWord(2, mode), 'empty'].join(' → ')}.

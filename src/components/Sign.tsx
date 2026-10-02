@@ -14,6 +14,7 @@ export interface SignProps {
   label?: string;
   editable?: EditableConfig;
   decorative?: boolean;
+  className?: string;
 }
 
 export function Sign({ mode, showMarks = false, ...rest }: SignProps) {

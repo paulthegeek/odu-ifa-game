@@ -1,7 +1,7 @@
 /** Line chart of round scores over time, for one settings combination. */
 import type { ReactNode } from 'react';
 import type { RoundRecord } from '../../logic/progress';
-import { ChartFrame } from './ChartFrame';
+import { ChartFrame, chartSvg, dataTable } from './ChartFrame';
 
 const W = 600;
 const H = 240;
@@ -41,9 +41,9 @@ export function ScoreChart({ rounds, controls }: { rounds: readonly RoundRecord[
 
   const chart =
     rounds.length === 0 ? (
-      <p className="muted">Play a timed round with these settings to see your scores here.</p>
+      <p className="text-muted">Play a timed round with these settings to see your scores here.</p>
     ) : (
-      <svg className="chart-svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={scoreSummary(rounds)}>
+      <svg className={chartSvg} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={scoreSummary(rounds)}>
         {ticks.map((t) => (
           <g key={t}>
             <line className="chart-grid-line" x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} />
@@ -94,8 +94,8 @@ export function ScoreChart({ rounds, controls }: { rounds: readonly RoundRecord[
     );
 
   const table = (
-    <table className="data-table">
-      <caption className="visually-hidden">Round scores</caption>
+    <table className={dataTable}>
+      <caption className="sr-only">Round scores</caption>
       <thead>
         <tr>
           <th scope="col">Date</th>

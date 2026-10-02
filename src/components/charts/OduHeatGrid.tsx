@@ -8,7 +8,8 @@ import { PRINCIPAL_ODU } from '../../data/odu';
 import type { OduStat } from '../../logic/progress';
 import { oduId } from '../../logic/odu';
 import { OduName, Yo } from '../OduName';
-import { ChartFrame, pct } from './ChartFrame';
+import { stack } from '../ui';
+import { ChartFrame, chartSvg, dataTable, pct } from './ChartFrame';
 
 const CELL = 22;
 const GAP = 2;
@@ -98,59 +99,61 @@ export function OduHeatGrid({
       : `You have practiced ${practiced} of 256 Odù; ${strong} are at 80% accuracy or above.`;
 
   const chart = (
-    <div className="stack">
-      <svg
-        className="chart-svg"
-        viewBox={`0 0 ${SIZE} ${SIZE}`}
-        style={{ maxWidth: '34rem' }}
-        role="img"
-        aria-label={summary}
-      >
-        <Patterns id={pid} />
-        {PRINCIPAL_ODU.map((p, i) => (
-          <g key={p.id}>
-            <text
-              className="chart-axis-text"
-              x={LABEL + i * (CELL + GAP) + CELL / 2}
-              y={LABEL - 8}
-              textAnchor="middle"
-            >
-              {i + 1}
-            </text>
-            <text
-              className="chart-axis-text"
-              x={LABEL - 6}
-              y={LABEL + i * (CELL + GAP) + CELL / 2 + 4}
-              textAnchor="end"
-            >
-              {i + 1}
-            </text>
-          </g>
-        ))}
-        {PRINCIPAL_ODU.map((r, ri) =>
-          PRINCIPAL_ODU.map((l, li) => {
-            const s = stats.get(oduId(r.id, l.id));
-            const b = band(s);
-            return (
-              <g key={`${r.id}-${l.id}`}>
-                <Cell b={b} x={LABEL + li * (CELL + GAP)} y={LABEL + ri * (CELL + GAP)} patternId={pid} />
-                <title>{`Right ${r.name}, left ${l.name}: ${s?.attempts ? `${pct(s.accuracy)} of ${s.attempts}` : 'not yet practiced'}`}</title>
-              </g>
-            );
-          }),
-        )}
-      </svg>
-      <ul className="heat-legend" aria-label="Legend">
-        {(['none', 'low', 'mid', 'high'] as const).map((b) => (
-          <li key={b}>
-            <Swatch b={b} patternId={pid} />
-            {BAND_TEXT[b]}
-          </li>
-        ))}
-      </ul>
+    <div className={stack}>
+      {/* The legend sits tight under the grid it explains. */}
+      <div>
+        <svg
+          className={`${chartSvg} max-w-[34rem]`}
+          viewBox={`0 0 ${SIZE} ${SIZE}`}
+          role="img"
+          aria-label={summary}
+        >
+          <Patterns id={pid} />
+          {PRINCIPAL_ODU.map((p, i) => (
+            <g key={p.id}>
+              <text
+                className="chart-axis-text"
+                x={LABEL + i * (CELL + GAP) + CELL / 2}
+                y={LABEL - 8}
+                textAnchor="middle"
+              >
+                {i + 1}
+              </text>
+              <text
+                className="chart-axis-text"
+                x={LABEL - 6}
+                y={LABEL + i * (CELL + GAP) + CELL / 2 + 4}
+                textAnchor="end"
+              >
+                {i + 1}
+              </text>
+            </g>
+          ))}
+          {PRINCIPAL_ODU.map((r, ri) =>
+            PRINCIPAL_ODU.map((l, li) => {
+              const s = stats.get(oduId(r.id, l.id));
+              const b = band(s);
+              return (
+                <g key={`${r.id}-${l.id}`}>
+                  <Cell b={b} x={LABEL + li * (CELL + GAP)} y={LABEL + ri * (CELL + GAP)} patternId={pid} />
+                  <title>{`Right ${r.name}, left ${l.name}: ${s?.attempts ? `${pct(s.accuracy)} of ${s.attempts}` : 'not yet practiced'}`}</title>
+                </g>
+              );
+            }),
+          )}
+        </svg>
+        <ul className="m-0 flex list-none flex-wrap gap-3 p-0 text-[0.85rem]" aria-label="Legend">
+          {(['none', 'low', 'mid', 'high'] as const).map((b) => (
+            <li key={b} className="flex items-center gap-[0.35rem]">
+              <Swatch b={b} patternId={pid} />
+              {BAND_TEXT[b]}
+            </li>
+          ))}
+        </ul>
+      </div>
       <details>
         <summary>Key: rows are the right leg, columns the left leg</summary>
-        <ol className="heat-key">
+        <ol className="m-0 list-decimal [columns:2_12rem] pl-6 text-[0.85rem]">
           {PRINCIPAL_ODU.map((p) => (
             <li key={p.id}>
               <Yo>{p.name}</Yo>
@@ -166,8 +169,8 @@ export function OduHeatGrid({
   ).filter((x) => x.s && x.s.attempts > 0);
 
   const table = (
-    <table className="data-table">
-      <caption className="visually-hidden">Accuracy for all practiced Odù</caption>
+    <table className={dataTable}>
+      <caption className="sr-only">Accuracy for all practiced Odù</caption>
       <thead>
         <tr>
           <th scope="col">Odù</th>

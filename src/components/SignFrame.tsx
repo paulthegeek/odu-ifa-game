@@ -5,6 +5,7 @@
 import type { KeyboardEvent, ReactNode, RefObject } from 'react';
 import type { Cell } from '../logic/build';
 import type { Mode } from '../logic/game';
+import { cn } from '../lib/cn';
 import { geometryFor, positionPoint, signDescription } from './signGeometry';
 
 export interface EditableConfig {
@@ -27,8 +28,16 @@ export interface SignFrameProps {
   readonly editable?: EditableConfig;
   /** Hide from assistive tech when the surrounding control already names the sign. */
   readonly decorative?: boolean;
+  /** Sizing overrides, e.g. `[--sign-width:26rem]` or a whole new width. */
+  readonly className?: string;
   readonly children: ReactNode;
 }
+
+const SIZE = {
+  large: '[--sign-width:15rem] large:[--sign-width:19rem]',
+  medium: '[--sign-width:10rem]',
+  small: '[--sign-width:6.5rem]',
+} as const;
 
 function WrongMarker({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
   const bx = x + w / 2 - 2;
@@ -53,12 +62,22 @@ export function SignFrame({
   label,
   editable,
   decorative,
+  className,
   children,
 }: SignFrameProps) {
   const g = geometryFor(mode);
   const description = label ?? signDescription(mode, cells);
+  // Drawn at --sign-width, capped by its container. --aspect (width ÷ height)
+  // lets a container cap the height instead, as the round stage does.
+  const frameClass = cn(
+    'relative w-[min(100%,var(--sign-width))]',
+    SIZE[size],
+    mode === 'opele' && '[--aspect:0.667]',
+    className,
+  );
   const svg = (
     <svg
+      className="block h-auto w-full"
       viewBox={`0 0 ${g.width} ${g.height}`}
       {...(editable || decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': description })}
       focusable="false"
@@ -73,7 +92,7 @@ export function SignFrame({
 
   if (!editable) {
     return (
-      <div className="sign" data-size={size} data-mode={mode}>
+      <div className={frameClass} data-mode={mode}>
         {svg}
       </div>
     );
@@ -81,8 +100,7 @@ export function SignFrame({
 
   return (
     <div
-      className="sign"
-      data-size={size}
+      className={frameClass}
       data-mode={mode}
       role="group"
       aria-label={mode === 'opele' ? 'Opẹ̀lẹ̀ to build' : 'Ọpọ́n Ifá to build'}
@@ -97,7 +115,7 @@ export function SignFrame({
               editable.buttonRefs.current[i] = el;
             }}
             type="button"
-            className="position-btn"
+            className="absolute min-h-[44px] min-w-[44px] -translate-1/2 cursor-pointer rounded-[10px] border-2 border-transparent bg-transparent p-0 text-inherit hover:border-border focus-visible:outline-offset-0"
             style={{
               left: `${(x / g.width) * 100}%`,
               top: `${(y / g.height) * 100}%`,

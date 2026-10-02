@@ -8,6 +8,8 @@ import { useApp } from '../app/AppContext';
 import type { ThemeChoice } from '../logic/storage';
 import { Choices } from './Choices';
 import { Icon, type IconName } from './Icon';
+import { iconButton } from './ui';
+import { cn } from '../lib/cn';
 
 const OPTIONS: { value: ThemeChoice; label: string }[] = [
   { value: 'system', label: 'Auto' },
@@ -38,7 +40,8 @@ export function ThemeChoices({ name, legendHidden = false }: { name: string; leg
   );
 }
 
-export function ThemeMenu() {
+/** `sidebar`: in the wide-screen sidebar, show the label and open the menu upward. */
+export function ThemeMenu({ sidebar = false }: { sidebar?: boolean }) {
   const { settings } = useApp();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -66,7 +69,7 @@ export function ThemeMenu() {
 
   return (
     <div
-      className="theme-menu"
+      className="relative"
       ref={wrapRef}
       onBlur={(e) => {
         if (!wrapRef.current?.contains(e.relatedTarget)) setOpen(false);
@@ -75,16 +78,26 @@ export function ThemeMenu() {
       <button
         ref={buttonRef}
         type="button"
-        className="icon-btn"
+        className={cn(
+          iconButton(),
+          sidebar && 'md:gap-[0.6rem] md:pr-[0.9rem] md:pl-[0.6rem] md:font-semibold',
+        )}
         aria-expanded={open}
         aria-controls={popId}
         onClick={() => setOpen((o) => !o)}
       >
         <Icon name={ICONS[settings.theme]} />
-        {/* Visually hidden in compact bars, shown beside the icon in the desktop sidebar. */}
-        <span className="theme-menu-label">Theme</span>
+        {/* Visually hidden in compact bars, shown beside the icon in the wide-screen sidebar. */}
+        <span className={cn('sr-only', sidebar && 'md:not-sr-only')}>Theme</span>
       </button>
-      <div id={popId} className="theme-pop" hidden={!open}>
+      <div
+        id={popId}
+        className={cn(
+          'absolute top-[calc(100%+0.5rem)] right-0 z-40 w-max max-w-[calc(100vw-2rem)] rounded-ctl border-2 border-border bg-surface p-2 shadow-card',
+          sidebar && 'md:top-auto md:right-auto md:bottom-[calc(100%+0.5rem)] md:left-0',
+        )}
+        hidden={!open}
+      >
         {open && <ThemeChoices name="theme" legendHidden />}
       </div>
     </div>
