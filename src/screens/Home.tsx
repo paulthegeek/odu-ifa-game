@@ -203,7 +203,18 @@ export function Home({
           ]}
         />
         <div className="stage-sign">
-          <Sign mode={s.mode} cells={STAGE_SIGN} size="large" showMarks={s.showMarks} decorative />
+          <Sign
+            mode={s.mode}
+            cells={STAGE_SIGN}
+            size="large"
+            showMarks={s.showMarks}
+            decorative
+            className={
+              s.mode === 'opele'
+                ? '[--sign-width:10.5rem] @wide/app:[--sign-width:17rem]'
+                : '@wide/app:[--sign-width:26rem]'
+            }
+          />
         </div>
         <div className="stage-text">
           <p className="stage-mode" lang="yo">

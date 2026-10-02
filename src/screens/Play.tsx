@@ -9,6 +9,7 @@ import { RoundHud } from '../components/RoundHud';
 import { Sign } from '../components/Sign';
 import type { RoundState } from '../logic/game';
 import { getOdu } from '../logic/odu';
+import { STAGE_FIT } from './roundLayout';
 
 export function Play({ config, onFinish }: { config: RoundConfig; onFinish: (s: RoundState) => void }) {
   const { settings } = useApp();
@@ -37,8 +38,14 @@ export function Play({ config, onFinish }: { config: RoundConfig; onFinish: (s: 
       <RoundHud config={config} state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />
       <div className="round-body">
         <div className="round-stage">
-          <Sign mode={mode} cells={odu.marks} showMarks={settings.showMarks} size="large" />
-          <LegCaptions mode={mode} />
+          <Sign
+            mode={mode}
+            cells={odu.marks}
+            showMarks={settings.showMarks}
+            size="large"
+            className={STAGE_FIT}
+          />
+          <LegCaptions mode={mode} className={STAGE_FIT} />
         </div>
         <section className="round-dock" aria-labelledby="dock-heading">
           <h2 id="dock-heading" className="dock-heading">

@@ -34,9 +34,7 @@ function render(overrides: Partial<Settings> = {}, children: React.ReactNode = <
 }
 
 function gridModes(): Set<string | undefined> {
-  return new Set(
-    [...container.querySelectorAll<HTMLElement>('.odu-list .sign')].map((el) => el.dataset.mode),
-  );
+  return new Set([...container.querySelectorAll<HTMLElement>('ul [data-mode]')].map((el) => el.dataset.mode));
 }
 
 function modeRadio(value: Mode): HTMLInputElement {
@@ -62,7 +60,7 @@ describe('Odù reference: sign mode', () => {
   it.each(['opele', 'opon'] as const)('starts in the Setup mode (%s)', (mode) => {
     render({ mode });
     expect(modeRadio(mode).checked).toBe(true);
-    expect(container.querySelectorAll('.odu-list .sign')).toHaveLength(16);
+    expect(container.querySelectorAll('ul [data-mode]')).toHaveLength(16);
     expect(gridModes()).toEqual(new Set([mode]));
   });
 
@@ -85,6 +83,6 @@ describe('Odù reference: sign mode', () => {
 
   it('study card draws in the override mode instead of the global one', () => {
     render({ mode: 'opele' }, <StudyCard oduId={MEJI_ODU[0]!.id} mode="opon" />);
-    expect(container.querySelector<HTMLElement>('.study-card .sign')?.dataset.mode).toBe('opon');
+    expect(container.querySelector<HTMLElement>('article [data-mode]')?.dataset.mode).toBe('opon');
   });
 });

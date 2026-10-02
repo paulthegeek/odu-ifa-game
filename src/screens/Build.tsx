@@ -19,6 +19,7 @@ import {
 } from '../logic/build';
 import { mirrorActive, type RoundState } from '../logic/game';
 import { getOdu } from '../logic/odu';
+import { STAGE_FIT } from './roundLayout';
 
 export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s: RoundState) => void }) {
   const { settings, announce } = useApp();
@@ -103,6 +104,7 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
             cells={cells}
             size="large"
             showMarks={settings.showMarks}
+            className={STAGE_FIT}
             editable={{
               labels: cells.map((c, i) => positionLabel(i, c, mode)),
               activeIndex: active,
@@ -116,7 +118,7 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
               buttonRefs,
             }}
           />
-          <LegCaptions mode={mode} />
+          <LegCaptions mode={mode} className={STAGE_FIT} />
         </div>
         <section className="round-dock" aria-labelledby="dock-heading">
           <h2 id="dock-heading" className="dock-heading target-name">
