@@ -12,6 +12,9 @@ import '@fontsource/noto-sans/vietnamese-600.css';
 import '@fontsource/noto-sans/latin-700.css';
 import '@fontsource/noto-sans/latin-ext-700.css';
 import '@fontsource/noto-sans/vietnamese-700.css';
+// Headings: Noto Serif Display. The weight file carries unicode-range for each
+// subset, so only the subsets a page uses are downloaded.
+import '@fontsource/noto-serif-display/600.css';
 import './styles/themes.css';
 import './styles/global.css';
 import { App } from './app/App';

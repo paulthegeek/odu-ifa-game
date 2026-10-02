@@ -5,8 +5,7 @@ import { useRound, type RoundConfig } from '../app/useRound';
 import { FeedbackBanner } from '../components/FeedbackBanner';
 import { LegCaptions } from '../components/LegCaptions';
 import { OduName } from '../components/OduName';
-import { RoundBar } from '../components/RoundBar';
-import { ScreenTitle } from '../components/ScreenTitle';
+import { RoundHud } from '../components/RoundHud';
 import { Sign } from '../components/Sign';
 import {
   canCheck,
@@ -95,18 +94,10 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
   const ready = canCheck(cells);
 
   return (
-    <div>
-      <ScreenTitle>
-        Build the sign{config.practice ? ': practice my misses' : ''}
-        {untimed && !config.practice ? ' (untimed practice)' : ''}
-      </ScreenTitle>
-      <RoundBar state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />
-      <div className="play-layout">
-        <div className="sign-stage">
-          <p className="target-name">
-            <span className="visually-hidden">Build: </span>
-            <OduName id={state.currentId} />
-          </p>
+    <div className="round">
+      <RoundHud config={config} state={state} remainingMs={remainingMs} untimed={untimed} onEnd={finish} />
+      <div className="round-body">
+        <div className="round-stage">
           <Sign
             mode={mode}
             cells={cells}
@@ -127,7 +118,12 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
           />
           <LegCaptions mode={mode} />
         </div>
-        <div className="stack">
+        <section className="round-dock" aria-labelledby="dock-heading">
+          <h2 id="dock-heading" className="dock-heading target-name">
+            <span className="dock-eyebrow">Build</span>
+            <span className="visually-hidden">: </span>
+            <OduName id={state.currentId} />
+          </h2>
           <div className="btn-row">
             <button type="button" className="btn btn-primary" disabled={!ready || !!feedback} onClick={check}>
               Check
@@ -160,7 +156,7 @@ export function Build({ config, onFinish }: { config: RoundConfig; onFinish: (s:
               <li>1 sets single, 2 sets double, Backspace clears the position, Enter checks.</li>
             </ul>
           </details>
-        </div>
+        </section>
       </div>
     </div>
   );

@@ -51,13 +51,11 @@ export function Progress({
   persistent,
   onReplace,
   onReset,
-  onBack,
 }: {
   data: ProgressData;
   persistent: boolean;
   onReplace: (data: ProgressData) => Promise<void>;
   onReset: () => Promise<void>;
-  onBack: () => void;
 }) {
   const { openStudy } = useApp();
   const [now] = useState(() => Date.now());
@@ -135,8 +133,11 @@ export function Progress({
   );
 
   return (
-    <div className="stack">
-      <ScreenTitle>Your progress</ScreenTitle>
+    <div className="page">
+      <header className="page-head">
+        <ScreenTitle>Your progress</ScreenTitle>
+        <p className="muted">Scores, accuracy and mix-ups from rounds on this device.</p>
+      </header>
       {!persistent && (
         <p className="notice">
           Storage isn’t available in this browser, so progress will only last until you close this page.
@@ -171,7 +172,7 @@ export function Progress({
         </dl>
       </section>
 
-      <section aria-labelledby="score-h" className="stack">
+      <section aria-labelledby="score-h" className="panel stack">
         <h2 id="score-h">Scores</h2>
         <ScoreChart
           rounds={activeKey ? scoreSeries(data.rounds, activeKey) : []}
@@ -194,14 +195,14 @@ export function Progress({
         />
       </section>
 
-      <section aria-labelledby="acc-h" className="stack">
+      <section aria-labelledby="acc-h" className="panel stack">
         <h2 id="acc-h">Accuracy by Odù</h2>
         {filters}
         <OduTileGrid stats={stats} />
         <OduHeatGrid stats={stats} />
       </section>
 
-      <section aria-labelledby="weak-h">
+      <section aria-labelledby="weak-h" className="panel">
         <h2 id="weak-h">Weakest Odù</h2>
         {weakest.length === 0 ? (
           <p className="muted">
@@ -221,7 +222,7 @@ export function Progress({
         )}
       </section>
 
-      <section aria-labelledby="mix-h">
+      <section aria-labelledby="mix-h" className="panel">
         <h2 id="mix-h">Common mix-ups</h2>
         {mix.length === 0 ? (
           <p className="muted">No mix-ups recorded yet.</p>
@@ -238,9 +239,7 @@ export function Progress({
       </section>
 
       <section aria-labelledby="data-h" className="card stack">
-        <h2 id="data-h" style={{ marginTop: 0 }}>
-          Your data
-        </h2>
+        <h2 id="data-h">Your data</h2>
         <p className="muted">
           Progress is stored only on this device. Export it to keep a backup or move it to another device.
         </p>
@@ -331,10 +330,6 @@ export function Progress({
           </div>
         )}
       </section>
-
-      <button type="button" className="btn btn-primary" onClick={onBack}>
-        Back
-      </button>
     </div>
   );
 }

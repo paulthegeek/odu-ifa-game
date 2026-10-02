@@ -1,14 +1,14 @@
 import { expect, test } from '@playwright/test';
-import { answerWithKey, openWith } from './helpers';
+import { answerWithKey, chooseTheme, goTo, openRoundSettings, openWith, startRound } from './helpers';
 
 test('Read: keyboard answers score and appear in results', async ({ page }) => {
   await openWith(page, { theme: 'light', timing: 'untimed', set: 'meji' });
-  await page.getByRole('button', { name: 'Begin' }).click();
+  await startRound(page, 'Read');
   const answers = page.getByRole('list', { name: 'Choose the Odù' }).getByRole('button');
   await expect(answers).toHaveCount(4);
   await answerWithKey(page, '1');
   await answerWithKey(page, 'D');
-  await expect(page.getByText(/2 answered/)).toBeVisible();
+  await expect(page.locator('.score-pill')).toContainText('2 answered');
   await page.getByRole('button', { name: 'End round' }).click();
   await expect(page.locator('.big-score', { hasText: /correct of 2/ })).toBeVisible();
   await expect(page.getByText('Untimed practice — not counted toward personal bests.')).toBeVisible();
@@ -16,13 +16,13 @@ test('Read: keyboard answers score and appear in results', async ({ page }) => {
 
 test('Timed round shows a countdown', async ({ page }) => {
   await openWith(page, { theme: 'light', timing: 'standard', length: 60 });
-  await page.getByRole('button', { name: 'Begin' }).click();
+  await startRound(page, 'Read');
   await expect(page.getByRole('timer')).toHaveAccessibleName(/Time left: (0|1) minutes/);
 });
 
 test('Build: positions start empty, Check needs all 8, keyboard works', async ({ page }) => {
   await openWith(page, { theme: 'light', timing: 'untimed', mode: 'opon', direction: 'build', set: 'all' });
-  await page.getByRole('button', { name: 'Begin' }).click();
+  await startRound(page, 'Build');
   const check = page.getByRole('button', { name: 'Check' });
   await expect(check).toBeDisabled();
   await expect(page.getByRole('button', { name: /: empty$/ })).toHaveCount(8);
@@ -50,7 +50,7 @@ test('Build: positions start empty, Check needs all 8, keyboard works', async ({
   await expect(check).toBeEnabled();
 
   await page.keyboard.press('Enter');
-  await expect(page.getByText(/1 answered/)).toBeVisible();
+  await expect(page.locator('.score-pill')).toContainText('1 answered');
   await page.getByRole('button', { name: 'End round' }).click();
   await expect(page.locator('.big-score', { hasText: /correct of 1/ })).toBeVisible();
 });
@@ -64,14 +64,14 @@ test('Build: Méjì mirror legs fills the other leg', async ({ page }) => {
     set: 'meji',
     mirrorLegs: true,
   });
-  await page.getByRole('button', { name: 'Begin' }).click();
+  await startRound(page, 'Build');
   await page.getByRole('button', { name: 'Right leg, mark 1 of 4: empty' }).click();
   await expect(page.getByRole('button', { name: 'Left leg, mark 1 of 4: single, open seed' })).toBeVisible();
 });
 
 test('Diacritics option changes display only', async ({ page }) => {
   await openWith(page, { theme: 'light', showDiacritics: false });
-  await page.getByRole('button', { name: 'Odù reference' }).click();
+  await goTo(page, 'Odù reference');
   await expect(page.getByText('Ose Meji', { exact: true })).toBeVisible();
   await expect(page.getByText('Eji Ogbe', { exact: true })).toBeVisible();
 });
@@ -79,7 +79,7 @@ test('Diacritics option changes display only', async ({ page }) => {
 test('Theme loads before first paint and the toggle switches it', async ({ page }) => {
   await openWith(page, { theme: 'night' });
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'night');
-  await page.getByText('Dark', { exact: true }).click();
+  await chooseTheme(page, 'Dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
@@ -87,15 +87,18 @@ test('Theme loads before first paint and the toggle switches it', async ({ page 
 
 test('Weak set is disabled until 20 answers, with an explanation', async ({ page }) => {
   await openWith(page, { theme: 'light' });
+  await openRoundSettings(page);
   await expect(page.getByRole('radio', { name: /My weak Odù/ })).toBeDisabled();
   await expect(page.getByText(/opens after 20 recorded answers/)).toBeVisible();
 });
 
 test('No horizontal scrolling', async ({ page }) => {
   await openWith(page, { theme: 'light', timing: 'untimed', set: 'all' });
-  for (const nav of ['Progress', 'Odù reference']) {
-    await page.getByRole('button', { name: nav }).click();
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-    expect(overflow, nav).toBeLessThanOrEqual(0);
+  const measure = () => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  for (const nav of ['Odù reference', 'Progress', 'Settings', 'Practice'] as const) {
+    await goTo(page, nav);
+    expect(await measure(), nav).toBeLessThanOrEqual(0);
   }
+  await startRound(page, 'Read');
+  expect(await measure(), 'round').toBeLessThanOrEqual(0);
 });

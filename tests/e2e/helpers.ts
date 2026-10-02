@@ -41,3 +41,31 @@ export async function answerWithKey(page: Page, key: string) {
   // Wait for feedback to clear and the next sign to appear.
   await expect(page.locator('.feedback[data-kind]')).toHaveCount(0, { timeout: 3000 });
 }
+
+/** Start a round from Home with the big Read or Build button. */
+export async function startRound(page: Page, direction: 'Read' | 'Build') {
+  await page.getByRole('button', { name: direction, exact: true }).click();
+}
+
+/** Go to a screen from the main navigation (tab bar on phones, sidebar on wide screens). */
+export async function goTo(page: Page, tab: 'Practice' | 'Odù reference' | 'Progress' | 'Settings') {
+  await page
+    .getByRole('navigation', { name: 'Main' })
+    .getByRole('button', { name: tab, exact: true })
+    .click();
+}
+
+/** Pick a theme from the compact theme menu. */
+export async function chooseTheme(page: Page, label: 'Auto' | 'Light' | 'Dark' | 'Night') {
+  await page.getByRole('button', { name: 'Theme', exact: true }).click();
+  await page.getByRole('radio', { name: label, exact: true }).check();
+}
+
+/** Show the round settings: an Edit sheet on phones, already inline on wide screens. */
+export async function openRoundSettings(page: Page) {
+  const edit = page.getByRole('button', { name: 'Edit round settings' });
+  if (await edit.isVisible()) {
+    await edit.click();
+    await expect(page.getByRole('dialog', { name: 'Round settings' })).toBeVisible();
+  }
+}

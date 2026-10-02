@@ -2,7 +2,7 @@ import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppContext } from '../../src/app/AppContext';
-import { Setup } from '../../src/screens/Setup';
+import { Home } from '../../src/screens/Home';
 import { DEFAULT_SETTINGS, type Settings } from '../../src/logic/storage';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -12,8 +12,9 @@ const SHOW_MARKS_TEXT = 'Show marks (I / II) beside each seed';
 let container: HTMLDivElement;
 let root: Root;
 let onUpdate: ReturnType<typeof vi.fn<(patch: Partial<Settings>) => void>>;
+let onStart: ReturnType<typeof vi.fn<(direction: 'read' | 'build') => void>>;
 
-/** Renders Setup with real settings state, so changes made on the screen re-render it. */
+/** Renders Home with real settings state, so changes made on the screen re-render it. */
 function Harness({ initial }: { initial: Settings }) {
   const [settings, setSettings] = useState(initial);
   const updateSettings = (patch: Partial<Settings>) => {
@@ -22,7 +23,7 @@ function Harness({ initial }: { initial: Settings }) {
   };
   return (
     <AppContext.Provider value={{ settings, updateSettings, announce: () => {}, openStudy: () => {} }}>
-      <Setup answerCount={0} onStart={() => {}} onHelp={() => {}} onAccessibility={() => {}} />
+      <Home answerCount={0} onStart={onStart} onSettings={() => {}} />
     </AppContext.Provider>
   );
 }
@@ -49,6 +50,7 @@ beforeEach(() => {
   document.body.appendChild(container);
   root = createRoot(container);
   onUpdate = vi.fn();
+  onStart = vi.fn();
 });
 
 afterEach(() => {
@@ -56,7 +58,7 @@ afterEach(() => {
   container.remove();
 });
 
-describe('Setup: show marks toggle', () => {
+describe('Home: show marks toggle', () => {
   it('is shown in Opẹ̀lẹ̀ mode', () => {
     render({ mode: 'opele' });
     expect(showMarksCheckbox()).not.toBeNull();
@@ -94,5 +96,27 @@ describe('Setup: show marks toggle', () => {
 
     act(() => modeRadio('opele').click());
     expect(showMarksCheckbox()?.checked).toBe(true);
+  });
+});
+
+describe('Home: start buttons', () => {
+  function startButton(name: string): HTMLButtonElement {
+    const button = [...container.querySelectorAll<HTMLButtonElement>('button[aria-labelledby]')].find(
+      (b) => document.getElementById(b.getAttribute('aria-labelledby')!)?.textContent === name,
+    );
+    if (!button) throw new Error(`no start button named ${name}`);
+    return button;
+  }
+
+  it('starts a Read round', () => {
+    render();
+    act(() => startButton('Read').click());
+    expect(onStart).toHaveBeenCalledWith('read');
+  });
+
+  it('starts a Build round', () => {
+    render();
+    act(() => startButton('Build').click());
+    expect(onStart).toHaveBeenCalledWith('build');
   });
 });

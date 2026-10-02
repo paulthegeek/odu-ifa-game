@@ -7,6 +7,9 @@ import { describeDiff, diffMarks } from '../logic/build';
 import { roundDuration, seenOdu, type RoundState } from '../logic/game';
 import { getOdu, signText } from '../logic/odu';
 
+const MODE_NAME = { opele: 'Opẹ̀lẹ̀', opon: 'Ọpọ́n Ifá' } as const;
+const SET_NAME = { meji: '16 Méjì', all: 'All 256', weak: 'My weak Odù' } as const;
+
 export interface RoundOutcome {
   readonly state: RoundState;
   readonly isNewBest: boolean;
@@ -36,10 +39,15 @@ export function Results({
   const missedIds = [...new Set(state.misses.map((m) => m.oduId))];
 
   return (
-    <div className="stack">
-      <ScreenTitle>{state.practice ? 'Practice complete' : 'Round complete'}</ScreenTitle>
-
-      <section className="card" aria-label="Score">
+    <div className="page">
+      <section className="result-hero" aria-labelledby="result-title">
+        <p className="eyebrow">
+          <span lang="yo">{MODE_NAME[mode]}</span> · {direction === 'read' ? 'Read' : 'Build'} ·{' '}
+          {SET_NAME[state.settings.set]}
+        </p>
+        <div id="result-title">
+          <ScreenTitle>{state.practice ? 'Practice complete' : 'Round complete'}</ScreenTitle>
+        </div>
         <p className="big-score">
           {state.score} correct of {state.attempted}
         </p>
@@ -48,35 +56,34 @@ export function Results({
             {state.practice ? 'Practice round' : 'Untimed practice'} — not counted toward personal bests.
           </p>
         ) : isNewBest ? (
-          <p>
+          <p className="best-badge">
             <span aria-hidden="true">★ </span>New personal best
             {previousBest !== null && ` (previous: ${previousBest})`}.
           </p>
         ) : (
           previousBest !== null && <p className="muted">Personal best for these settings: {previousBest}.</p>
         )}
+        <div className="action-row">
+          <button type="button" className="btn btn-primary" onClick={onPlayAgain}>
+            Play again
+          </button>
+          <button type="button" className="btn" onClick={onPracticeMisses} disabled={missedIds.length === 0}>
+            Practice my misses
+          </button>
+          <button type="button" className="btn" onClick={onProgress}>
+            View progress
+          </button>
+          <button type="button" className="btn" onClick={onSettings}>
+            Change settings
+          </button>
+          <button type="button" className="btn-link" onClick={onHelp}>
+            How to read a sign
+          </button>
+        </div>
       </section>
 
-      <div className="btn-row">
-        <button type="button" className="btn btn-primary" onClick={onPlayAgain}>
-          Play again
-        </button>
-        <button type="button" className="btn" onClick={onPracticeMisses} disabled={missedIds.length === 0}>
-          Practice my misses
-        </button>
-        <button type="button" className="btn" onClick={onProgress}>
-          View progress
-        </button>
-        <button type="button" className="btn" onClick={onSettings}>
-          Change settings
-        </button>
-        <button type="button" className="btn btn-link" onClick={onHelp}>
-          How to read a sign
-        </button>
-      </div>
-
-      <section>
-        <h2>Missed Odù</h2>
+      <section className="panel" aria-labelledby="missed-h">
+        <h2 id="missed-h">Missed Odù</h2>
         {state.misses.length === 0 ? (
           <p className="muted">
             {state.attempted === 0 ? 'No answers this round.' : 'No misses this round.'}
@@ -109,16 +116,16 @@ export function Results({
                       )}
                     </div>
                     <div>
-                      <p style={{ margin: 0 }}>
+                      <p className="miss-name">
                         <strong>
                           <OduName id={m.oduId} />
                         </strong>
                       </p>
-                      <p className="sign-text" style={{ margin: 0 }}>
+                      <p className="sign-text">
                         <span className="visually-hidden">Marks, right leg then left leg: </span>
                         {signText(target.marks)}
                       </p>
-                      <p style={{ margin: '0.25rem 0 0' }}>
+                      <p className="miss-given">
                         {direction === 'build' ? 'Your sign is ' : 'You chose '}
                         <OduName id={m.givenId} />
                       </p>
@@ -146,8 +153,8 @@ export function Results({
       </section>
 
       {seen.length > 0 && (
-        <section>
-          <h2>Study every Odù from this round</h2>
+        <section className="panel" aria-labelledby="seen-h">
+          <h2 id="seen-h">Study every Odù from this round</h2>
           <ul className="odu-list">
             {seen.map((id) => (
               <li key={id}>

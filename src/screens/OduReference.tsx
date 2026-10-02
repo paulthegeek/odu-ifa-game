@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../app/AppContext';
+import { Choices } from '../components/Choices';
 import { OduName, Yo } from '../components/OduName';
 import { ScreenTitle } from '../components/ScreenTitle';
 import { Sign } from '../components/Sign';
@@ -27,9 +28,9 @@ function OduGrid({ items, mode }: { items: readonly Odu[]; mode: Mode }) {
   );
 }
 
-export function OduReference({ onBack }: { onBack: () => void }) {
+export function OduReference() {
   const { settings } = useApp();
-  // Starts from the Setup choice each time the screen opens; never written back to settings.
+  // Starts from the Home mode choice each time the screen opens; never written back to settings.
   const [mode, setMode] = useState<Mode>(settings.mode);
   const [view, setView] = useState<'meji' | 'all'>('meji');
   const [rightLeg, setRightLeg] = useState('');
@@ -38,53 +39,36 @@ export function OduReference({ onBack }: { onBack: () => void }) {
   const filtered = searchOdu(query, rightLeg ? ALL_ODU.filter((o) => o.right.id === rightLeg) : ALL_ODU);
 
   return (
-    <div className="stack">
-      <ScreenTitle>Odù reference</ScreenTitle>
-      <p className="muted">Choose an Odù to open its study card.</p>
+    <div className="page">
+      <header className="page-head">
+        <ScreenTitle>Odù reference</ScreenTitle>
+        <p className="muted">Choose an Odù to open its study card.</p>
+      </header>
 
-      <fieldset>
-        <legend>Draw signs as</legend>
-        <div className="choice-group">
-          <label className="choice">
-            <input
-              type="radio"
-              name="refmode"
-              value="opele"
-              checked={mode === 'opele'}
-              onChange={() => setMode('opele')}
-            />
-            <span className="choice-label" lang="yo">
-              Opẹ̀lẹ̀
-            </span>
-          </label>
-          <label className="choice">
-            <input
-              type="radio"
-              name="refmode"
-              value="opon"
-              checked={mode === 'opon'}
-              onChange={() => setMode('opon')}
-            />
-            <span className="choice-label" lang="yo">
-              Ọpọ́n Ifá
-            </span>
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Show</legend>
-        <div className="choice-group">
-          <label className="choice">
-            <input type="radio" name="refview" checked={view === 'meji'} onChange={() => setView('meji')} />
-            <span className="choice-label">16 principal Odù</span>
-          </label>
-          <label className="choice">
-            <input type="radio" name="refview" checked={view === 'all'} onChange={() => setView('all')} />
-            <span className="choice-label">All 256</span>
-          </label>
-        </div>
-      </fieldset>
+      <div className="toolbar">
+        <Choices
+          variant="segmented"
+          legend="Draw signs as"
+          name="refmode"
+          value={mode}
+          onChange={setMode}
+          options={[
+            { value: 'opele', label: <span lang="yo">Opẹ̀lẹ̀</span> },
+            { value: 'opon', label: <span lang="yo">Ọpọ́n Ifá</span> },
+          ]}
+        />
+        <Choices
+          variant="segmented"
+          legend="Show"
+          name="refview"
+          value={view}
+          onChange={setView}
+          options={[
+            { value: 'meji', label: '16 principal Odù' },
+            { value: 'all', label: 'All 256' },
+          ]}
+        />
+      </div>
 
       {view === 'meji' ? (
         <OduGrid items={MEJI_ODU} mode={mode} />
@@ -119,10 +103,6 @@ export function OduReference({ onBack }: { onBack: () => void }) {
           <OduGrid items={filtered} mode={mode} />
         </>
       )}
-
-      <button type="button" className="btn btn-primary" onClick={onBack}>
-        Back
-      </button>
     </div>
   );
 }

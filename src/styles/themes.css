@@ -4,29 +4,47 @@
  *
  * <html data-theme="light|dark|night" data-contrast="high">
  * The theme is set before first paint by the inline script in index.html.
+ *
+ * Palette: neutral and moss-green UI around earth-tone signs (wood, ìyẹ̀rọ̀sùn).
+ * --line is a decorative hairline only. --border is the 3:1 edge for controls
+ * whose boundary must be seen (chips, switches, inputs, button edges).
  */
+
+:root {
+  --radius-stage: 28px;
+  --radius-card: 20px;
+  --radius-ctl: 16px;
+  --font-sans: 'Noto Sans', system-ui, sans-serif;
+  --font-serif: 'Noto Serif Display', 'Noto Serif', Georgia, serif;
+}
 
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f4f2e4;
-  --surface: #fffdf4;
-  --surface-2: #e8e5cc;
-  --text: #1f231b;
-  --text-muted: #4c5142;
-  --border: #7a7d65;
-  --accent: #2f5a2b;
-  --on-accent: #fffdf4;
-  --accent-soft: #dfe9d0;
-  --focus: #2f5a2b;
-  --focus-halo: #fffdf4;
-  --correct: #1d6650;
-  --incorrect: #8f3a1c;
-  --correct-bg: #d9ece3;
-  --incorrect-bg: #f6e4dc;
+  --bg: #ffffff;
+  --stage: #f3f4ee;
+  --surface: #ffffff;
+  --surface-2: #eaece3;
+  --text: #25281f;
+  --text-muted: #62665a;
+  --line: #e1e3d9;
+  --border: #868a7c;
+  --card-border: transparent;
+  --accent: #3e7c2f;
+  --accent-edge: #2a5a1f;
+  --on-accent: #ffffff;
+  --accent-soft: #ddf2cf;
+  --accent-on-soft: #2a5a1f;
+  --link: #2a5a1f;
+  --focus: #2a5a1f;
+  --focus-halo: #ffffff;
+  --correct: #2b6b22;
+  --incorrect: #a03a1c;
+  --correct-bg: #e4f4da;
+  --incorrect-bg: #fbe6de;
 
   /* Sign drawings */
-  --sign-bg: #e8e5cc;
+  --sign-bg: #f3f4ee;
   --wood: #8a5a2e;
   --wood-dark: #4f3218;
   --wood-light: #b8834e;
@@ -39,35 +57,42 @@
   --seed-ridge: #d9b27a;
   --seed-outline: #2e1c0c;
   --empty-slot: #6d6153;
-  --diff: #8f3a1c;
+  --diff: #a03a1c;
 
   /* Charts */
-  --chart-line: #2f5a2b;
-  --chart-grid: #d4d1b4;
-  --heat: #2f5a2b;
+  --chart-line: #3e7c2f;
+  --chart-grid: #e1e3d9;
+  --heat: #3e7c2f;
 
-  --shadow: 0 1px 2px rgb(40 30 20 / 0.12), 0 2px 8px rgb(40 30 20 / 0.08);
+  --shadow: 0 1px 2px rgb(30 40 20 / 0.08), 0 4px 16px rgb(30 40 20 / 0.06);
 }
 
+/* Dark: deep green-charcoal, never pure black or white. */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #161915;
-  --surface: #1e221c;
-  --surface-2: #282e24;
-  --text: #e8e6d9;
-  --text-muted: #b5b5a2;
-  --border: #737a64;
-  --accent: #b0d494;
-  --on-accent: #161915;
-  --accent-soft: #2a3a24;
-  --focus: #d3ebbf;
-  --focus-halo: #161915;
-  --correct: #7fd1b0;
-  --incorrect: #efa487;
-  --correct-bg: #1c382e;
-  --incorrect-bg: #402a24;
+  --bg: #121711;
+  --stage: #1b2219;
+  --surface: #222b20;
+  --surface-2: #2a3427;
+  --text: #edf1e7;
+  --text-muted: #a3ad9b;
+  --line: #2f3a2c;
+  --border: #6f7c68;
+  --card-border: transparent;
+  --accent: #8fd16a;
+  --accent-edge: #5a8f3f;
+  --on-accent: #0f160c;
+  --accent-soft: #1e3317;
+  --accent-on-soft: #8fd16a;
+  --link: #8fd16a;
+  --focus: #b9e89a;
+  --focus-halo: #121711;
+  --correct: #9ad97a;
+  --incorrect: #f0a487;
+  --correct-bg: #1e3317;
+  --incorrect-bg: #3a2420;
 
-  --sign-bg: #282e24;
+  --sign-bg: #1b2219;
   --wood: #6a4727;
   --wood-dark: #3a2817;
   --wood-light: #8d6641;
@@ -80,35 +105,41 @@
   --seed-ridge: #d9b88a;
   --seed-outline: #d9c4a0;
   --empty-slot: #a3a892;
-  --diff: #efa487;
+  --diff: #f0a487;
 
-  --chart-line: #b0d494;
-  --chart-grid: #394132;
-  --heat: #b0d494;
+  --chart-line: #8fd16a;
+  --chart-grid: #2f3a2c;
+  --heat: #8fd16a;
 
   --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
 }
 
-/* Night: dim olive (Moss), dimmer than Dark. No bright whites or blues. */
+/* Night: dimmer and warmer than Dark (olive and amber). No bright whites or blues. */
 :root[data-theme='night'] {
   color-scheme: dark;
-  --bg: #0c0e08;
-  --surface: #12150c;
-  --surface-2: #191d11;
-  --text: #b8b27c;
-  --text-muted: #979163;
-  --border: #6e6d49;
-  --accent: #a6a262;
-  --on-accent: #0c0e08;
-  --accent-soft: #23261a;
-  --focus: #c4bf7a;
-  --focus-halo: #0c0e08;
-  --correct: #94b572;
-  --incorrect: #c9825a;
-  --correct-bg: #1a2210;
-  --incorrect-bg: #26150d;
+  --bg: #0d0e09;
+  --stage: #14160f;
+  --surface: #1a1c13;
+  --surface-2: #20231a;
+  --text: #cbc08f;
+  --text-muted: #a0976c;
+  --line: #2a2c1f;
+  --border: #716c4b;
+  --card-border: transparent;
+  --accent: #a9b064;
+  --accent-edge: #6b7140;
+  --on-accent: #0d0e09;
+  --accent-soft: #232716;
+  --accent-on-soft: #a9b064;
+  --link: #a9b064;
+  --focus: #c8c27c;
+  --focus-halo: #0d0e09;
+  --correct: #9db874;
+  --incorrect: #cf8a62;
+  --correct-bg: #1b2412;
+  --incorrect-bg: #28170e;
 
-  --sign-bg: #191d11;
+  --sign-bg: #14160f;
   --wood: #4a3019;
   --wood-dark: #1e1208;
   --wood-light: #6a4526;
@@ -121,11 +152,11 @@
   --seed-ridge: #b48852;
   --seed-outline: #a6a262;
   --empty-slot: #8a8858;
-  --diff: #c9825a;
+  --diff: #cf8a62;
 
-  --chart-line: #a6a262;
-  --chart-grid: #2c2f1c;
-  --heat: #a6a262;
+  --chart-line: #a9b064;
+  --chart-grid: #2a2c1f;
+  --heat: #a9b064;
 
   --shadow: none;
 }
@@ -134,14 +165,20 @@
 :root[data-contrast='high'] {
   color-scheme: light;
   --bg: #ffffff;
+  --stage: #ffffff;
   --surface: #ffffff;
   --surface-2: #ffffff;
   --text: #000000;
   --text-muted: #000000;
+  --line: #000000;
   --border: #000000;
+  --card-border: #000000;
   --accent: #000000;
+  --accent-edge: #000000;
   --on-accent: #ffffff;
   --accent-soft: #ffffff;
+  --accent-on-soft: #000000;
+  --link: #000000;
   --focus: #000000;
   --focus-halo: #ffffff;
   --correct: #000000;
@@ -170,4 +207,9 @@
 
   --shadow: none;
   --stroke-scale: 1.6;
+}
+
+/* Display serifs are harder to read with dyslexia; use the body face instead. */
+html[data-spacing='true'] {
+  --font-serif: var(--font-sans);
 }
