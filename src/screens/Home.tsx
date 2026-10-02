@@ -161,7 +161,6 @@ export function Home({
   const [sheetOpen, setSheetOpen] = useState(false);
   const weakReady = answerCount >= WEAK_SET_MIN_ANSWERS;
   const set = s.set === 'weak' && !weakReady ? 'meji' : s.set;
-  const flip = () => updateSettings({ mode: s.mode === 'opon' ? 'opele' : 'opon' });
   const settingsId = useId();
 
   const fields = (
@@ -198,13 +197,7 @@ export function Home({
           ]}
         />
         <div className="stage-sign">
-          <button type="button" className="icon-btn stage-arrow" aria-label="Previous mode" onClick={flip}>
-            <Icon name="chevron-left" />
-          </button>
           <Sign mode={s.mode} cells={STAGE_SIGN} size="large" showMarks={s.showMarks} decorative />
-          <button type="button" className="icon-btn stage-arrow" aria-label="Next mode" onClick={flip}>
-            <Icon name="chevron-right" />
-          </button>
         </div>
         <div className="stage-text">
           <p className="stage-mode" lang="yo">

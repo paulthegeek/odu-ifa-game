@@ -785,8 +785,7 @@ dialog.study-dialog::backdrop {
 .stage-sign {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.25rem;
+  justify-content: center;
   width: 100%;
 }
 .stage-sign .sign {
@@ -794,9 +793,6 @@ dialog.study-dialog::backdrop {
 }
 .stage-sign .sign[data-mode='opele'] {
   --sign-width: 10.5rem;
-}
-.stage-arrow {
-  color: var(--text-muted);
 }
 .stage-text {
   text-align: center;
@@ -814,24 +810,10 @@ dialog.study-dialog::backdrop {
   color: var(--text-muted);
 }
 
-/* Phones: the mode switch is a pair of dots under the stage. */
+/* The filled segment marks the mode, so the check icon stays hidden. */
 .mode-switch {
-  order: 5;
+  width: 100%;
 }
-.choices[data-variant='segmented'].mode-switch .choices-options {
-  display: flex;
-  gap: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-}
-.choices[data-variant='segmented'].mode-switch .choice,
-.choices[data-variant='segmented'].mode-switch .choice:has(.choice-input:checked) {
-  width: 44px;
-  padding: 0;
-  background: transparent;
-}
-.mode-switch .choice-text,
 .mode-switch .choice-check {
   position: absolute;
   width: 1px;
@@ -839,18 +821,6 @@ dialog.study-dialog::backdrop {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
-}
-.mode-switch .choice::before {
-  content: '';
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  border: 2px solid var(--border);
-}
-.mode-switch .choice:has(.choice-input:checked)::before {
-  width: 26px;
-  background: var(--accent);
-  border-color: var(--accent);
 }
 
 .home-actions {
@@ -968,39 +938,7 @@ html[data-large='true'] .start-actions {
     gap: 1.25rem;
   }
   .mode-switch {
-    order: -1;
     width: min(100%, 20rem);
-  }
-  .choices[data-variant='segmented'].mode-switch .choices-options {
-    display: grid;
-    gap: 4px;
-    padding: 4px;
-    border: 2px solid var(--border);
-    background: var(--surface);
-  }
-  .choices[data-variant='segmented'].mode-switch .choice,
-  .choices[data-variant='segmented'].mode-switch .choice:has(.choice-input:checked) {
-    width: auto;
-    padding: 0.35rem 0.75rem;
-  }
-  .choices[data-variant='segmented'].mode-switch .choice:has(.choice-input:checked) {
-    background: var(--accent);
-  }
-  .mode-switch .choice-text {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-  }
-  .mode-switch .choice::before {
-    content: none;
-  }
-  .stage-arrow {
-    display: none;
-  }
-  .stage-sign {
-    justify-content: center;
   }
   .stage-sign .sign {
     --sign-width: 26rem;
