@@ -50,7 +50,7 @@ export function RoundHud({
       <Timer remainingMs={remainingMs} totalMs={totalMs} untimed={untimed} />
       <div className="hud-end">
         <p className="score-pill">
-          <Icon name="check" />
+          <Icon name="check" className="size-4 stroke-3 text-accent" />
           <span aria-hidden="true">
             {state.score}
             <span className="score-of">/{state.attempted}</span>

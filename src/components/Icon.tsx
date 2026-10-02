@@ -1,4 +1,6 @@
 /** Small stroke icons. Always decorative: the surrounding control carries the name. */
+import { cn } from '../lib/cn';
+
 export type IconName =
   | 'practice'
   | 'book'
@@ -99,7 +101,7 @@ const PATHS: Record<IconName, React.ReactNode> = {
 export function Icon({ name, className }: { name: IconName; className?: string }) {
   return (
     <svg
-      className={className ? `icon ${className}` : 'icon'}
+      className={cn('size-[1.375rem] flex-none', className)}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

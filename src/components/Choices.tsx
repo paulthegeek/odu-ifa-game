@@ -5,9 +5,14 @@
  *
  * Segmented groups draw the selection as one thumb that slides between options.
  * Each label carries a hidden bold copy so selecting it never changes its width.
+ *
+ * Checked, focused and disabled looks come from the radio inside each label,
+ * via has-* (on the label) and group-has-* (on its children).
  */
 import type { CSSProperties, ReactNode } from 'react';
+import { cn } from '../lib/cn';
 import { Icon } from './Icon';
+import { eyebrow } from './ui';
 
 export interface ChoiceOption<T extends string | number> {
   value: T;
@@ -16,6 +21,29 @@ export interface ChoiceOption<T extends string | number> {
   disabled?: boolean;
   describedBy?: string;
 }
+
+type Variant = 'chips' | 'segmented' | 'list';
+
+const OPTIONS: Record<Variant, string> = {
+  chips: 'flex flex-wrap gap-2',
+  segmented:
+    'relative isolate grid auto-cols-[minmax(0,1fr)] grid-flow-col gap-[4px] rounded-ctl border-2 border-border bg-surface p-[4px]',
+  list: 'grid gap-2',
+};
+
+const CHOICE: Record<Variant, string> = {
+  chips: 'px-[1.7rem] has-checked:pr-4 has-checked:pl-[2.4rem]',
+  segmented:
+    'justify-center rounded-[11px] border-0 bg-transparent px-3 text-center has-checked:bg-transparent forced-colors:has-checked:text-[HighlightText] forced-colors:has-checked:forced-color-adjust-none',
+  list: 'w-full items-start rounded-ctl px-4 py-3',
+};
+
+// Chips show details as hints instead; segmented groups show the choice with the thumb.
+const CHECK: Record<Variant, string> = {
+  chips: 'absolute left-4',
+  segmented: 'sr-only',
+  list: 'mt-[0.2rem]',
+};
 
 export function Choices<T extends string | number>({
   legend,
@@ -27,6 +55,7 @@ export function Choices<T extends string | number>({
   hint,
   variant = 'chips',
   className,
+  legendClassName,
 }: {
   legend: ReactNode;
   legendHidden?: boolean;
@@ -35,8 +64,9 @@ export function Choices<T extends string | number>({
   options: readonly ChoiceOption<T>[];
   onChange: (v: T) => void;
   hint?: ReactNode;
-  variant?: 'chips' | 'segmented' | 'list';
+  variant?: Variant;
   className?: string;
+  legendClassName?: string;
 }) {
   const selected = options.findIndex((o) => o.value === value);
   const thumb = variant === 'segmented' && selected >= 0;
@@ -44,15 +74,34 @@ export function Choices<T extends string | number>({
     ? ({ '--count': options.length, '--index': selected } as CSSProperties)
     : undefined;
   return (
-    <fieldset className={className ? `choices ${className}` : 'choices'} data-variant={variant}>
-      <legend className={legendHidden ? 'sr-only' : 'choices-legend'}>{legend}</legend>
-      <div className="choices-options" style={thumbStyle}>
-        {thumb && <span className="choices-thumb" aria-hidden="true" />}
+    <fieldset className={cn('min-w-0', className)}>
+      <legend className={legendHidden ? 'sr-only' : cn('mb-2', eyebrow, legendClassName)}>{legend}</legend>
+      <div className={OPTIONS[variant]} style={thumbStyle}>
+        {thumb && (
+          <span
+            className={cn(
+              'absolute top-[4px] bottom-[4px] left-[4px] -z-1 w-[calc((100%-8px-(var(--count)-1)*4px)/var(--count))] translate-x-[calc(var(--index)*(100%+4px))] rounded-[11px] bg-accent',
+              'forced-colors:bg-[Highlight] forced-colors:forced-color-adjust-none',
+              'motion-safe:transition-transform motion-safe:duration-240 motion-safe:ease-out-soft',
+            )}
+            aria-hidden="true"
+          />
+        )}
         {options.map((o) => (
-          <label key={String(o.value)} className="choice">
+          <label
+            key={String(o.value)}
+            className={cn(
+              'group relative inline-flex min-h-[44px] cursor-pointer items-center gap-[0.4rem] rounded-full border-2 border-border bg-surface px-4 py-[0.35rem] font-medium text-fg',
+              'has-checked:border-accent has-checked:bg-accent has-checked:font-bold has-checked:text-on-accent',
+              'has-focus-visible:shadow-halo has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus',
+              'has-disabled:cursor-not-allowed has-disabled:border-dashed has-disabled:bg-transparent has-disabled:text-muted',
+              'motion-safe:[transition:background-color_240ms_ease,color_240ms_ease,padding_240ms_cubic-bezier(0.3,0.7,0.4,1)]',
+              CHOICE[variant],
+            )}
+          >
             <input
               type="radio"
-              className="choice-input"
+              className="absolute inset-0 m-0 size-full cursor-[inherit] opacity-0"
               name={name}
               value={String(o.value)}
               checked={value === o.value}
@@ -60,15 +109,31 @@ export function Choices<T extends string | number>({
               aria-describedby={o.describedBy}
               onChange={() => onChange(o.value)}
             />
-            <Icon name="check" className="choice-check" />
-            <span className="choice-text">
-              <span className="choice-label">
+            <Icon
+              name="check"
+              className={cn(
+                'size-4 scale-50 stroke-3 opacity-0 group-has-checked:scale-100 group-has-checked:opacity-100',
+                'motion-safe:[transition:opacity_240ms_ease,scale_240ms_cubic-bezier(0.3,0.7,0.4,1)]',
+                CHECK[variant],
+              )}
+            />
+            <span className="flex flex-col">
+              <span className="grid *:[grid-area:1/1]">
                 <span>{o.label}</span>
-                <span className="choice-label-sizer" aria-hidden="true">
+                <span className="invisible font-bold" aria-hidden="true">
                   {o.label}
                 </span>
               </span>
-              {o.detail && <span className="choice-detail">{o.detail}</span>}
+              {o.detail && (
+                <span
+                  className={cn(
+                    'text-[0.8rem] font-normal text-muted group-has-checked:text-inherit',
+                    variant === 'chips' && 'sr-only',
+                  )}
+                >
+                  {o.detail}
+                </span>
+              )}
             </span>
           </label>
         ))}

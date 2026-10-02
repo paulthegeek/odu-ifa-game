@@ -16,6 +16,8 @@ import { EXTENDED_TIME_MULTIPLIER, ROUND_LENGTHS, WEAK_SET_MIN_ANSWERS } from '.
 import type { Direction, Mode } from '../logic/game';
 import { getOdu } from '../logic/odu';
 import type { Settings } from '../logic/storage';
+import { eyebrow } from '../components/ui';
+import { cn } from '../lib/cn';
 
 const MODE_NAME: Record<Mode, string> = { opon: 'Ọpọ́n Ifá', opele: 'Opẹ̀lẹ̀' };
 const MODE_CAPTION: Record<Mode, string> = {
@@ -56,7 +58,7 @@ function StartButton({
       aria-describedby={`${id}-d`}
       onClick={onClick}
     >
-      <Icon name={icon} className="big-btn-icon" />
+      <Icon name={icon} className="size-[1.6rem]" />
       <span className="big-btn-text">
         <span id={`${id}-t`} className="big-btn-title">
           {title}
@@ -74,11 +76,14 @@ function RoundSettingsFields({
   set,
   weakReady,
   answerCount,
+  inCard,
   onSettings,
 }: {
   set: Settings['set'];
   weakReady: boolean;
   answerCount: number;
+  /** In the wide-screen card rather than the phone sheet. */
+  inCard: boolean;
   onSettings: () => void;
 }) {
   const { settings: s, updateSettings } = useApp();
@@ -127,8 +132,8 @@ function RoundSettingsFields({
         }
       />
 
-      <fieldset className="switch-group">
-        <legend className="choices-legend">Display</legend>
+      <fieldset className="min-w-0">
+        <legend className={cn(eyebrow, inCard ? 'mb-0' : 'mb-2')}>Display</legend>
         <Switch checked={s.showDiacritics} onChange={(v) => updateSettings({ showDiacritics: v })}>
           Show tone marks and underdots (e.g. <span lang="yo">Ọ̀sẹ́</span>)
         </Switch>
@@ -168,6 +173,7 @@ export function Home({
       set={set}
       weakReady={weakReady}
       answerCount={answerCount}
+      inCard={wide}
       onSettings={() => {
         setSheetOpen(false);
         onSettings();
