@@ -19,19 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
       - name: Type-check
-        run: npm run typecheck
+        run: pnpm typecheck
       - name: Unit tests
-        run: npm test
+        run: pnpm test
       - name: Build
-        run: npx vite build
+        run: pnpm exec vite build
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

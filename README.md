@@ -11,23 +11,23 @@ Names, ordering and reading direction follow traditional Yoruba (Nigerian) conve
 
 ## Run locally
 
-Requires Node 24 or later.
+Requires Node 24 or later and [pnpm](https://pnpm.io). The pnpm version is pinned in `package.json`. Run `corepack enable pnpm` once to use it.
 
 ```sh
-npm install
-npm run dev        # http://localhost:5173/odu-ifa-game/
+pnpm install
+pnpm dev           # http://localhost:5173/odu-ifa-game/
 ```
 
 ## Tests and checks
 
 ```sh
-npm test           # unit tests (Vitest)
-npm run lint       # ESLint
-npm run typecheck  # TypeScript
-npm run format     # Prettier
+pnpm test          # unit tests (Vitest)
+pnpm lint          # ESLint
+pnpm typecheck     # TypeScript
+pnpm format        # Prettier
 
-npx playwright install chromium   # once
-npm run test:e2e                  # end-to-end + axe WCAG 2.2 AA checks, every theme, desktop and phone
+pnpm exec playwright install chromium   # once
+pnpm test:e2e                           # end-to-end + axe WCAG 2.2 AA checks, every theme, desktop and phone
 ```
 
 ## Editing the Odù data and aliases
@@ -71,7 +71,7 @@ Study content is in [`src/data/ese.ts`](src/data/ese.ts), separate from the Odù
 },
 ```
 
-The file also contains one example entry marked `PLACEHOLDER — replace before release`. It appears only in `npm run dev` and is stripped from production builds.
+The file also contains one example entry marked `PLACEHOLDER — replace before release`. It appears only in `pnpm dev` and is stripped from production builds.
 
 ## Deploying (GitHub Pages)
 
@@ -88,7 +88,7 @@ The base path is set in one place: `BASE` in [`vite.config.ts`](vite.config.ts).
 
 The PWA manifest and service worker use the same value, so the app installs and works offline under either path.
 
-To regenerate the PNG app icons from `public/favicon.svg`, run `npm run icons`.
+To regenerate the PNG app icons from `public/favicon.svg`, run `pnpm icons`.
 
 ## Project layout
 

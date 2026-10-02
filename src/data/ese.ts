@@ -62,7 +62,7 @@ const ENTRIES: readonly EseEntry[] = [
 /**
  * PLACEHOLDER — replace before release.
  * Shows the shape of a finished entry. Contains no real ẹsẹ. It is only
- * visible in development (`npm run dev`) and is stripped from production builds.
+ * visible in development (`pnpm dev`) and is stripped from production builds.
  */
 const PLACEHOLDER_ENTRY: EseEntry = {
   oduId: 'ogbe_ogbe',

@@ -1,5 +1,5 @@
 // Renders public/favicon.svg to the PNG icons the PWA manifest needs.
-// Usage: npm run icons   (requires `npx playwright install chromium`)
+// Usage: pnpm icons   (requires `pnpm exec playwright install chromium`)
 import { readFile } from 'node:fs/promises';
 import { chromium } from '@playwright/test';
 
