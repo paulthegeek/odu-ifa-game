@@ -175,14 +175,16 @@ export function Setup({
           />
           Show tone marks and underdots (e.g. <span lang="yo">Ọ̀sẹ́</span>)
         </label>
-        <label className="toggle">
-          <input
-            type="checkbox"
-            checked={s.showMarks}
-            onChange={(e) => updateSettings({ showMarks: e.target.checked })}
-          />
-          Show marks (I / II) beside each seed — a helper for beginners
-        </label>
+        {s.mode === 'opele' && (
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={s.showMarks}
+              onChange={(e) => updateSettings({ showMarks: e.target.checked })}
+            />
+            Show marks (I / II) beside each seed — a helper for beginners
+          </label>
+        )}
       </fieldset>
 
       <button type="submit" className="btn btn-primary btn-block" style={{ fontSize: '1.15rem' }}>
