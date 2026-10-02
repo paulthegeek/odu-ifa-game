@@ -96,7 +96,7 @@ To regenerate the PNG app icons from `public/favicon.svg`, run `pnpm icons`.
 src/data/        Odù data, study content, configuration (editable)
 src/logic/       naming, distractors, rounds, build checking, progress, storage (pure, unit-tested)
 src/components/  sign drawings (SVG), answer choices, study card, charts
-src/screens/     Setup, Play, Build, Results, Progress, Odù reference, Help, Accessibility
+src/screens/     Home, Play, Build, Results, Progress, Odù reference, Help, Settings
 src/styles/      theme tokens (Light, Dark, Night, High-contrast) and global styles
 tests/unit/      Vitest
 tests/e2e/       Playwright + axe

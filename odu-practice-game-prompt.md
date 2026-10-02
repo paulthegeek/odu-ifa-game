@@ -81,14 +81,14 @@ Show an ọpọ́n Ifá (divination tray) with the sign marked in ìyẹ̀rọ̀
 
 ---
 
-## Game setup screen
+## Home (practice) screen
 
-Before each round the player chooses:
+The mode is shown large on a stage panel and switched there. Two large buttons start a round immediately in the chosen direction. Odù set, round length and display options live in **round settings**: shown inline on wide screens, and in an Edit sheet on phones (with a one-line summary on the Home screen).
 
 1. **Mode:** Opẹ̀lẹ̀ or Ọpọ́n Ifá
-2. **Direction:**
-   - **Read the sign** (default): see a sign, choose its name
-   - **Build the sign**: see a name, build its sign (see "Reverse mode" below)
+2. **Direction** (the two start buttons):
+   - **Read**: see a sign, choose its name
+   - **Build**: see a name, build its sign (see "Reverse mode" below)
 3. **Odù set:**
    - 16 Méjì only (beginner)
    - All 256 (Méjì + Ọmọ Odù)
@@ -96,7 +96,7 @@ Before each round the player chooses:
 4. **Round length:** 1 minute or 2 minutes
 5. **Display options** (remembered between sessions): diacritics on/off, "show marks" helper on/off
 
-Show a short "How to read this sign" help panel (reading order, right leg first, single vs. double marks), reachable from the setup screen and the results screen.
+Show a short "How to read this sign" help panel (reading order, right leg first, single vs. double marks), reachable from the navigation on every screen outside a round, and from the results screen.
 
 ---
 
@@ -173,7 +173,7 @@ The game records every answer on the device so players can see how they're impro
 
 **What to record** for each answer: Odù id, mode (Opẹ̀lẹ̀ / Ọpọ́n), direction (Read / Build), correct or not, the answer given, response time in ms, timestamp, and whether the round was timed. Also record a summary for each round (settings, score, attempted, date).
 
-**Progress screen** (reachable from Setup and Results):
+**Progress screen** (reachable from the main navigation and Results):
 
 - **Overview:** rounds played, total answers, overall accuracy, average response time, and current practice streak (days in a row with at least one round).
 - **Score over time:** a simple line chart of round scores for a chosen mode + direction + set + length, so scores from different settings aren't mixed together.
@@ -186,7 +186,7 @@ The game records every answer on the device so players can see how they're impro
 
 **Practicing weak Odù:**
 
-- The "My weak Odù" set in Setup picks signs weighted toward low accuracy and slow response times, still mixing in some stronger Odù so the round isn't discouraging. It is enabled once there are at least 20 recorded answers; before that, explain why it's unavailable.
+- The "My weak Odù" set in round settings picks signs weighted toward low accuracy and slow response times, still mixing in some stronger Odù so the round isn't discouraging. It is enabled once there are at least 20 recorded answers; before that, explain why it's unavailable.
 - Weak-Odù rounds count toward progress data but have their own personal best.
 
 **Data management:**
@@ -207,11 +207,12 @@ The game records every answer on the device so players can see how they're impro
 ## Look and feel
 
 - Clean, uncluttered, intuitive. One primary action per screen.
-- Warm, grounded palette (earth tones: wood, ìyẹ̀rọ̀sùn yellow, deep indigo or charcoal), with a neutral high-contrast base so the sign is always the focal point.
-- Typography must display Yoruba diacritics correctly (ẹ, ọ, ṣ, and tone marks). Use a font with full coverage, such as Noto Sans or Noto Serif.
+- Calm palette: neutral surfaces and a moss-green accent around earth-tone signs (wood, ìyẹ̀rọ̀sùn yellow), so the sign is always the focal point.
+- **Navigation:** a bottom tab bar on phones and a left sidebar on wide screens (Practice, Odù reference, Progress, Settings), hidden during a round so play stays focused.
+- Typography must display Yoruba diacritics correctly (ẹ, ọ, ṣ, and tone marks). Use fonts with full coverage: Noto Sans for body text and Noto Serif Display for headings (Noto Sans replaces the serif in dyslexia-friendly spacing mode).
 - **Responsive:** works on phones (portrait first), tablets, and laptops. On small screens, stack the sign above the answers; on wide screens, place them side by side. No horizontal scrolling.
-- **Themes:** Light, Dark, and Night, chosen from a toggle that is always visible in the header (not buried in settings). By default the app follows the device's light/dark setting, and it remembers the player's choice.
-  - **Dark:** deep charcoal/indigo background (not pure black), off-white text (not pure white), and softened wood and ìyẹ̀rọ̀sùn tones for the opẹ̀lẹ̀ and ọpọ́n.
+- **Themes:** Light, Dark, and Night, chosen from a compact theme button that is always visible in the top bar or sidebar on every screen, including during a round (not buried in settings); the same choice is also on the Settings screen. By default the app follows the device's light/dark setting, and it remembers the player's choice.
+  - **Dark:** deep green-charcoal background (not pure black), off-white text (not pure white), and softened wood and ìyẹ̀rọ̀sùn tones for the opẹ̀lẹ̀ and ọpọ́n.
   - **Night mode** (for practicing in a dark room): dimmer and warmer than Dark. Very dark background, low-brightness amber/warm text and marks, and no bright whites or blues anywhere. Correct/incorrect feedback uses muted tones instead of bright flashes. The signs must still meet the 3:1 contrast minimum.
   - The theme loads before the first paint, so there's no white flash when the page opens.
   - Every screen, including the SVG sign drawings, modals, and the results screen, takes its colors from shared theme variables so no element stays bright in Dark or Night.
@@ -226,7 +227,7 @@ The game records every answer on the device so players can see how they're impro
 - Never rely on color alone: correct/incorrect feedback also uses an icon and text.
 - Color contrast of at least 4.5:1 for text and 3:1 for the sign marks and UI components.
 - Respect `prefers-reduced-motion`. No flashing content.
-- **Accessibility settings panel:**
+- **Accessibility settings** (on the Settings screen):
   - High-contrast mode (pure black/white marks, thick strokes)
   - Large text / large sign mode
   - Extended time or untimed practice option (WCAG 2.2.1, Timing Adjustable). Untimed rounds are clearly labeled and don't count toward personal bests.
@@ -287,14 +288,14 @@ src/
     charts/           # SVG line chart, 16-tile grid, 16×16 grid, with table views
     ...
   screens/
-    Setup.tsx
+    Home.tsx          # practice: mode stage, Read/Build, round settings
     Play.tsx          # Read the sign
     Build.tsx         # Build the sign
     Results.tsx
     Progress.tsx
     OduReference.tsx  # browse all Odù and their study cards
     Help.tsx
-    AccessibilitySettings.tsx
+    Settings.tsx      # theme and accessibility settings
   styles/
     themes.css        # color tokens per theme
     global.css
@@ -321,7 +322,7 @@ tests/
   - Build mode: a correctly built sign matches its name, every wrong position is identified, and Check stays disabled until all 8 positions are filled.
   - Progress: accuracy and weakest-Odù ranking (including the 3-attempt minimum), mix-up counts, roll-up of old answers, and export → import round-trips without data loss.
   - Study content: only `reviewed: true` entries are shown, and the placeholder entry never appears in a production build.
-- Playwright + axe must report no WCAG 2.2 AA violations on the Setup, Play, Build, Results, Progress, and Odù Reference screens in every theme.
+- Playwright + axe must report no WCAG 2.2 AA violations on the Home (including round settings), Play, Build, Results, Progress, Odù Reference, Help, and Settings screens in every theme.
 - Include a `README.md` covering how to run locally (`npm install`, `npm run dev`), run tests, edit the Odù data and aliases, add ẹsẹ and meanings, and deploy.
 
 ### Hosting on GitHub Pages

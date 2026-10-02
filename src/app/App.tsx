@@ -5,10 +5,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StudyDialog } from '../components/StudyCard';
 import { WEAK_SET_MIN_ANSWERS } from '../data/config';
-import { ThemeToggle } from '../components/ThemeToggle';
 import type { OduSet } from '../logic/distractors';
 import {
   personalBestKey,
+  type Direction,
   roundDuration,
   type Mode,
   type RoundSettings,
@@ -27,20 +27,28 @@ import {
 } from '../logic/progress';
 import { memoryStore, openProgressStore, type ProgressStore } from '../logic/progressStore';
 import { clearBests, loadSettings, recordBest, saveSettings, type Settings } from '../logic/storage';
-import { AccessibilitySettings } from '../screens/AccessibilitySettings';
 import { Build } from '../screens/Build';
 import { Help } from '../screens/Help';
+import { Home } from '../screens/Home';
 import { OduReference } from '../screens/OduReference';
 import { Play } from '../screens/Play';
 import { Progress } from '../screens/Progress';
 import { Results, type RoundOutcome } from '../screens/Results';
-import { Setup } from '../screens/Setup';
+import { Settings as SettingsScreen } from '../screens/Settings';
+import { AppBar, type Tab } from './AppBar';
 import { AppContext, type AppContextValue, type StudyOptions } from './AppContext';
 import type { RoundConfig } from './useRound';
 
-type Screen = 'setup' | 'round' | 'results' | 'progress' | 'reference' | 'help' | 'a11y';
+type Screen = 'home' | 'round' | 'results' | 'progress' | 'reference' | 'help' | 'settings';
 
-const THEME_COLORS: Record<string, string> = { light: '#f4f2e4', dark: '#161915', night: '#0c0e08' };
+const HELP_BACK: Partial<Record<Screen, string>> = {
+  results: 'Back to results',
+  reference: 'Back to Odù reference',
+  progress: 'Back to progress',
+  settings: 'Back to settings',
+};
+
+const THEME_COLORS: Record<string, string> = { light: '#ffffff', dark: '#121711', night: '#0d0e09' };
 
 function resolveTheme(choice: Settings['theme']): 'light' | 'dark' | 'night' {
   if (choice !== 'system') return choice;
@@ -76,8 +84,9 @@ let answerCounter = 0;
 
 export function App() {
   const [settings, setSettings] = useState<Settings>(loadSettings);
-  const [screen, setScreen] = useState<Screen>('setup');
-  const [returnTo, setReturnTo] = useState<Screen>('setup');
+  const [screen, setScreen] = useState<Screen>('home');
+  // Help is the only screen with a Back button; the others are reached from the tabs.
+  const [helpReturn, setHelpReturn] = useState<Screen>('home');
   const [round, setRound] = useState<{ config: RoundConfig; key: number } | null>(null);
   const [outcome, setOutcome] = useState<RoundOutcome | null>(null);
   const [study, setStudy] = useState<{ id: string; mode?: Mode } | null>(null);
@@ -138,18 +147,25 @@ export function App() {
   );
 
   const go = (next: Screen) => {
-    setReturnTo(screen === 'help' || screen === 'a11y' ? returnTo : screen);
+    if (next === 'help' && screen !== 'help') setHelpReturn(screen);
     setScreen(next);
     window.scrollTo(0, 0);
   };
 
   const answerCount = totalAnswers(progress);
 
-  const startRound = (practiceIds?: readonly string[], base?: RoundSettings) => {
+  const startRound = ({
+    direction: chosen,
+    practiceIds,
+    base,
+  }: { direction?: Direction; practiceIds?: readonly string[]; base?: RoundSettings } = {}) => {
     const set: OduSet = settings.set === 'weak' && answerCount < WEAK_SET_MIN_ANSWERS ? 'meji' : settings.set;
+    const direction = chosen ?? settings.direction;
+    // Remember the last direction so Results, Progress filters and defaults follow it.
+    if (chosen && chosen !== settings.direction) updateSettings({ direction: chosen });
     const roundSettings: RoundSettings = base ?? {
       mode: settings.mode,
-      direction: settings.direction,
+      direction,
       set,
       length: settings.length,
       timing: settings.timing,
@@ -224,95 +240,73 @@ export function App() {
   );
 
   const inRound = screen === 'round';
+  const activeTab: Tab | null =
+    screen === 'results' || screen === 'home'
+      ? 'home'
+      : screen === 'reference' || screen === 'progress' || screen === 'settings'
+        ? screen
+        : null;
 
   return (
     <AppContext.Provider value={ctx}>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <header className="app-header">
-        <p className="app-title">
-          {inRound ? (
-            <span lang="en">Odù Practice</span>
-          ) : (
-            <button type="button" onClick={() => go('setup')}>
-              Odù Practice
-            </button>
-          )}
-        </p>
-        <div className="header-tools">
-          {!inRound && (
-            <nav aria-label="Main" className="btn-row">
-              <button type="button" className="btn btn-link" onClick={() => go('reference')}>
-                Odù reference
-              </button>
-              <button type="button" className="btn btn-link" onClick={() => go('progress')}>
-                Progress
-              </button>
-              <button type="button" className="btn btn-link" onClick={() => go('a11y')}>
-                Accessibility
-              </button>
-            </nav>
-          )}
-          <ThemeToggle />
-        </div>
-      </header>
+      <div className="shell" data-round={inRound}>
+        {!inRound && <AppBar active={activeTab} onNavigate={go} onHelp={() => go('help')} />}
 
-      <main id="main" tabIndex={-1}>
-        {screen === 'setup' && (
-          <Setup
-            answerCount={answerCount}
-            onStart={() => startRound()}
-            onHelp={() => go('help')}
-            onAccessibility={() => go('a11y')}
-          />
-        )}
-        {screen === 'round' &&
-          round &&
-          (round.config.settings.direction === 'read' ? (
-            <Play key={round.key} config={round.config} onFinish={finishRound} />
-          ) : (
-            <Build key={round.key} config={round.config} onFinish={finishRound} />
-          ))}
-        {screen === 'results' && outcome && (
-          <Results
-            outcome={outcome}
-            onPlayAgain={() =>
-              startRound(undefined, outcome.state.practice ? undefined : outcome.state.settings)
-            }
-            onPracticeMisses={() =>
-              startRound([...new Set(outcome.state.misses.map((m) => m.oduId))], outcome.state.settings)
-            }
-            onProgress={() => go('progress')}
-            onSettings={() => go('setup')}
-            onHelp={() => go('help')}
-          />
-        )}
-        {screen === 'progress' && (
-          <Progress
-            data={progress}
-            persistent={persistent}
-            onReplace={saveProgress}
-            onReset={async () => {
-              await storeRef.current.clear();
-              clearBests();
-              progressRef.current = emptyProgress();
-              setProgress(progressRef.current);
-            }}
-            onBack={() => setScreen(returnTo === 'progress' ? 'setup' : returnTo)}
-          />
-        )}
-        {screen === 'reference' && (
-          <OduReference onBack={() => setScreen(returnTo === 'reference' ? 'setup' : returnTo)} />
-        )}
-        {screen === 'help' && (
-          <Help
-            onBack={() => setScreen(returnTo)}
-            backLabel={returnTo === 'results' ? 'Back to results' : 'Back to setup'}
-          />
-        )}
-        {screen === 'a11y' && <AccessibilitySettings onBack={() => setScreen(returnTo)} />}
-      </main>
+        <main id="main" tabIndex={-1} className="main">
+          {screen === 'home' && (
+            <Home
+              answerCount={answerCount}
+              onStart={(direction) => startRound({ direction })}
+              onSettings={() => go('settings')}
+            />
+          )}
+          {screen === 'round' &&
+            round &&
+            (round.config.settings.direction === 'read' ? (
+              <Play key={round.key} config={round.config} onFinish={finishRound} />
+            ) : (
+              <Build key={round.key} config={round.config} onFinish={finishRound} />
+            ))}
+          {screen === 'results' && outcome && (
+            <Results
+              outcome={outcome}
+              onPlayAgain={() =>
+                startRound({ base: outcome.state.practice ? undefined : outcome.state.settings })
+              }
+              onPracticeMisses={() =>
+                startRound({
+                  practiceIds: [...new Set(outcome.state.misses.map((m) => m.oduId))],
+                  base: outcome.state.settings,
+                })
+              }
+              onProgress={() => go('progress')}
+              onSettings={() => go('home')}
+              onHelp={() => go('help')}
+            />
+          )}
+          {screen === 'progress' && (
+            <Progress
+              data={progress}
+              persistent={persistent}
+              onReplace={saveProgress}
+              onReset={async () => {
+                await storeRef.current.clear();
+                clearBests();
+                progressRef.current = emptyProgress();
+                setProgress(progressRef.current);
+              }}
+            />
+          )}
+          {screen === 'reference' && <OduReference />}
+          {screen === 'help' && (
+            <Help onBack={() => go(helpReturn)} backLabel={HELP_BACK[helpReturn] ?? 'Back to practice'} />
+          )}
+          {screen === 'settings' && <SettingsScreen />}
+        </main>
+      </div>
 
       <div className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
         {message}

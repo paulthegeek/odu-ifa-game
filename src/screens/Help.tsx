@@ -9,11 +9,14 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
   const openMark = OPELE_MAPPING.open === 1 ? 'single mark (I)' : 'double mark (II)';
   const closedMark = OPELE_MAPPING.closed === 1 ? 'single mark (I)' : 'double mark (II)';
   return (
-    <div className="stack">
-      <ScreenTitle>How to read a sign</ScreenTitle>
+    <div className="page">
+      <header className="page-head">
+        <ScreenTitle>How to read a sign</ScreenTitle>
+        <p className="muted">Reading order, single and double marks, and a worked example.</p>
+      </header>
 
       <section className="card">
-        <h2 style={{ marginTop: 0 }}>Reading order</h2>
+        <h2>Reading order</h2>
         <ul>
           <li>A sign has two legs, each with four marks, read from top to bottom.</li>
           <li>
@@ -32,7 +35,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
       </section>
 
       <section className="card">
-        <h2 style={{ marginTop: 0 }}>Single and double marks</h2>
+        <h2>Single and double marks</h2>
         <ul>
           <li>
             On the <span lang="yo">ọpọ́n Ifá</span>, a single mark is one stroke (I) and a double mark is two
@@ -43,22 +46,22 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             center) is a {openMark}. A <strong>closed</strong> seed (outer shell up, with a ridge) is a{' '}
             {closedMark}.
           </li>
-          <li>Turn on “Show marks” in setup to see I / II beside each seed while you learn.</li>
+          <li>Turn on “Show marks” in round settings to see I / II beside each seed while you learn.</li>
         </ul>
       </section>
 
       <section className="card">
-        <h2 style={{ marginTop: 0 }}>
+        <h2>
           Example: <OduName id={example.id} />
         </h2>
-        <div className="btn-row" style={{ alignItems: 'flex-start' }}>
-          <figure style={{ margin: 0 }}>
+        <div className="help-figures">
+          <figure>
             <Sign mode="opele" cells={example.marks} size="medium" showMarks />
             <figcaption className="hint">
               <span lang="yo">Opẹ̀lẹ̀</span>
             </figcaption>
           </figure>
-          <figure style={{ margin: 0 }}>
+          <figure>
             <Sign mode="opon" cells={example.marks} size="medium" />
             <figcaption className="hint">
               <span lang="yo">Ọpọ́n Ifá</span>
@@ -68,7 +71,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
         <p className="sign-text">Right leg | Left leg: {signText(example.marks)}</p>
       </section>
 
-      <button type="button" className="btn btn-primary" onClick={onBack}>
+      <button type="button" className="btn btn-primary page-back" onClick={onBack}>
         {backLabel}
       </button>
     </div>

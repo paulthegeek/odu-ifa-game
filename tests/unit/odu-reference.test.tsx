@@ -29,10 +29,7 @@ function Harness({ initial, children }: { initial: Settings; children: React.Rea
   );
 }
 
-function render(
-  overrides: Partial<Settings> = {},
-  children: React.ReactNode = <OduReference onBack={() => {}} />,
-) {
+function render(overrides: Partial<Settings> = {}, children: React.ReactNode = <OduReference />) {
   act(() => root.render(<Harness initial={{ ...DEFAULT_SETTINGS, ...overrides }}>{children}</Harness>));
 }
 
