@@ -25,10 +25,10 @@ const EXPECTED: [string, string][] = [
   ['Ògúndá', 'I I I II'],
   ['Ọ̀sá', 'II I I I'],
   ['Ìká', 'II I II II'],
-  ['Òtúúrúpọ̀n', 'II II I II'],
+  ['Òtúrúpọ̀n', 'II II I II'],
   ['Òtúrá', 'I II I I'],
   ['Ìrẹtẹ̀', 'I I II I'],
-  ['Ọ̀ṣẹ́', 'I II I II'],
+  ['Ọ̀sẹ́', 'I II I II'],
   ['Òfún', 'II I II I'],
 ];
 
@@ -44,10 +44,10 @@ const EXPECTED_MEJI = [
   'Ògúndá Méjì',
   'Ọ̀sá Méjì',
   'Ìká Méjì',
-  'Òtúúrúpọ̀n Méjì',
+  'Òtúrúpọ̀n Méjì',
   'Òtúrá Méjì',
   'Ìrẹtẹ̀ Méjì',
-  'Ọ̀ṣẹ́ Méjì',
+  'Ọ̀sẹ́ Méjì',
   'Òfún Méjì',
 ];
 
@@ -123,10 +123,10 @@ describe('the 256 Odù', () => {
 
 describe('diacritics display option', () => {
   it('removes marks on screen only', () => {
-    expect(stripDiacritics('Ọ̀ṣẹ́')).toBe('Ose');
-    expect(stripDiacritics('Òtúúrúpọ̀n Méjì')).toBe('Otuurupon Meji');
+    expect(stripDiacritics('Ọ̀sẹ́')).toBe('Ose');
+    expect(stripDiacritics('Òtúrúpọ̀n Méjì')).toBe('Oturupon Meji');
     const odu = getOdu('ose_ose');
     expect(displayName(odu, false)).toBe('Ose Meji');
-    expect(odu.name).toBe('Ọ̀ṣẹ́ Méjì');
+    expect(odu.name).toBe('Ọ̀sẹ́ Méjì');
   });
 });

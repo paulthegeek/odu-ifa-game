@@ -173,7 +173,7 @@ export function Setup({
             checked={s.showDiacritics}
             onChange={(e) => updateSettings({ showDiacritics: e.target.checked })}
           />
-          Show tone marks and underdots (e.g. <span lang="yo">Ọ̀ṣẹ́</span>)
+          Show tone marks and underdots (e.g. <span lang="yo">Ọ̀sẹ́</span>)
         </label>
         <label className="toggle">
           <input

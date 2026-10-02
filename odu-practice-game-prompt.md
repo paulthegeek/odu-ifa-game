@@ -15,7 +15,7 @@ All Yoruba words follow standard Yoruba orthography as used in Ìṣẹ̀ṣẹ 
 - Use the full set of tone marks (à, á) and underdots (ẹ, ọ, ṣ) exactly as written in this prompt. Don't simplify, re-spell, or "correct" them.
 - Don't use Lucumí, Spanish, or Portuguese spellings (for example "Meyi", "Oshe", "Oyekun", "Baba Ejiogbe", "Otura Niko"). Write ṣ, not "sh"; write Méjì, not "Meyi".
 - The spellings in this prompt are the source of truth. If a spelling isn't given here, leave a clearly marked placeholder for review rather than guessing.
-- The "diacritics off" display option only removes the marks on screen (e.g. Ọ̀ṣẹ́ → Ose). It never changes the stored names, and it's off by default.
+- The "diacritics off" display option only removes the marks on screen (e.g. Ọ̀sẹ́ → Ose). It never changes the stored names, and it's off by default.
 - Put Yoruba text in `lang="yo"` elements, and make sure the font renders combined marks (such as ẹ̀ and ọ́) correctly.
 
 ## Core data
@@ -37,10 +37,10 @@ Each principal Odù is a column of four marks, read top to bottom. `I` = single 
 | 9 | Ògúndá | I · I · I · II |
 | 10 | Ọ̀sá | II · I · I · I |
 | 11 | Ìká | II · I · II · II |
-| 12 | Òtúúrúpọ̀n | II · II · I · II |
+| 12 | Òtúrúpọ̀n (also written Òtúúrúpọ̀n) | II · II · I · II |
 | 13 | Òtúrá (also written Òtúá) | I · II · I · I |
 | 14 | Ìrẹtẹ̀ | I · I · II · I |
-| 15 | Ọ̀ṣẹ́ | I · II · I · II |
+| 15 | Ọ̀sẹ́ | I · II · I · II |
 | 16 | Òfún | II · I · II · I |
 
 ### The 256 Odù
@@ -49,7 +49,7 @@ Each principal Odù is a column of four marks, read top to bottom. `I` = single 
 - **Naming rule for the 16 principal Odù (same Odù on both legs):** the name changes. It is **not** written as the leg name twice (never "Ogbè Ogbè" or "Òtúrá Òtúrá").
   - Ogbè on both legs → **Èjì Ogbè** (the only exception to the Méjì pattern)
   - Every other principal Odù → *[Odù] **Méjì***, e.g. Òtúrá on both legs → **Òtúrá Méjì**, Ọ̀yẹ̀kú on both legs → **Ọ̀yẹ̀kú Méjì**
-  - The 16 principal names are: Èjì Ogbè, Ọ̀yẹ̀kú Méjì, Ìwòrì Méjì, Òdí Méjì, Ìrosùn Méjì, Ọ̀wọ́nrín Méjì, Ọ̀bàrà Méjì, Ọ̀kànràn Méjì, Ògúndá Méjì, Ọ̀sá Méjì, Ìká Méjì, Òtúúrúpọ̀n Méjì, Òtúrá Méjì, Ìrẹtẹ̀ Méjì, Ọ̀ṣẹ́ Méjì, Òfún Méjì.
+  - The 16 principal names are: Èjì Ogbè, Ọ̀yẹ̀kú Méjì, Ìwòrì Méjì, Òdí Méjì, Ìrosùn Méjì, Ọ̀wọ́nrín Méjì, Ọ̀bàrà Méjì, Ọ̀kànràn Méjì, Ògúndá Méjì, Ọ̀sá Méjì, Ìká Méjì, Òtúrúpọ̀n Méjì, Òtúrá Méjì, Ìrẹtẹ̀ Méjì, Ọ̀sẹ́ Méjì, Òfún Méjì.
   - Implement this in one naming function used everywhere names appear (answer choices, results, screen-reader text), so the rule can't be missed in one place.
   - Store "Ogbè Méjì" as an alias of Èjì Ogbè for search and future use, but always display Èjì Ogbè.
 - When the legs differ, it is an **Ọmọ Odù**, named right leg + left leg by default (e.g. right Ọ̀sá, left Ìrẹtẹ̀ → **Ọ̀sá Ìrẹtẹ̀**).

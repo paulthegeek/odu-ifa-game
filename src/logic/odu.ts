@@ -26,7 +26,7 @@ export interface Odu {
   readonly marks: readonly Mark[];
 }
 
-/** Remove tone marks and underdots for display only (Ọ̀ṣẹ́ → Ose). */
+/** Remove tone marks and underdots for display only (Ọ̀sẹ́ → Ose). */
 export function stripDiacritics(text: string): string {
   return text.normalize('NFD').replace(/\p{M}/gu, '').normalize('NFC');
 }
