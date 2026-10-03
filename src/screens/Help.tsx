@@ -47,7 +47,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             center) is a {openMark}. A <strong>closed</strong> seed (outer shell up, with a ridge) is a{' '}
             {closedMark}.
           </li>
-          <li>Turn on “Show marks” in round settings to see I / II beside each seed while you learn.</li>
+          <li>Turn on “Show marks” in Settings to see I / II beside each seed while you learn.</li>
         </ul>
       </section>
 

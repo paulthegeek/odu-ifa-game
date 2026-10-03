@@ -271,11 +271,7 @@ export function App() {
           )}
         >
           {screen === 'home' && (
-            <Home
-              answerCount={answerCount}
-              onStart={(direction) => startRound({ direction })}
-              onSettings={() => go('settings')}
-            />
+            <Home answerCount={answerCount} onStart={(direction) => startRound({ direction })} />
           )}
           {screen === 'round' &&
             round &&
