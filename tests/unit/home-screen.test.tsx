@@ -7,8 +7,6 @@ import { DEFAULT_SETTINGS, type Settings } from '../../src/logic/storage';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-const SHOW_MARKS_TEXT = 'Show marks (I / II) beside each seed';
-
 let container: HTMLDivElement;
 let root: Root;
 let onUpdate: ReturnType<typeof vi.fn<(patch: Partial<Settings>) => void>>;
@@ -23,20 +21,35 @@ function Harness({ initial }: { initial: Settings }) {
   };
   return (
     <AppContext.Provider value={{ settings, updateSettings, announce: () => {}, openStudy: () => {} }}>
-      <Home answerCount={0} onStart={onStart} onSettings={() => {}} />
+      <Home answerCount={0} onStart={onStart} />
     </AppContext.Provider>
   );
 }
 
+let renders = 0;
+
+/** Each call mounts afresh, so the new settings take effect. */
 function render(overrides: Partial<Settings> = {}) {
-  act(() => root.render(<Harness initial={{ ...DEFAULT_SETTINGS, ...overrides }} />));
+  act(() => root.render(<Harness key={++renders} initial={{ ...DEFAULT_SETTINGS, ...overrides }} />));
 }
 
-function showMarksCheckbox(): HTMLInputElement | null {
-  const label = [...container.querySelectorAll('label')].find((l) =>
-    l.textContent?.includes(SHOW_MARKS_TEXT),
-  );
-  return label?.querySelector('input[type="checkbox"]') ?? null;
+function radios(name: string): HTMLInputElement[] {
+  return [...container.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`)];
+}
+
+function labelOf(input: HTMLInputElement): string {
+  // The first text span is the visible label (a hidden bold copy follows it).
+  return input.closest('label')?.querySelector('span.grid > span')?.textContent ?? '';
+}
+
+/** Pretend the screen is wide (tablet or desktop). jsdom has no matchMedia, which reads as a phone. */
+function asWide() {
+  vi.stubGlobal('matchMedia', (query: string) => ({
+    matches: true,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  }));
 }
 
 function modeRadio(value: Settings['mode']): HTMLInputElement {
@@ -56,67 +69,91 @@ beforeEach(() => {
 afterEach(() => {
   act(() => root.unmount());
   container.remove();
+  vi.unstubAllGlobals();
 });
 
-describe('Home: show marks toggle', () => {
-  it('is shown in Opẹ̀lẹ̀ mode', () => {
+describe('Home: choices', () => {
+  it('leaves display options to Settings', () => {
     render({ mode: 'opele' });
-    expect(showMarksCheckbox()).not.toBeNull();
+    expect(container.textContent).not.toContain('Show marks');
+    expect(container.textContent).not.toContain('tone marks');
   });
 
-  it('is hidden in Ọpọ́n Ifá mode', () => {
-    render({ mode: 'opon' });
-    expect(showMarksCheckbox()).toBeNull();
+  it('offers the Odù set, with My weak Odù locked until 20 answers', () => {
+    render();
+    expect(radios('set').map((r) => r.value)).toEqual(['meji', 'all', 'weak']);
+    expect(radios('set').find((r) => r.value === 'weak')?.disabled).toBe(true);
   });
 
-  it('keeps the tone marks toggle in both modes', () => {
-    for (const mode of ['opele', 'opon'] as const) {
-      render({ mode });
-      expect(container.textContent).toContain('Show tone marks and underdots');
-    }
+  it('leaves round length to Settings on phones', () => {
+    render();
+    expect(radios('length')).toHaveLength(0);
   });
 
-  it('reflects the stored setting', () => {
-    render({ mode: 'opele', showMarks: true });
-    expect(showMarksCheckbox()?.checked).toBe(true);
+  it('shows round length on wide screens, as the time a round really lasts', () => {
+    asWide();
+    render({ timing: 'standard' });
+    expect(radios('length').map(labelOf)).toEqual(['1 minute', '2 minutes']);
+
+    render({ timing: 'extended' });
+    expect(radios('length').map(labelOf)).toEqual(['2 minutes', '4 minutes']);
   });
 
-  it('updates the setting when toggled', () => {
-    render({ mode: 'opele', showMarks: false });
-    act(() => showMarksCheckbox()!.click());
-    expect(onUpdate).toHaveBeenLastCalledWith({ showMarks: true });
-    expect(showMarksCheckbox()?.checked).toBe(true);
-  });
-
-  it('hides and reappears as the mode changes, keeping its value', () => {
-    render({ mode: 'opele', showMarks: true });
-
-    act(() => modeRadio('opon').click());
-    expect(showMarksCheckbox()).toBeNull();
-
-    act(() => modeRadio('opele').click());
-    expect(showMarksCheckbox()?.checked).toBe(true);
+  it('hides round length on wide screens for untimed practice', () => {
+    asWide();
+    render({ timing: 'untimed' });
+    expect(radios('length')).toHaveLength(0);
   });
 });
 
-describe('Home: start buttons', () => {
-  function startButton(name: string): HTMLButtonElement {
+describe('Home: start button', () => {
+  function startButton(): HTMLButtonElement {
     const button = [...container.querySelectorAll<HTMLButtonElement>('button[aria-labelledby]')].find(
-      (b) => document.getElementById(b.getAttribute('aria-labelledby')!)?.textContent === name,
+      (b) => document.getElementById(b.getAttribute('aria-labelledby')!)?.textContent === 'Start round',
     );
-    if (!button) throw new Error(`no start button named ${name}`);
+    if (!button) throw new Error('no Start round button');
     return button;
   }
 
-  it('starts a Read round', () => {
-    render();
-    act(() => startButton('Read').click());
+  function directionRadio(value: 'read' | 'build'): HTMLInputElement {
+    const input = container.querySelector<HTMLInputElement>(`input[name="direction"][value="${value}"]`);
+    if (!input) throw new Error(`no direction radio for ${value}`);
+    return input;
+  }
+
+  it('starts a round in the saved direction', () => {
+    render({ direction: 'build' });
+    expect(directionRadio('build').checked).toBe(true);
+    act(() => startButton().click());
+    expect(onStart).toHaveBeenCalledWith('build');
+  });
+
+  it('starts a Read round after choosing Read', () => {
+    render({ direction: 'build' });
+    act(() => directionRadio('read').click());
+    expect(onUpdate).toHaveBeenLastCalledWith({ direction: 'read' });
+    act(() => startButton().click());
     expect(onStart).toHaveBeenCalledWith('read');
   });
 
-  it('starts a Build round', () => {
+  function summary(): string | null | undefined {
+    return document.getElementById(startButton().getAttribute('aria-describedby')!)?.textContent;
+  }
+
+  it('sums up the round it will start, including its real length', () => {
+    render({ direction: 'read', length: 120, set: 'all', timing: 'standard' });
+    expect(summary()).toBe('Read · All 256 · 2 minutes');
+
+    render({ direction: 'build', length: 120, set: 'meji', timing: 'extended' });
+    expect(summary()).toBe('Build · 16 Méjì · 4 minutes');
+
+    render({ timing: 'untimed' });
+    expect(summary()).toMatch(/· Untimed$/);
+  });
+
+  it('is the only button that starts a round', () => {
     render();
-    act(() => startButton('Build').click());
-    expect(onStart).toHaveBeenCalledWith('build');
+    act(() => modeRadio('opon').click());
+    expect(onStart).not.toHaveBeenCalled();
   });
 });

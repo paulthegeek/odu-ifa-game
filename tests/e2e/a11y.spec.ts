@@ -1,22 +1,11 @@
 import { expect, test } from '@playwright/test';
-import {
-  THEMES,
-  answerWithKey,
-  expectNoA11yViolations,
-  goTo,
-  openRoundSettings,
-  openWith,
-  startRound,
-} from './helpers';
+import { THEMES, answerWithKey, expectNoA11yViolations, goTo, openWith, startRound } from './helpers';
 
 for (const theme of THEMES) {
   test.describe(`WCAG 2.2 AA — ${theme.name}`, () => {
-    test('Home, round settings, Odù reference, study card, Help and Settings', async ({ page }) => {
+    test('Home, Odù reference, study card, Help and Settings', async ({ page }) => {
       await openWith(page, theme.settings);
       await expectNoA11yViolations(page, `home (${theme.name})`);
-      await openRoundSettings(page);
-      await expectNoA11yViolations(page, `round settings (${theme.name})`);
-      await page.keyboard.press('Escape');
 
       await page.getByRole('button', { name: 'How to read a sign' }).first().click();
       await expect(page.getByRole('heading', { level: 1, name: 'How to read a sign' })).toBeVisible();

@@ -70,6 +70,8 @@
 @custom-variant large (html[data-large='true'] &);
 @custom-variant roomy (html:is([data-large='true'], [data-spacing='true']) &);
 @custom-variant hc (html[data-contrast='high'] &);
+/* Short viewports (e.g. iPhone SE in Safari), where Home tightens up to keep Start on screen. */
+@custom-variant short (@media (max-height: 40rem));
 
 /* ── Element defaults ───────────────────────────────────────────────────
  * On top of Tailwind's preflight. Kept to elements whose look is the same

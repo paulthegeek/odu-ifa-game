@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { answerWithKey, chooseTheme, goTo, openRoundSettings, openWith, startRound } from './helpers';
+import { answerWithKey, chooseTheme, goTo, openWith, startRound } from './helpers';
 
 test('Read: keyboard answers score and appear in results', async ({ page }) => {
   await openWith(page, { theme: 'light', timing: 'untimed', set: 'meji' });
@@ -87,9 +87,8 @@ test('Theme loads before first paint and the toggle switches it', async ({ page 
 
 test('Weak set is disabled until 20 answers, with an explanation', async ({ page }) => {
   await openWith(page, { theme: 'light' });
-  await openRoundSettings(page);
-  await expect(page.getByRole('radio', { name: /My weak Odù/ })).toBeDisabled();
-  await expect(page.getByText(/opens after 20 recorded answers/)).toBeVisible();
+  await expect(page.getByRole('radio', { name: /weak Odù/i })).toBeDisabled();
+  await expect(page.getByText('After 20 answers')).toBeVisible();
 });
 
 test('No horizontal scrolling', async ({ page }) => {
@@ -101,4 +100,19 @@ test('No horizontal scrolling', async ({ page }) => {
   }
   await startRound(page, 'Read');
   expect(await measure(), 'round').toBeLessThanOrEqual(0);
+});
+
+test('Round length: on Practice for wide screens, in Settings for phones', async ({ page, isMobile }) => {
+  await openWith(page, { theme: 'light', timing: 'standard', length: 60 });
+  const start = page.getByRole('button', { name: 'Start round', exact: true });
+  await expect(start).toHaveAccessibleDescription(/1 minute$/);
+  await expect(page.getByRole('group', { name: 'Round length' })).toHaveCount(isMobile ? 0 : 1);
+
+  await goTo(page, 'Settings');
+  await page.getByRole('radio', { name: '2 minutes' }).check();
+  await page.getByRole('radio', { name: /^Extended time/ }).check();
+  await expect(page.getByRole('radio', { name: '4 minutes' })).toBeChecked();
+
+  await goTo(page, 'Practice');
+  await expect(start).toHaveAccessibleDescription(/4 minutes$/);
 });

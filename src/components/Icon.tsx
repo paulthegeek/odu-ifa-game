@@ -16,7 +16,8 @@ export type IconName =
   | 'arrow-right'
   | 'check'
   | 'eye'
-  | 'pen';
+  | 'pen'
+  | 'play';
 
 const PATHS: Record<IconName, React.ReactNode> = {
   practice: (
@@ -96,6 +97,7 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
     </>
   ),
+  play: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" />,
 };
 
 export function Icon({ name, className }: { name: IconName; className?: string }) {
