@@ -185,20 +185,24 @@
   .seed-inner {
     fill: var(--seed-inner);
   }
-  .seed-hollow {
-    fill: none;
-    stroke: var(--seed-rim);
-    stroke-width: 2px;
-    opacity: 0.55;
+  .seed-shadow {
+    fill: var(--seed-shadow);
   }
-  .seed-shell {
+  .seed-shell,
+  .cord-bead {
     fill: var(--seed-shell);
     stroke: var(--seed-outline);
     stroke-width: calc(2px * var(--stroke-scale, 1));
   }
   .seed-ridge {
-    fill: none;
+    fill: var(--seed-ridge);
     stroke: var(--seed-ridge);
+    stroke-width: calc(1px * var(--stroke-scale, 1));
+    stroke-linejoin: round;
+  }
+  .seed-shine {
+    fill: none;
+    stroke: var(--seed-shine);
     stroke-width: calc(3px * var(--stroke-scale, 1));
     stroke-linecap: round;
   }
