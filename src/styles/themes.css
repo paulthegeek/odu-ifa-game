@@ -49,7 +49,9 @@
   --seed-rim: #7a4f28;
   --seed-inner: #fbf0d7;
   --seed-shell: #3f2814;
-  --seed-ridge: #d9b27a;
+  --seed-ridge: #6b4421;
+  --seed-shadow: #e2c995;
+  --seed-shine: #d9b27a;
   --seed-outline: #2e1c0c;
   --empty-slot: #6d6153;
   --diff: #a03a1c;
@@ -97,7 +99,9 @@
   --seed-rim: #7a5530;
   --seed-inner: #e3d0a8;
   --seed-shell: #4a3119;
-  --seed-ridge: #d9b88a;
+  --seed-ridge: #6a4524;
+  --seed-shadow: #c2a676;
+  --seed-shine: #d9b88a;
   --seed-outline: #d9c4a0;
   --empty-slot: #a3a892;
   --diff: #f0a487;
@@ -144,7 +148,9 @@
   --seed-rim: #5e3e1f;
   --seed-inner: #c49a60;
   --seed-shell: #2c1c0e;
-  --seed-ridge: #b48852;
+  --seed-ridge: #4a2f16;
+  --seed-shadow: #a67e4a;
+  --seed-shine: #b48852;
   --seed-outline: #a6a262;
   --empty-slot: #8a8858;
   --diff: #cf8a62;
@@ -191,7 +197,9 @@
   --seed-rim: #000000;
   --seed-inner: #ffffff;
   --seed-shell: #000000;
-  --seed-ridge: #ffffff;
+  --seed-ridge: #000000;
+  --seed-shadow: #ffffff;
+  --seed-shine: #000000;
   --seed-outline: #000000;
   --empty-slot: #000000;
   --diff: #000000;

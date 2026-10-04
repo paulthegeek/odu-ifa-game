@@ -1,7 +1,8 @@
 /**
  * Opẹ̀lẹ̀ drawing: two strands of four half-pods joined at the top.
- * Open seed (concave side up) shows a pale hollow inside a rim;
- * closed seed (convex side up) is a solid shell with a ridge down the middle.
+ * Open seed (concave inner side up) is a pale hollow cup inside a rim, with the
+ * pod's ridge running down the middle of the hollow; closed seed (convex shell up)
+ * is a plain dark dome with only a soft highlight.
  * The two states differ in shape and shading, not only color.
  */
 import { OPELE_MAPPING } from '../data/config';
@@ -13,26 +14,36 @@ const RX = 17;
 const RY = 22;
 
 function OpenSeed({ x, y }: { x: number; y: number }) {
+  const hx = RX - 5;
+  const hy = RY - 5;
+  const cy = y + 1;
   return (
-    <g>
+    <g data-seed="open">
       <ellipse className="seed-rim" cx={x} cy={y} rx={RX} ry={RY} />
-      <ellipse className="seed-inner" cx={x} cy={y + 1} rx={RX - 6} ry={RY - 6} />
-      <path className="seed-hollow" d={`M ${x - 8} ${y - 8} Q ${x} ${y - 14} ${x + 8} ${y - 8}`} />
+      <ellipse className="seed-inner" cx={x} cy={cy} rx={hx} ry={hy} />
+      <path
+        className="seed-shadow"
+        d={`M ${x - hx} ${cy} A ${hx} ${hy} 0 0 1 ${x + hx} ${cy} A ${hx} ${hy - 5} 0 0 0 ${x - hx} ${cy} Z`}
+      />
+      <path
+        className="seed-ridge"
+        d={`M ${x} ${y - 9} Q ${x + 4} ${y + 3} ${x} ${y + 14} Q ${x - 4} ${y + 3} ${x} ${y - 9} Z`}
+      />
     </g>
   );
 }
 
 function ClosedSeed({ x, y }: { x: number; y: number }) {
   return (
-    <g>
+    <g data-seed="closed">
       <ellipse className="seed-shell" cx={x} cy={y} rx={RX} ry={RY} />
-      <line className="seed-ridge" x1={x} y1={y - RY + 6} x2={x} y2={y + RY - 6} />
+      <path className="seed-shine" d={`M ${x - 12} ${y + 1.5} A 12 17 0 0 1 ${x - 3.1} ${y - 16.4}`} />
     </g>
   );
 }
 
 function EmptySlot({ x, y }: { x: number; y: number }) {
-  return <ellipse className="slot-empty" cx={x} cy={y} rx={RX} ry={RY} />;
+  return <ellipse className="slot-empty" data-seed="empty" cx={x} cy={y} rx={RX} ry={RY} />;
 }
 
 export function Seed({ cell, x, y }: { cell: Cell; x: number; y: number }) {
@@ -47,11 +58,11 @@ function OpeleArt({ cells, showMarks }: { cells: readonly Cell[]; showMarks: boo
     <>
       {/* Strands joined at the top */}
       <path className="cord" d={`M ${G.leftX} ${top} C ${G.leftX} 22, ${G.rightX} 22, ${G.rightX} ${top}`} />
-      <circle className="seed-shell" cx={(G.leftX + G.rightX) / 2} cy={28} r={5} />
+      <circle className="cord-bead" cx={(G.leftX + G.rightX) / 2} cy={28} r={5} />
       {[G.leftX, G.rightX].map((x) => (
         <g key={x}>
           <line className="cord" x1={x} y1={top} x2={x} y2={bottom + 14} />
-          <circle className="seed-shell" cx={x} cy={bottom + 18} r={4} />
+          <circle className="cord-bead" cx={x} cy={bottom + 18} r={4} />
         </g>
       ))}
       {cells.map((cell, i) => {

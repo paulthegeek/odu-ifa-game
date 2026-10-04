@@ -43,9 +43,9 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             parallel strokes (II).
           </li>
           <li>
-            On the <span lang="yo">opẹ̀lẹ̀</span>, an <strong>open</strong> seed (hollow inner side up, pale
-            center) is a {openMark}. A <strong>closed</strong> seed (outer shell up, with a ridge) is a{' '}
-            {closedMark}.
+            On the <span lang="yo">opẹ̀lẹ̀</span>, an <strong>open</strong> seed (hollow inner side up: a pale
+            cup with a ridge down the middle) is a {openMark}. A <strong>closed</strong> seed (rounded outer
+            shell up: a plain dark dome) is a {closedMark}.
           </li>
           <li>Turn on “Show marks” in Settings to see I / II beside each seed while you learn.</li>
         </ul>
