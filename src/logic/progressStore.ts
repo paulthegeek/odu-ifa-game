@@ -141,7 +141,7 @@ function checkRollupKey(key: string, withPair: boolean): boolean {
 export function validateProgress(raw: unknown): ValidationResult {
   if (!isObj(raw)) return { ok: false, error: 'This file is not a progress export.' };
   if ('format' in raw && raw.format !== EXPORT_FORMAT) {
-    return { ok: false, error: 'This file is not an Odù Practice progress export.' };
+    return { ok: false, error: 'This file is not a Mọ Odù progress export.' };
   }
   if (raw.version !== 1) return { ok: false, error: 'This progress file is from an unsupported version.' };
   const { answers, rounds, rollup } = raw;
