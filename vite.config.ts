@@ -18,8 +18,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Odù Practice',
-        short_name: 'Odù Practice',
+        name: 'Mọ Odù',
+        short_name: 'Mọ Odù',
         description: 'Practice recognizing Odù Ifá signs on the opẹ̀lẹ̀ and ọpọ́n Ifá.',
         lang: 'en',
         start_url: BASE,

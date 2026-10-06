@@ -28,7 +28,7 @@ export function AppBar({
   return (
     <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 bg-bg pt-[max(0.5rem,env(safe-area-inset-top))] pr-3 pb-2 pl-5 md:h-dvh md:flex-col md:flex-nowrap md:items-stretch md:justify-start md:gap-7 md:border-r md:border-line md:bg-surface md:px-4 md:pt-7 md:pb-6">
       <p className="m-0 font-serif text-[1.6rem] leading-[1.2] font-semibold md:px-3 md:text-[1.9rem]">
-        <span lang="yo">Odù</span>
+        <span lang="yo">Mọ Odù</span>
       </p>
       <nav
         aria-label="Main"

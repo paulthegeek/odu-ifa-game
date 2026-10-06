@@ -29,7 +29,7 @@ For setup commands and the data-editing rules, see the [README](../README.md).
 
 ## 1. What the app does
 
-Odù Practice helps Ifá practitioners learn to recognize Odù signs quickly. There are two ways to play:
+Mọ Odù helps Ifá practitioners learn to recognize Odù signs quickly. There are two ways to play:
 
 - **Read the sign**: the app shows a sign, and the player picks its name from four choices.
 - **Build the sign**: the app shows a name, and the player builds its sign by tapping eight positions.
