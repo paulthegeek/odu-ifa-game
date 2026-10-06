@@ -3,6 +3,7 @@
  * game keeps working when storage is blocked (private mode, disabled cookies).
  */
 import { ROUND_LENGTHS, type RoundLength } from '../data/config';
+import { SOUND_STYLES, type SoundStyle } from '../data/sounds';
 import type { OduSet } from './distractors';
 import type { Direction, Mode, Timing } from './game';
 
@@ -14,6 +15,7 @@ export interface Settings {
   largeText: boolean;
   dyslexiaSpacing: boolean;
   soundCues: boolean;
+  soundStyle: SoundStyle;
   timing: Timing;
   showDiacritics: boolean;
   showMarks: boolean;
@@ -30,6 +32,7 @@ export const DEFAULT_SETTINGS: Settings = {
   largeText: false,
   dyslexiaSpacing: false,
   soundCues: false,
+  soundStyle: 'soft',
   timing: 'standard',
   showDiacritics: true,
   showMarks: false,
@@ -76,6 +79,7 @@ export function parseSettings(raw: unknown): Settings {
     largeText: bool(r.largeText, d.largeText),
     dyslexiaSpacing: bool(r.dyslexiaSpacing, d.dyslexiaSpacing),
     soundCues: bool(r.soundCues, d.soundCues),
+    soundStyle: oneOf(r.soundStyle, SOUND_STYLES, d.soundStyle),
     timing: oneOf(r.timing, ['standard', 'extended', 'untimed'] as const, d.timing),
     showDiacritics: bool(r.showDiacritics, d.showDiacritics),
     showMarks: bool(r.showMarks, d.showMarks),

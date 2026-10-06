@@ -100,7 +100,7 @@ export function useRound(config: RoundConfig, onFinish: (state: RoundState) => v
       commit(next);
       const correctId = next.answers[next.answers.length - 1]!.oduId;
       setFeedback({ kind: correct ? 'correct' : 'incorrect', correctId });
-      if (appSettings.soundCues) playCue(correct ? 'correct' : 'incorrect');
+      if (appSettings.soundCues) playCue(correct ? 'correct' : 'incorrect', appSettings.soundStyle);
       const name = displayName(getOdu(correctId), appSettings.showDiacritics);
       announce(
         correct ? `Correct. Score ${next.score}.` : `Not correct. It was ${name}. Score ${next.score}.`,
@@ -121,7 +121,15 @@ export function useRound(config: RoundConfig, onFinish: (state: RoundState) => v
       );
       return correct;
     },
-    [feedback, commit, finish, announce, appSettings.soundCues, appSettings.showDiacritics],
+    [
+      feedback,
+      commit,
+      finish,
+      announce,
+      appSettings.soundCues,
+      appSettings.soundStyle,
+      appSettings.showDiacritics,
+    ],
   );
 
   return { state, feedback, remainingMs, untimed: duration === null, answer, finish };
