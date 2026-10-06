@@ -1,9 +1,12 @@
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppContext } from '../../src/app/AppContext';
 import { Settings as SettingsScreen } from '../../src/screens/Settings';
 import { DEFAULT_SETTINGS, type Settings } from '../../src/logic/storage';
+import { playCue } from '../../src/logic/sound';
+
+vi.mock('../../src/logic/sound', () => ({ playCue: vi.fn() }));
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -85,5 +88,29 @@ describe('Settings: display', () => {
         expect(container.textContent).toContain(text);
       }
     }
+  });
+});
+
+describe('Settings: sound', () => {
+  const styleRadios = () => container.querySelectorAll('input[name="soundStyle"]');
+
+  it('hides the sound style until sound cues are on', () => {
+    render({ soundCues: false });
+    expect(styleRadios()).toHaveLength(0);
+  });
+
+  it('lists five styles with soft chosen by default', () => {
+    render({ soundCues: true });
+    expect(styleRadios()).toHaveLength(5);
+    expect(radio('soundStyle', 'soft').checked).toBe(true);
+  });
+
+  it('previews the chosen style', () => {
+    render({ soundCues: true });
+    act(() => radio('soundStyle', 'bell').click());
+    expect(radio('soundStyle', 'bell').checked).toBe(true);
+    const play = [...container.querySelectorAll('button')].find((b) => b.textContent === 'Play incorrect');
+    act(() => play!.click());
+    expect(playCue).toHaveBeenCalledWith('incorrect', 'bell');
   });
 });

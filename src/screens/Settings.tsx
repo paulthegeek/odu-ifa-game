@@ -1,12 +1,15 @@
 import type { ReactNode } from 'react';
 import { useApp } from '../app/AppContext';
 import { Choices } from '../components/Choices';
+import { Icon } from '../components/Icon';
 import { PageHead } from '../components/PageHead';
-import { card, page } from '../components/ui';
+import { button, card, hint, page } from '../components/ui';
 import { Switch } from '../components/Switch';
 import { ThemeChoices } from '../components/ThemeToggle';
 import { ROUND_LENGTHS } from '../data/config';
+import { SOUND_PRESETS, SOUND_STYLES } from '../data/sounds';
 import { roundDuration } from '../logic/game';
+import { playCue, type CueKind } from '../logic/sound';
 import type { Settings as SettingsData } from '../logic/storage';
 import { cn } from '../lib/cn';
 
@@ -105,6 +108,47 @@ function RoundsFields() {
   );
 }
 
+/**
+ * Sound style picker, shown once sound cues are on. Previewing is an explicit button
+ * press, never automatic on selection, so arrowing through the radios doesn't play
+ * sounds over a screen reader.
+ */
+function SoundFields() {
+  const { settings: s, updateSettings } = useApp();
+  const preview = (kind: CueKind, label: string) => (
+    <button type="button" className={button({ size: 'small' })} onClick={() => playCue(kind, s.soundStyle)}>
+      <Icon name="play" className="size-4" />
+      {label}
+    </button>
+  );
+  return (
+    <div className="mt-3 grid gap-3 border-t border-line pt-3">
+      <Choices
+        variant="list"
+        quiet
+        legend="Sound style"
+        name="soundStyle"
+        value={s.soundStyle}
+        onChange={(soundStyle) => updateSettings({ soundStyle })}
+        options={SOUND_STYLES.map((id) => ({
+          value: id,
+          label: SOUND_PRESETS[id].label,
+          detail: SOUND_PRESETS[id].detail,
+        }))}
+        hint={
+          <p className={hint}>
+            Correct answers rise and sound brighter. Incorrect answers fall and sound lower.
+          </p>
+        }
+      />
+      <div className="flex flex-wrap gap-2">
+        {preview('correct', 'Play correct')}
+        {preview('incorrect', 'Play incorrect')}
+      </div>
+    </div>
+  );
+}
+
 export function Settings() {
   const { settings: s, updateSettings } = useApp();
   const toggle = (key: BooleanSetting, label: ReactNode, hint?: string) => (
@@ -157,6 +201,7 @@ export function Settings() {
       <section className={card()} aria-labelledby="sound-h">
         <h2 id="sound-h">Sound</h2>
         {toggle('soundCues', 'Sound cues for correct and incorrect answers')}
+        {s.soundCues && <SoundFields />}
       </section>
     </div>
   );

@@ -94,6 +94,7 @@ src/
     odu.ts              The 16 principal Odù, naming constants, aliases.
     config.ts           Tunable numbers: timings, round lengths, opẹ̀lẹ̀ mapping, weak-Odù weights.
     ese.ts              Study content (meanings, ẹsẹ). Gated by `reviewed`.
+    sounds.ts           Sound-cue presets (notes, timbre, master volume).
   logic/                PURE TYPESCRIPT. No React. Unit-tested.
     odu.ts              Builds the 256, owns the naming rule, lookup and search.
     game.ts             Round state machine: createRound / submitAnswer / advance / finishRound.
@@ -104,7 +105,7 @@ src/
     storage.ts          Settings and personal bests in localStorage.
     random.ts           Injectable RNG (seeded for tests), shuffle, weighted pick.
     study.ts            Which study entries may be shown.
-    sound.ts            Optional Web Audio cues.
+    sound.ts            Web Audio synth that plays the cue presets.
   app/                  REACT GLUE. Owns app state and wires logic to UI.
     App.tsx             Shell: screen switching, progress loading, startRound/finishRound.
     AppContext.tsx      Context: settings, updateSettings, announce, openStudy.
@@ -503,6 +504,10 @@ Follow the README section "Adding ẹsẹ Ifá and meanings". In short: edit `sr
    - add a `@custom-variant` in `app.css`.
 5. **If it changes how a round plays**, add it to `RoundSettings` in `logic/game.ts` and to `roundSettings` in `startRound`, and consider whether it belongs in `personalBestKey` and `roundSeriesKey`.
 6. Add a case to `tests/unit/settings-screen.test.tsx`.
+
+### …change or add a sound style?
+
+Edit [`src/data/sounds.ts`](../src/data/sounds.ts). Add the id to `SOUND_STYLES` and a preset to `SOUND_PRESETS`; Settings lists it automatically. The default is `soundStyle` in `DEFAULT_SETTINGS` (`logic/storage.ts`). `tests/unit/sound-presets.test.ts` enforces the rules that keep correct and incorrect distinct (correct rises, sits higher and ends before `FEEDBACK_MS.correct`). Adjust overall loudness with `SOUND_VOLUME`, not per note.
 
 ### …add a new screen?
 
