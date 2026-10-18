@@ -388,6 +388,7 @@ All sign art is hand-written inline SVG. There are no image assets.
 - **Text alternative**: `signDescription()` produces text such as "Opẹ̀lẹ̀. Right leg, top to bottom: open, open, open, closed. Left leg: …". Pass `decorative` when the surrounding control already names the sign.
 - **Opẹ̀lẹ̀ seeds** are drawn from `OPELE_MAPPING` in config. Never assume that open means single.
 - **Editable mode** uses a roving tabindex: only the active cell has `tabIndex=0`, and each cell button has a full label such as "Right leg, mark 2 of 4: double".
+- **Teaching extras** (used by Help): `labels` puts text beside each mark in index order (I / II, or reading order 1–8), and `markTop` highlights the top of the drawing (the uncarved gap in the tray's border, or the join of the chain). [`MarkSamples.tsx`](../src/components/MarkSamples.tsx) draws single marks, single seeds and one leg as a strip (`LegGlyph`).
 - **Sizing**: `size` sets `--sign-width`. On the round stage, `STAGE_FIT` (in [`roundLayout.ts`](../src/screens/roundLayout.ts)) also limits the height using `--aspect`.
 - **Colors**: SVG parts use class names (`.seed-shell`, `.tray-mark`, `.cord`, …) styled in `app.css` from theme variables, so every drawing adapts to Dark, Night and High-contrast.
 

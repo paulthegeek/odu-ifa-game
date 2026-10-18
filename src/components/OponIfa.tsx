@@ -49,27 +49,66 @@ function Carving() {
   return <>{notches}</>;
 }
 
-function OponArt({ cells }: { cells: readonly Cell[] }) {
+/** An arc along the rim across the uncarved gap at the top (the gap spans ±22.5°). */
+function topArc(): string {
+  const r = (INNER + OUTER) / 2;
+  const a = (18 * Math.PI) / 180;
+  const dx = r * Math.sin(a);
+  const y = C - r * Math.cos(a);
+  return `M ${C - dx} ${y} A ${r} ${r} 0 0 1 ${C + dx} ${y}`;
+}
+
+function OponArt({
+  cells,
+  labels,
+  markTop,
+}: {
+  cells: readonly Cell[];
+  labels?: readonly string[];
+  markTop: boolean;
+}) {
   return (
     <>
       <circle className="tray-rim" cx={C} cy={C} r={OUTER} />
       <Carving />
+      {markTop && <path className="tray-top" d={topArc()} />}
       <circle className="tray-powder" cx={C} cy={C} r={INNER} />
       <circle className="tray-inner-edge" cx={C} cy={C} r={INNER} />
       {cells.map((cell, i) => {
         const { x, y } = positionPoint(G, i);
         return <TrayMark key={i} cell={cell} x={x} y={y} />;
       })}
+      {labels &&
+        cells.map((cell, i) => {
+          if (cell === 0 || !labels[i]) return null;
+          const { x, y } = positionPoint(G, i);
+          return (
+            <text
+              key={`l${i}`}
+              className="tray-label"
+              x={i < 4 ? x + 24 : x - 24}
+              y={y + 7}
+              textAnchor={i < 4 ? 'start' : 'end'}
+            >
+              {labels[i]}
+            </text>
+          );
+        })}
     </>
   );
 }
 
-export type OponIfaProps = Omit<SignFrameProps, 'mode' | 'children'>;
+export type OponIfaProps = Omit<SignFrameProps, 'mode' | 'children'> & {
+  /** Text beside each mark (index order), e.g. I / II or reading order 1–8. */
+  labels?: readonly string[];
+  /** Highlight the uncarved gap that marks the top of the tray. */
+  markTop?: boolean;
+};
 
-export function OponIfa(props: OponIfaProps) {
+export function OponIfa({ labels, markTop = false, ...props }: OponIfaProps) {
   return (
     <SignFrame mode="opon" {...props}>
-      <OponArt cells={props.cells} />
+      <OponArt cells={props.cells} labels={labels} markTop={markTop} />
     </SignFrame>
   );
 }

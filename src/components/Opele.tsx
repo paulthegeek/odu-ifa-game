@@ -51,9 +51,20 @@ export function Seed({ cell, x, y }: { cell: Cell; x: number; y: number }) {
   return cell === OPELE_MAPPING.open ? <OpenSeed x={x} y={y} /> : <ClosedSeed x={x} y={y} />;
 }
 
-function OpeleArt({ cells, showMarks }: { cells: readonly Cell[]; showMarks: boolean }) {
+function OpeleArt({
+  cells,
+  showMarks,
+  labels,
+  markTop,
+}: {
+  cells: readonly Cell[];
+  showMarks: boolean;
+  labels?: readonly string[];
+  markTop: boolean;
+}) {
   const top = G.rows[0]! - RY;
   const bottom = G.rows[3]! + RY;
+  const text = labels ?? (showMarks ? cells.map((c) => (c === 1 ? 'I' : 'II')) : null);
   return (
     <>
       {/* Strands joined at the top */}
@@ -69,14 +80,16 @@ function OpeleArt({ cells, showMarks }: { cells: readonly Cell[]; showMarks: boo
         const { x, y } = positionPoint(G, i);
         return <Seed key={i} cell={cell} x={x} y={y} />;
       })}
-      {showMarks &&
+      {/* The join at the top of the chain, circled to show which way up to read. */}
+      {markTop && <circle className="top-ring" cx={(G.leftX + G.rightX) / 2} cy={30} r={17} />}
+      {text &&
         cells.map((cell, i) => {
-          if (cell === 0) return null;
+          if (cell === 0 || !text[i]) return null;
           const { x, y } = positionPoint(G, i);
           const lx = i < 4 ? x + RX + 8 : x - RX - 8;
           return (
             <text key={`m${i}`} className="mark-label" x={lx} y={y + 5} textAnchor={i < 4 ? 'start' : 'end'}>
-              {cell === 1 ? 'I' : 'II'}
+              {text[i]}
             </text>
           );
         })}
@@ -84,12 +97,18 @@ function OpeleArt({ cells, showMarks }: { cells: readonly Cell[]; showMarks: boo
   );
 }
 
-export type OpeleProps = Omit<SignFrameProps, 'mode' | 'children'> & { showMarks?: boolean };
+export type OpeleProps = Omit<SignFrameProps, 'mode' | 'children'> & {
+  showMarks?: boolean;
+  /** Text beside each seed (index order), e.g. reading order 1–8. Overrides showMarks. */
+  labels?: readonly string[];
+  /** Circle the join at the top of the chain. */
+  markTop?: boolean;
+};
 
-export function Opele({ showMarks = false, ...props }: OpeleProps) {
+export function Opele({ showMarks = false, labels, markTop = false, ...props }: OpeleProps) {
   return (
     <SignFrame mode="opele" {...props}>
-      <OpeleArt cells={props.cells} showMarks={showMarks} />
+      <OpeleArt cells={props.cells} showMarks={showMarks} labels={labels} markTop={markTop} />
     </SignFrame>
   );
 }
