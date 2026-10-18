@@ -1,5 +1,5 @@
 /**
- * Sound-cue presets, synthesised with Web Audio (no audio files, so they work offline).
+ * Sound-cue presets, synthesized with Web Audio (no audio files, so they work offline).
  *
  * Every preset follows the same rules so correct and incorrect are easy to tell apart:
  * correct rises, sits higher, sounds brighter and is short (it must end before
