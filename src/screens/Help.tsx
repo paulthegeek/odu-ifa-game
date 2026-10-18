@@ -392,7 +392,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
                 <>
                   A round wooden divination tray covered with a thin layer of <Yo>ìyẹ̀rọ̀sùn</Yo>, a yellow
                   powder. The diviner draws each mark in the powder with their fingers as the sign is cast,
-                  usually with <Yo>ikin</Yo>, the sacred palm nuts.
+                  with <Yo>ikin</Yo>, the sacred palm nuts.
                 </>
               }
               whichWayUp={
