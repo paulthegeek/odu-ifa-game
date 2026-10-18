@@ -397,9 +397,9 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
               }
               whichWayUp={
                 <>
-                  The carved border has one plain gap, highlighted here. In this app that gap is always at the
-                  top. Start each leg at the mark nearest it and read down. On many real trays the top is the
-                  edge carved with a face, the <Yo>ojú ọpọ́n</Yo>.
+                  The carved border has one plain gap, highlighted here. In this app the gap is always at the
+                  top, so start each leg at the mark closest to it and read down. On many real trays, the top
+                  edge is carved with a face, usually <Yo>Èṣù</Yo>’s, called the <Yo>ojú ọpọ́n</Yo>.
                 </>
               }
               single="One stroke, drawn from bottom to top."
