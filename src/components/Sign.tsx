@@ -10,6 +10,10 @@ export interface SignProps {
   cells: readonly Cell[];
   size?: 'large' | 'medium' | 'small';
   showMarks?: boolean;
+  /** Text beside each mark (index order), e.g. reading order 1–8. */
+  labels?: readonly string[];
+  /** Highlight the top of the tray or chain. */
+  markTop?: boolean;
   wrong?: readonly number[];
   label?: string;
   editable?: EditableConfig;
