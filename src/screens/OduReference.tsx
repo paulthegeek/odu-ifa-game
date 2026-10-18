@@ -51,8 +51,8 @@ export function OduReference() {
           value={mode}
           onChange={setMode}
           options={[
-            { value: 'opele', label: <span lang="yo">Opẹ̀lẹ̀</span> },
             { value: 'opon', label: <span lang="yo">Ọpọ́n Ifá</span> },
+            { value: 'opele', label: <span lang="yo">Opẹ̀lẹ̀</span> },
           ]}
         />
         <Choices

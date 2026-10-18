@@ -85,7 +85,7 @@ export function Home({
       {/* On phones the stage says it all; the intro stays for screen readers. */}
       <div className="@max-wide/app:sr-only @wide/app:pt-2 @wide/app:[grid-area:intro]">
         <ScreenTitle className="m-0">Start a round</ScreenTitle>
-        <p className="mt-2 mb-0 text-muted">Pick a mode, choose what to practise, then press Start.</p>
+        <p className="mt-2 mb-0 text-muted">Pick a mode, choose what to practice, then press Start.</p>
       </div>
 
       {/* Phones get a compact stage (small sign beside its name) so Start stays above the tab bar. */}

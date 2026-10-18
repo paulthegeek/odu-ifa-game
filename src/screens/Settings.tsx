@@ -50,7 +50,7 @@ const TIMINGS: {
 /**
  * Timing choices as cards. The chosen card opens to show the round length, in the
  * time a round really lasts (Extended doubles it), so the two read as one choice.
- * The length is its own labelled group placed after the chosen radio, not inside
+ * The length is its own labeled group placed after the chosen radio, not inside
  * its label. Native radios keep the browser's arrow-key behavior.
  */
 function RoundsFields() {
