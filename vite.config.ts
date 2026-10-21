@@ -5,10 +5,10 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 /**
- * Base path for GitHub Pages: https://<username>.github.io/<repo>/
- * Change it here only. For a custom domain, use '/'.
+ * Base path. The site is served from the root of its custom domain (https://odugame.com/).
+ * Change it here only. Without a custom domain, use '/<repo>/' (https://<username>.github.io/<repo>/).
  */
-export const BASE = '/odu-ifa-game/';
+export const BASE = '/';
 
 export default defineConfig({
   base: BASE,

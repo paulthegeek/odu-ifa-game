@@ -9,7 +9,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: `http://localhost:${PORT}/odu-ifa-game/`,
+    baseURL: `http://localhost:${PORT}/`,
     serviceWorkers: 'block',
     trace: 'retain-on-failure',
   },
@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   webServer: {
     command: `pnpm build && pnpm exec vite preview --port ${PORT} --strictPort`,
-    url: `http://localhost:${PORT}/odu-ifa-game/`,
+    url: `http://localhost:${PORT}/`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
