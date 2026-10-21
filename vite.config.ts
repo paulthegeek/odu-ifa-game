@@ -19,8 +19,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeManifestIcons: false,
       manifest: {
-        name: 'Mọ Odù',
-        short_name: 'Mọ Odù',
+        name: 'Odù Game',
+        short_name: 'Odù Game',
         description: 'Practice recognizing Odù Ifá signs on the opẹ̀lẹ̀ and ọpọ́n Ifá.',
         lang: 'en',
         start_url: BASE,

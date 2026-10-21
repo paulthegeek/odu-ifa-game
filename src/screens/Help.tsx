@@ -1,5 +1,5 @@
 /**
- * How to read a sign: a six-step lesson for first-time readers. The ọpọ́n Ifá
+ * How to read a sign: a seven-step lesson for first-time readers. The ọpọ́n Ifá
  * and the opẹ̀lẹ̀ each get a lesson with the same parts (tray first), and the
  * page ends with one practice question per tool.
  */
@@ -29,7 +29,7 @@ const STEPS: { id: string; nav: ReactNode }[] = [
     id: 'help-opon',
     nav: (
       <>
-        Reading the <Yo>ọpọ́n Ifá</Yo>
+        Reading the <Yo>Ọpọ́n Ifá</Yo>
       </>
     ),
   },
@@ -37,14 +37,21 @@ const STEPS: { id: string; nav: ReactNode }[] = [
     id: 'help-opele',
     nav: (
       <>
-        Reading the <Yo>opẹ̀lẹ̀</Yo>
+        Reading the <Yo>Opẹ̀lẹ̀</Yo>
       </>
     ),
   },
-  { id: 'help-names', nav: 'The 16 leg names' },
+  {
+    id: 'help-names',
+    nav: (
+      <>
+        The 16 principal <Yo>Odù</Yo>
+      </>
+    ),
+  },
   { id: 'help-order', nav: 'Right leg first' },
   { id: 'help-meji', nav: 'When both legs match' },
-  { id: 'help-try', nav: 'Try two' },
+  { id: 'help-try', nav: 'Try it' },
 ];
 const STEP_IDS = STEPS.map((s) => s.id);
 
@@ -84,26 +91,23 @@ function StepNav() {
     <nav aria-label="Steps" className="hidden @wide/app:sticky @wide/app:top-8 @wide/app:block">
       <p className={cn(eyebrow, 'mb-2 ml-2')}>On this page</p>
       <ol className="m-0 grid list-none gap-[0.15rem] p-0">
-        {STEPS.map((s, i) => {
-          const last = i === STEPS.length - 1;
-          return (
-            <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                aria-current={current === s.id ? 'location' : undefined}
-                className="group flex min-h-10 items-center gap-[0.6rem] rounded-[12px] px-2 py-1 text-[0.92rem] font-semibold text-muted no-underline hover:bg-stage hover:text-fg aria-[current]:bg-accent-soft aria-[current]:text-accent-on-soft"
+        {STEPS.map((s, i) => (
+          <li key={s.id}>
+            <a
+              href={`#${s.id}`}
+              aria-current={current === s.id ? 'location' : undefined}
+              className="group flex min-h-10 items-center gap-[0.6rem] rounded-[12px] px-2 py-1 text-[0.92rem] font-semibold text-muted no-underline hover:bg-stage hover:text-fg aria-[current]:bg-accent-soft aria-[current]:text-accent-on-soft"
+            >
+              <span
+                className="grid size-6 flex-none place-items-center rounded-full border-[1.5px] border-border text-[0.75rem] group-aria-[current]:border-accent group-aria-[current]:bg-accent group-aria-[current]:text-on-accent"
+                aria-hidden="true"
               >
-                <span
-                  className="grid size-6 flex-none place-items-center rounded-full border-[1.5px] border-border text-[0.75rem] group-aria-[current]:border-accent group-aria-[current]:bg-accent group-aria-[current]:text-on-accent"
-                  aria-hidden="true"
-                >
-                  {last ? '?' : i + 1}
-                </span>
-                <span>{s.nav}</span>
-              </a>
-            </li>
-          );
-        })}
+                {i + 1}
+              </span>
+              <span>{s.nav}</span>
+            </a>
+          </li>
+        ))}
       </ol>
     </nav>
   );
@@ -268,11 +272,11 @@ interface Answer {
 function Quiz({ mode, oduId, answers }: { mode: Mode; oduId: string; answers: readonly Answer[] }) {
   const [picked, setPicked] = useState<string | null>(null);
   const chosen = answers.find((a) => a.id === picked);
-  const tool = mode === 'opon' ? 'tray' : 'opẹ̀lẹ̀';
+  const tool = mode === 'opon' ? 'tray' : 'Opẹ̀lẹ̀';
   return (
     <div className="grid gap-3">
       <p className={eyebrow}>
-        On the <Yo>{mode === 'opon' ? 'ọpọ́n Ifá' : 'opẹ̀lẹ̀'}</Yo>
+        On the <Yo>{mode === 'opon' ? 'Ọpọ́n Ifá' : 'Opẹ̀lẹ̀'}</Yo>
       </p>
       <div className="grid items-center gap-4 @wide/app:grid-cols-[10rem_minmax(0,1fr)]">
         <Sign mode={mode} cells={getOdu(oduId).marks} size="medium" className="justify-self-center" />
@@ -327,7 +331,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
 
   return (
     <div className={page}>
-      <PageHead title="How to read a sign">A beginner’s guide in six short steps.</PageHead>
+      <PageHead title="How to read a sign">A beginner’s guide in seven short steps.</PageHead>
       <p className="m-0 max-w-[40rem]">
         Each Ifá reading gives a sign called an <strong>Odù</strong>. There are 256 Odù and each has a name.
         These steps show you how to look at any sign and say its name.
@@ -381,7 +385,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             n={2}
             title={
               <>
-                Reading the <Yo>ọpọ́n Ifá</Yo>
+                Reading the <Yo>Ọpọ́n Ifá</Yo>
               </>
             }
           >
@@ -413,7 +417,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             n={3}
             title={
               <>
-                Reading the <Yo>opẹ̀lẹ̀</Yo>
+                Reading the <Yo>Opẹ̀lẹ̀</Yo>
               </>
             }
           >
@@ -434,10 +438,10 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             />
           </Step>
 
-          <Step n={4} title="Each leg spells one of 16 names">
+          <Step n={4} title="Each leg represents one of 16 names">
             <p>
-              Four marks that are each single or double make exactly 16 patterns. Each pattern has the name of
-              one of the 16 principal Odù. Learning these 16 is most of the work.
+              Four marks that are each single or double make up 16 distinct patterns. Each pattern has the
+              name of one of the 16 principal Odù. Learning these 16 will set you up for success.
             </p>
             <ol className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(4.75rem,1fr))] gap-2 p-0">
               {PRINCIPAL_ODU.map((p) => (
@@ -536,7 +540,7 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
                     'ogbe_ogbe',
                     'opele',
                     <>
-                      <Yo>Ogbè</Yo> on both legs, on the <Yo>opẹ̀lẹ̀</Yo>
+                      <Yo>Ogbè</Yo> on both legs, on the <Yo>Opẹ̀lẹ̀</Yo>
                     </>,
                   ],
                 ] as const
@@ -577,9 +581,18 @@ export function Help({ onBack, backLabel }: { onBack: () => void; backLabel: str
             aria-labelledby="help-try-h"
             className="grid scroll-mt-4 gap-5 rounded-card border-2 border-accent bg-surface p-5 [&_p]:m-0"
           >
-            <h2 id="help-try-h" className="m-0">
-              Try two
-            </h2>
+            <div className="flex items-center gap-3">
+              <span
+                className="grid size-8 flex-none place-items-center rounded-full bg-accent font-bold text-on-accent"
+                aria-hidden="true"
+              >
+                7
+              </span>
+              <h2 id="help-try-h" className="m-0">
+                <span className="sr-only">Step 7: </span>
+                Try it
+              </h2>
+            </div>
             <Quiz
               mode="opon"
               oduId="ogunda_iwori"

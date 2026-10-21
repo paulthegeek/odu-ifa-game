@@ -59,12 +59,13 @@ afterEach(() => {
 });
 
 describe('Help', () => {
-  it('teaches the ọpọ́n Ifá before the opẹ̀lẹ̀, in six steps', () => {
+  it('teaches the Ọpọ́n Ifá before the Opẹ̀lẹ̀, in seven steps', () => {
     render();
     const steps = stepHeadings();
-    expect(steps).toHaveLength(6);
-    expect(steps[1]).toContain('Reading the ọpọ́n Ifá');
-    expect(steps[2]).toContain('Reading the opẹ̀lẹ̀');
+    expect(steps).toHaveLength(7);
+    expect(steps[1]).toContain('Reading the Ọpọ́n Ifá');
+    expect(steps[2]).toContain('Reading the Opẹ̀lẹ̀');
+    expect(steps[6]).toBe('Step 7: Try it');
   });
 
   it('gives both tools a lesson with the same parts', () => {

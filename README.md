@@ -1,4 +1,4 @@
-# Mọ Odù
+# Odù Game
 
 A study aid for learning to recognize Odù Ifá signs quickly and accurately, on the **opẹ̀lẹ̀** and the **ọpọ́n Ifá**.
 
