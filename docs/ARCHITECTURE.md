@@ -478,7 +478,7 @@ A few screen tests (`home-screen`, `settings-screen`, `odu-reference`, `opele-se
 
 - `pnpm build` runs `tsc -b` and then `vite build`, which outputs to `dist/`.
 - [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) runs on every push to `main`. It installs dependencies (frozen lockfile), then runs lint, typecheck, unit tests and the build, then deploys `dist/` to GitHub Pages. If any check fails, nothing is deployed.
-- **Base path**: `BASE = '/odu-ifa-game/'` in [`vite.config.ts`](../vite.config.ts) is used by Vite, the PWA manifest (`start_url`, `scope`) and the service worker fallback.
+- **Base path**: `BASE = '/'` (the site is served at the root of https://odugame.com) in [`vite.config.ts`](../vite.config.ts) is used by Vite, the PWA manifest (`start_url`, `scope`) and the service worker fallback.
 - **PWA**: Workbox precaches all JS, CSS, HTML, SVG, PNG and woff2 files, except the two 512 px icons. `registerType: 'autoUpdate'` downloads a new deploy in the background. [`app/updateReload.ts`](../src/app/updateReload.ts) then reloads the page to switch to it, but waits while a round or its results are on screen.
 - **Slow connections**: `index.html` shows a loading message until React starts. If the app script fails to download, it shows a **Try again** button instead of a blank page.
 - Requirements: Node ≥ 24 and the pnpm version pinned in `package.json` (`corepack enable pnpm`).
@@ -545,9 +545,9 @@ Read the last gotcha in section 16 first. You'll need to:
 - update `exportProgress` / `parseImport`;
 - add tests to `progress.test.ts`.
 
-### …deploy to a custom domain?
+### …deploy without the custom domain?
 
-Set `BASE = '/'` in `vite.config.ts` and add `public/CNAME`. Also update the two hard-coded `/odu-ifa-game/` URLs in `playwright.config.ts`.
+Remove the domain under **Settings → Pages → Custom domain**. Set `BASE = '/odu-ifa-game/'` in `vite.config.ts`, and add `odu-ifa-game/` to the two `localhost` URLs in `playwright.config.ts`.
 
 ---
 

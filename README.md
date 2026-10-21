@@ -15,7 +15,7 @@ Requires Node 24 or later and [pnpm](https://pnpm.io). The pnpm version is pinne
 
 ```sh
 pnpm install
-pnpm dev           # http://localhost:5173/odu-ifa-game/
+pnpm dev           # http://localhost:5173/
 ```
 
 ## Tests and checks
@@ -79,12 +79,11 @@ The file also contains one example entry marked `PLACEHOLDER — replace before 
 2. Push to `main`. [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) then:
    1. runs lint, type-check and unit tests (the deploy stops if any fail)
    2. builds the site
-   3. publishes it to `https://<username>.github.io/odu-ifa-game/`
+   3. publishes it to [odugame.com](https://odugame.com)
 
-The base path is set in one place: `BASE` in [`vite.config.ts`](vite.config.ts). For a custom domain:
+The custom domain is set in the repository settings under **Pages → Custom domain**, not in a `CNAME` file (GitHub ignores that file when deploying with Actions). The domain's DNS points at GitHub Pages.
 
-1. Set `BASE` to `'/'`.
-2. Add a `CNAME` file to `public/`.
+The base path is set in one place: `BASE` in [`vite.config.ts`](vite.config.ts). It is `'/'` because the site is served from the root of the domain. Without a custom domain, set it to `'/odu-ifa-game/'`.
 
 The PWA manifest and service worker use the same value, so the app installs and works offline under either path.
 
