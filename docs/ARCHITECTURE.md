@@ -75,7 +75,7 @@ In code vocabulary:
 | Styling            | Tailwind CSS v4 utilities, with theme tokens held in CSS variables                                    |
 | Offline / install  | `vite-plugin-pwa` (Workbox service worker with auto-update)                                           |
 | Storage            | `localStorage` for settings and personal bests; IndexedDB (through `idb-keyval`) for progress history |
-| Fonts              | Self-hosted Noto Sans and Noto Serif Display (`@fontsource`). These cover the Yoruba diacritics.      |
+| Fonts              | Self-hosted Noto Sans and Noto Serif Display, cut down from `@fontsource` to the Yoruba characters.   |
 | Unit tests         | Vitest with jsdom and `fake-indexeddb`                                                                |
 | E2E / a11y tests   | Playwright with axe-core (WCAG 2.2 AA), run on desktop and phone viewports in every theme             |
 | Lint / format      | ESLint (type-checked rules plus react-hooks), and Prettier with the Tailwind class-sorting plugin     |
@@ -86,7 +86,8 @@ In code vocabulary:
 ## 4. Repository map and the layer rule
 
 ```
-index.html              Root HTML. Contains an inline script that applies the theme before first paint.
+index.html              Root HTML. Inline scripts apply the theme before first paint and show a retry
+                        message if the app script fails to download.
 vite.config.ts          Vite, Tailwind, PWA manifest, Vitest config. BASE path lives here.
 src/
   main.tsx              Entry: fonts, CSS, service worker registration, <App/>.
@@ -112,11 +113,14 @@ src/
     AppBar.tsx          Navigation (bottom tabs on phones, sidebar on wide screens).
     useRound.ts         Hook that runs a round: clock, feedback delay, announcements, sound.
     useMediaQuery.ts    Media query hook plus WIDE_QUERY.
+    updateReload.ts     Holds back service-worker update reloads until a round is over.
   screens/              One component per screen (Home, Play, Build, Results, Progress, ...).
   components/           Reusable UI: sign drawings, choices, sheet, charts.
     ui.ts               Shared Tailwind "class recipes" (button(), card(), hint, ...).
   lib/cn.ts             clsx + tailwind-merge, extended with the custom theme names.
+  assets/fonts/         Cut-down woff2 files from `pnpm fonts` (scripts/build-fonts.mjs).
   styles/
+    fonts.css           @font-face rules with unicode-range for the files in assets/fonts.
     app.css             Tailwind entry: @theme tokens, custom variants, base styles, SVG classes.
     themes.css          Color tokens for Light / Dark / Night / High-contrast.
 tests/
@@ -147,7 +151,7 @@ flowchart LR
 ## 5. Boot sequence
 
 1. **[`index.html`](../index.html)** runs a small inline script _before_ React loads. It reads settings from `localStorage` and sets `data-theme`, `data-contrast`, `data-large` and `data-spacing` on `<html>`, so a dark-mode user never sees a white flash.
-2. **[`main.tsx`](../src/main.tsx)** imports the font subsets and `app.css`, registers the service worker (`registerSW({ immediate: true })`), and renders `<App/>` inside `StrictMode`.
+2. **[`main.tsx`](../src/main.tsx)** imports `fonts.css` and `app.css`, registers the service worker (`registerSW({ immediate: true, onNeedReload: requestReload })`), and renders `<App/>` inside `StrictMode`.
 3. **[`App.tsx`](../src/app/App.tsx)** on mount:
    - loads settings synchronously from `localStorage` (`useState(loadSettings)`).
    - starts with an **in-memory** progress store and empty progress, then asynchronously opens IndexedDB (`openProgressStore()`). It swaps in the real store and data when that resolves. If IndexedDB is unavailable, the app keeps the memory store and the Progress screen warns that data won't be saved.
@@ -475,7 +479,8 @@ A few screen tests (`home-screen`, `settings-screen`, `odu-reference`, `opele-se
 - `pnpm build` runs `tsc -b` and then `vite build`, which outputs to `dist/`.
 - [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) runs on every push to `main`. It installs dependencies (frozen lockfile), then runs lint, typecheck, unit tests and the build, then deploys `dist/` to GitHub Pages. If any check fails, nothing is deployed.
 - **Base path**: `BASE = '/odu-ifa-game/'` in [`vite.config.ts`](../vite.config.ts) is used by Vite, the PWA manifest (`start_url`, `scope`) and the service worker fallback.
-- **PWA**: Workbox precaches all JS, CSS, HTML, SVG, PNG and woff2 files. `registerType: 'autoUpdate'` means a new deploy takes over the next time the app is loaded.
+- **PWA**: Workbox precaches all JS, CSS, HTML, SVG, PNG and woff2 files, except the two 512 px icons. `registerType: 'autoUpdate'` downloads a new deploy in the background. [`app/updateReload.ts`](../src/app/updateReload.ts) then reloads the page to switch to it, but waits while a round or its results are on screen.
+- **Slow connections**: `index.html` shows a loading message until React starts. If the app script fails to download, it shows a **Try again** button instead of a blank page.
 - Requirements: Node ≥ 24 and the pnpm version pinned in `package.json` (`corepack enable pnpm`).
 
 ---
@@ -559,5 +564,6 @@ Set `BASE = '/'` in `vite.config.ts` and add `public/CNAME`. Also update the two
 - **Timing edge case.** The sign on screen when time runs out is not scored. If you change how rounds end, keep that rule; `game.test.ts` checks it.
 - **Opẹ̀lẹ̀ mapping is configurable.** Use `OPELE_MAPPING` and `seedWord()`; never hard-code open = single.
 - **Left/right is from the diviner's view.** Index 0–3 (the right leg) is drawn on the _player's right_, and ArrowLeft in Build moves to the left leg.
+- **Fonts only cover the characters the app uses today.** A new Latin letter outside that set (for example ń) falls back to a system font. Add it to `YO_EXT` in `scripts/build-fonts.mjs` and to `fonts.css`, then run `pnpm fonts`.
 - **The e2e suite isn't in CI.** A green deploy doesn't mean the a11y checks pass; run `pnpm test:e2e` yourself.
 - **Stored progress that fails validation is replaced, not repaired.** `progressStore.load()` returns `emptyProgress()` when the stored data fails `validateProgress`, and the next `save()` overwrites it. A schema change that makes old data invalid would **silently wipe users' history**. Always add a version bump and a migration.

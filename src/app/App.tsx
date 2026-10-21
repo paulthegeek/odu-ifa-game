@@ -38,6 +38,7 @@ import { Settings as SettingsScreen } from '../screens/Settings';
 import { cn } from '../lib/cn';
 import { AppBar, type Tab } from './AppBar';
 import { AppContext, type AppContextValue, type StudyOptions } from './AppContext';
+import { setBusy } from './updateReload';
 import type { RoundConfig } from './useRound';
 
 type Screen = 'home' | 'round' | 'results' | 'progress' | 'reference' | 'help' | 'settings';
@@ -241,6 +242,8 @@ export function App() {
   );
 
   const inRound = screen === 'round';
+  // Hold back an app update while a round or its results are on screen.
+  useEffect(() => setBusy(inRound || screen === 'results'), [inRound, screen]);
   const activeTab: Tab | null =
     screen === 'results' || screen === 'home'
       ? 'home'

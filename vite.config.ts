@@ -17,6 +17,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      includeManifestIcons: false,
       manifest: {
         name: 'Mọ Odù',
         short_name: 'Mọ Odù',
@@ -36,6 +37,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // The OS keeps its own copy of install icons; no need to precache the large ones.
+        globIgnores: ['pwa-512x512.png', 'pwa-maskable-512x512.png'],
         navigateFallback: `${BASE}index.html`,
       },
     }),

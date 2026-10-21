@@ -90,6 +90,8 @@ The PWA manifest and service worker use the same value, so the app installs and 
 
 To regenerate the PNG app icons from `public/favicon.svg`, run `pnpm icons`.
 
+The fonts in `src/assets/fonts/` are cut down so slow connections download as little as possible. To regenerate them, run `pnpm fonts` (it needs fonttools: `pip install fonttools brotli`). If you add text with a Latin letter outside the current set (for example ń), add it to `YO_EXT` in [`scripts/build-fonts.mjs`](scripts/build-fonts.mjs) and to the matching `unicode-range` in [`src/styles/fonts.css`](src/styles/fonts.css) first.
+
 ## Project layout
 
 ```
