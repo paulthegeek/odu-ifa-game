@@ -25,10 +25,15 @@ pnpm test          # unit tests (Vitest)
 pnpm lint          # ESLint
 pnpm typecheck     # TypeScript
 pnpm format        # Prettier
+pnpm size          # bundle size budget (run after a build)
 
 pnpm exec playwright install chromium   # once
 pnpm test:e2e                           # end-to-end + axe WCAG 2.2 AA checks, every theme, desktop and phone
 ```
+
+Every pull request runs these in [`.github/workflows/ci.yml`](.github/workflows/ci.yml): the `checks` job (format, lint, type-check, unit tests, build, size budget) and the `e2e` job. Both must pass before a PR can merge into `main`.
+
+The size budgets are in [`.size-limit.json`](.size-limit.json). JavaScript and CSS are measured gzipped, as GitHub Pages serves them. If a change goes over on purpose, raise the limit in the same PR and say why.
 
 ## Editing the Odù data and aliases
 
