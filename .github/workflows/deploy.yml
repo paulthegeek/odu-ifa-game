@@ -3,34 +3,43 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Run from the Actions tab, on main. Leave "tag" empty to redeploy main, or enter a
+  # release tag (e.g. v2026.10.22-1) to roll back to it.
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to roll back to (empty = redeploy main)
+        required: false
+        default: ''
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
+  # The same checks and e2e tests as on pull requests. Skipped for a rollback: the tag
+  # already passed them when it was released.
+  ci:
+    if: inputs.tag == ''
+    uses: ./.github/workflows/ci.yml
+
   build:
+    needs: ci
+    if: ${{ !cancelled() && (needs.ci.result == 'success' || needs.ci.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag && format('refs/tags/{0}', inputs.tag) || github.sha }}
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Lint
-        run: pnpm lint
-      - name: Type-check
-        run: pnpm typecheck
-      - name: Unit tests
-        run: pnpm test
       - name: Build
         run: pnpm exec vite build
       - uses: actions/configure-pages@v6
@@ -40,10 +49,43 @@ jobs:
 
   deploy:
     needs: build
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+      - name: Summary
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          if [ -n "$TAG" ]; then
+            echo "Rolled back to **$TAG**." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Deployed ${GITHUB_SHA:0:7}." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # Tags each deploy of main as vYYYY.MM.DD-N (UTC) with a GitHub release listing the
+  # merged PRs, so any earlier version can be redeployed with the rollback above.
+  release:
+    needs: deploy
+    if: ${{ !cancelled() && needs.deploy.result == 'success' && inputs.tag == '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          day="v$(date -u +%Y.%m.%d)"
+          count=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$day-" --jq length)
+          tag="$day-$((count + 1))"
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "$tag" --generate-notes --latest
+          echo "Released **$tag**." >> "$GITHUB_STEP_SUMMARY"

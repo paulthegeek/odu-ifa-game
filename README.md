@@ -81,10 +81,20 @@ The file also contains one example entry marked `PLACEHOLDER — replace before 
 ## Deploying (GitHub Pages)
 
 1. In the repository settings, set **Pages → Source** to **GitHub Actions**.
-2. Push to `main`. [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) then:
-   1. runs lint, type-check and unit tests (the deploy stops if any fail)
+2. Merge a pull request into `main`. [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) then:
+   1. runs the same checks and e2e tests as CI (the deploy stops if any fail)
    2. builds the site
    3. publishes it to [odugame.com](https://odugame.com)
+   4. tags that commit and creates a [GitHub release](https://github.com/paulthegeek/odu-ifa-game/releases) listing the merged PRs. Tags are dated in UTC, numbered from 1 each day: `v2026.10.22-1`, `v2026.10.22-2`, …
+
+### Rolling back
+
+To put an earlier version back on odugame.com:
+
+1. Open **Actions → Deploy to GitHub Pages → Run workflow**.
+2. Leave the branch as `main`, enter the release tag (for example `v2026.10.22-1`) and run it.
+
+This deploys that tag without running the checks again, because it passed them when it was released. Then fix the problem in a PR. Merging it deploys `main` again as a new release. Leaving the tag empty redeploys the current `main`.
 
 The custom domain is set in the repository settings under **Pages → Custom domain**, not in a `CNAME` file (GitHub ignores that file when deploying with Actions). The domain's DNS points at GitHub Pages.
 
