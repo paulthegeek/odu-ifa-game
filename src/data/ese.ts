@@ -32,15 +32,13 @@ export interface EseEntry {
   readonly snippets: readonly EseSnippet[];
   /** Only reviewed entries are shown. */
   readonly reviewed: boolean;
-  /** Marks the example entry. Placeholders are never shown in production. */
-  readonly placeholder?: true;
 }
 
 /**
  * Entries for the 16 Méjì, in order of seniority, waiting for content.
  * Add Ọmọ Odù entries below them in the same shape.
  */
-const ENTRIES: readonly EseEntry[] = [
+export const ESE_ENTRIES: readonly EseEntry[] = [
   { oduId: 'ogbe_ogbe', meaning: '', snippets: [], reviewed: false },
   { oduId: 'oyeku_oyeku', meaning: '', snippets: [], reviewed: false },
   { oduId: 'iwori_iwori', meaning: '', snippets: [], reviewed: false },
@@ -58,27 +56,3 @@ const ENTRIES: readonly EseEntry[] = [
   { oduId: 'ose_ose', meaning: '', snippets: [], reviewed: false },
   { oduId: 'ofun_ofun', meaning: '', snippets: [], reviewed: false },
 ];
-
-/**
- * PLACEHOLDER — replace before release.
- * Shows the shape of a finished entry. Contains no real ẹsẹ. It is only
- * visible in development (`pnpm dev`) and is stripped from production builds.
- */
-const PLACEHOLDER_ENTRY: EseEntry = {
-  oduId: 'ogbe_ogbe',
-  meaning: 'PLACEHOLDER — replace before release. A short English summary of the Odù goes here.',
-  snippets: [
-    {
-      yoruba: 'PLACEHOLDER — the Yoruba text of an approved ẹsẹ goes here.',
-      english: 'PLACEHOLDER — its English translation goes here.',
-      source: 'PLACEHOLDER — Book title, p. 00 · or · from [teacher/house], oral teaching',
-    },
-  ],
-  reviewed: false,
-  placeholder: true,
-};
-
-/** All entries, including the placeholder in development only. */
-export const ESE_ENTRIES: readonly EseEntry[] = import.meta.env.DEV
-  ? [...ENTRIES, PLACEHOLDER_ENTRY]
-  : ENTRIES;

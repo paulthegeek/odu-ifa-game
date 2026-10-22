@@ -85,4 +85,16 @@ describe('Odù reference: sign mode', () => {
     render({ mode: 'opele' }, <StudyCard oduId={MEJI_ODU[0]!.id} mode="opon" />);
     expect(container.querySelector<HTMLElement>('article [data-mode]')?.dataset.mode).toBe('opon');
   });
+
+  it('study card without reviewed notes shows only the name and sign', () => {
+    render({}, <StudyCard oduId="osa_irete" />);
+    expect(container.querySelector('article [data-mode]')).not.toBeNull();
+    expect(container.querySelector('article section')).toBeNull();
+    expect(container.querySelector('article')!.textContent).toBe('Ọ̀sá Ìrẹtẹ̀');
+  });
+
+  it('study card does not list aliases', () => {
+    render({}, <StudyCard oduId="ogbe_ogbe" />);
+    expect(container.textContent).not.toContain('Ogbè Méjì');
+  });
 });

@@ -56,7 +56,7 @@ export const EJI_OGBE = 'Èjì Ogbè';
  * Traditional alternate names, keyed by full Odù id (`<right>_<left>`).
  *
  * DO NOT invent aliases. Only add names that are supplied and verified.
- * Aliases are used for search and shown on study cards; the display name
+ * Aliases are used for search only; the display name
  * always comes from the naming rule in `src/logic/odu.ts`.
  */
 export const ODU_ALIASES: Readonly<Record<string, readonly string[]>> = {
