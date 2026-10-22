@@ -1,0 +1,15 @@
+// Cloudflare Worker that hosts PR previews only. Production stays on GitHub Pages.
+// Deployed by .github/workflows/preview.yml; see "PR previews" in the README.
+{
+  "$schema": "https://www.unpkg.com/wrangler@4.151.3/config-schema.json",
+  "name": "odu-game",
+  "compatibility_date": "2026-10-22",
+  // No Worker script: Cloudflare serves the built files directly.
+  "assets": {
+    "directory": "./dist",
+    // Unknown paths get index.html, as on GitHub Pages with the service worker's fallback.
+    "not_found_handling": "single-page-application",
+  },
+  // Required for `wrangler preview`. Previews use the same settings as above.
+  "previews": {},
+}
