@@ -431,7 +431,7 @@ These are product requirements, enforced by review and tests.
 ### Cultural and content correctness
 
 - **Spelling**: Yoruba follows standard orthography with full tone marks and underdots, as written in `data/odu.ts`. Don't simplify it or substitute Lucumí, Spanish or Portuguese forms. "Show diacritics off" only changes what is _displayed_.
-- **Never invent content.** Don't generate, paraphrase or "fill in" ẹsẹ, translations, meanings or aliases. Only entries with `reviewed: true` in [`data/ese.ts`](../src/data/ese.ts) are shown. The example placeholder entry exists only in dev builds (`import.meta.env.DEV`).
+- **Never invent content.** Don't generate, paraphrase or "fill in" ẹsẹ, translations, meanings or aliases. Only entries with `reviewed: true` in [`data/ese.ts`](../src/data/ese.ts) are shown.
 - **Names come only from `composeName`.** Don't build Odù names by hand anywhere else.
 - **Tone**: calm and respectful. No jokey copy, mascots or game-show styling.
 
