@@ -108,4 +108,4 @@ tests/e2e/       Playwright + axe
 
 Components are styled with [Tailwind CSS](https://tailwindcss.com) v4 utility classes. Colors are CSS variables in `src/styles/themes.css`, exposed to Tailwind as `bg-surface`, `text-muted`, `border-border` and so on, so every theme works without `dark:` variants. Use `@wide/app:` for layouts that depend on the width of the main column, and `large:`, `roomy:` and `hc:` for the large-text, spacing and high-contrast settings. The SVG parts of the sign drawings and charts keep named classes in `app.css`.
 
-Progress is stored in IndexedDB and settings in localStorage. Nothing leaves the device unless you export it from the Progress screen.
+Progress is stored in IndexedDB and settings in localStorage. Your progress never leaves the device unless you export it from the Progress screen. The site counts anonymous usage (screens opened, rounds played, settings changed and errors) with [Umami](https://umami.is). It uses no cookies and doesn't record who you are.

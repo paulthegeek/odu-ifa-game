@@ -27,6 +27,7 @@ import {
 } from '../logic/progress';
 import { memoryStore, openProgressStore, type ProgressStore } from '../logic/progressStore';
 import { clearBests, loadSettings, recordBest, saveSettings, type Settings } from '../logic/storage';
+import { trackEvent, trackScreen } from '../lib/analytics';
 import { Build } from '../screens/Build';
 import { Help } from '../screens/Help';
 import { Home } from '../screens/Home';
@@ -115,6 +116,8 @@ export function App() {
     };
   }, []);
 
+  useEffect(() => trackScreen(screen), [screen]);
+
   const saveProgress = useCallback(async (data: ProgressData) => {
     progressRef.current = data;
     setProgress(data);
@@ -138,10 +141,10 @@ export function App() {
     announceTimer.current = window.setTimeout(() => setMessage(text), 50);
   }, []);
 
-  const openStudy = useCallback(
-    (id: string, options?: StudyOptions) => setStudy({ id, mode: options?.mode }),
-    [],
-  );
+  const openStudy = useCallback((id: string, options?: StudyOptions) => {
+    setStudy({ id, mode: options?.mode });
+    trackEvent('study-card-opened', { odu: id });
+  }, []);
 
   const ctx: AppContextValue = useMemo(
     () => ({ settings, updateSettings, announce, openStudy }),
@@ -185,6 +188,13 @@ export function App() {
     } else {
       pool = (roundSettings.set === 'meji' ? MEJI_ODU : ALL_ODU).map((o) => o.id);
     }
+    trackEvent('round-started', {
+      mode: roundSettings.mode,
+      direction: roundSettings.direction,
+      set: roundSettings.set,
+      timing: roundSettings.timing,
+      practice: !!practiceIds,
+    });
     setRound((r) => ({
       config: { settings: roundSettings, pool, weights, practice: !!practiceIds },
       key: (r?.key ?? 0) + 1,
@@ -196,6 +206,12 @@ export function App() {
   const finishRound = useCallback(
     (state: RoundState) => {
       const s = state.settings;
+      trackEvent('round-finished', {
+        mode: s.mode,
+        direction: s.direction,
+        answered: state.attempted,
+        correct: state.score,
+      });
       const timed = roundDuration(s, state.practice) !== null;
       const bestKey = personalBestKey(s, state.practice);
       const best = bestKey ? recordBest(bestKey, state.score) : { isNewBest: false, previous: null };

@@ -12,6 +12,7 @@ import { roundDuration } from '../logic/game';
 import { playCue, type CueKind } from '../logic/sound';
 import type { Settings as SettingsData } from '../logic/storage';
 import { cn } from '../lib/cn';
+import { trackEvent } from '../lib/analytics';
 
 type BooleanSetting = {
   [K in keyof SettingsData]: SettingsData[K] extends boolean ? K : never;
@@ -152,7 +153,14 @@ function SoundFields() {
 export function Settings() {
   const { settings: s, updateSettings } = useApp();
   const toggle = (key: BooleanSetting, label: ReactNode, hint?: string) => (
-    <Switch checked={s[key]} onChange={(v) => updateSettings({ [key]: v })} hint={hint}>
+    <Switch
+      checked={s[key]}
+      onChange={(v) => {
+        updateSettings({ [key]: v });
+        trackEvent('setting-changed', { setting: key, on: v });
+      }}
+      hint={hint}
+    >
       {label}
     </Switch>
   );
