@@ -36,7 +36,7 @@ Odù Game helps Ifá practitioners learn to recognize Odù signs quickly. There 
 
 Rounds are timed (1 or 2 minutes, with optional extended time) or untimed. Every answer is recorded on the device, and the Progress screen turns that history into accuracy charts, a list of the player's weakest Odù, and their most common mix-ups. A "My weak Odù" set weights future rounds toward the signs the player misses most.
 
-The app runs entirely in the browser: there is no server, no account and no analytics. It is a PWA that installs and works offline, and it is hosted on GitHub Pages.
+The app runs entirely in the browser: there is no server and no account. Anonymous usage counts are sent to Umami; see [ANALYTICS.md](ANALYTICS.md). It is a PWA that installs and works offline, and it is hosted on GitHub Pages.
 
 The original product brief is in [`odu-practice-game-prompt.md`](../odu-practice-game-prompt.md). Read it once: it explains many decisions that look arbitrary in the code, such as tone, spelling, accessibility targets and timings.
 
@@ -118,6 +118,7 @@ src/
   components/           Reusable UI: sign drawings, choices, sheet, charts.
     ui.ts               Shared Tailwind "class recipes" (button(), card(), hint, ...).
   lib/cn.ts             clsx + tailwind-merge, extended with the custom theme names.
+  lib/analytics.ts      trackScreen/trackEvent for Umami. See docs/ANALYTICS.md.
   assets/fonts/         Cut-down woff2 files from `pnpm fonts` (scripts/build-fonts.mjs).
   styles/
     fonts.css           @font-face rules with unicode-range for the files in assets/fonts.
