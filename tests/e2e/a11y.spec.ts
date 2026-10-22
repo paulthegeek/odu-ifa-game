@@ -1,6 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { THEMES, answerWithKey, expectNoA11yViolations, goTo, openWith, startRound } from './helpers';
 
+// Each test runs several axe scans, and the scan of all 256 signs is slow. The first test
+// takes about 12s on a fast machine, and over 30s (the default) on a slow CI runner.
+test.describe.configure({ timeout: 90_000 });
+
 for (const theme of THEMES) {
   test.describe(`WCAG 2.2 AA — ${theme.name}`, () => {
     test('Home, Odù reference, study card, Help and Settings', async ({ page }) => {

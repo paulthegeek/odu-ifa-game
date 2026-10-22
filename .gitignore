@@ -6,6 +6,7 @@ playwright-report
 test-results
 blob-report
 .wrangler
+.lighthouseci
 *.local
 .DS_Store
 .vscode/*

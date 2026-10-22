@@ -35,6 +35,10 @@ Every pull request runs these in [`.github/workflows/ci.yml`](.github/workflows/
 
 The size budgets are in [`.size-limit.json`](.size-limit.json). JavaScript and CSS are measured gzipped, as GitHub Pages serves them. If a change goes over on purpose, raise the limit in the same PR and say why.
 
+PRs also get a Lighthouse check ([`.github/workflows/lighthouse.yml`](.github/workflows/lighthouse.yml)). It audits the built site three times on mobile settings and reports the median scores in the run summary. Accessibility must stay at 100 and best practices at 90 or more. Performance and SEO below 90 only warn. The thresholds are in [`lighthouserc.json`](lighthouserc.json). The check is advisory: it can fail without blocking the merge or the deploy. To run it locally after a build: `npx @lhci/cli@0.15.1 autorun`.
+
+Dependabot ([`.github/dependabot.yml`](.github/dependabot.yml)) opens PRs every Monday. Minor and patch updates come grouped in one PR, and each major update gets its own PR. It doesn't update the Wrangler and Lighthouse CI versions pinned in the workflows, or pnpm itself.
+
 ## Editing the Odù data and aliases
 
 All Odù data is in [`src/data/odu.ts`](src/data/odu.ts):

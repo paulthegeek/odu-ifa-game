@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Weekly version updates, one PR for minor and patch, and a PR per major.
+  # Not covered: WRANGLER_VERSION and LHCI_VERSION in the workflows, and the pnpm
+  # version in package.json (packageManager).
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Wait before suggesting a new release, so broken or malicious ones are usually pulled first.
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: deps
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: deps

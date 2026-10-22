@@ -1,0 +1,53 @@
+name: Lighthouse
+
+# Advisory: not a required check, and separate from ci.yml so a score dip never blocks
+# a deploy. Thresholds are in lighthouserc.json.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lighthouse-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Run with npx, not as a project dependency. Update the version here.
+  LHCI_VERSION: 0.15.1
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm exec vite build
+      # Three mobile runs of the built site; assertions use the median run.
+      - name: Lighthouse
+        run: npx --yes "@lhci/cli@$LHCI_VERSION" autorun
+      - name: Summary
+        if: ${{ !cancelled() && hashFiles('.lighthouseci/manifest.json') != '' }}
+        run: |
+          {
+            echo "| Category | Score |"
+            echo "| --- | --- |"
+            jq -r '.[] | select(.isRepresentativeRun) | .summary | to_entries[]
+              | "| \(.key) | \(.value * 100 | round) |"' .lighthouseci/manifest.json
+            echo
+            echo "Full reports are in the lighthouse-reports artifact."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 7
