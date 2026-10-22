@@ -96,6 +96,18 @@ To regenerate the PNG app icons from `public/favicon.svg`, run `pnpm icons`.
 
 The fonts in `src/assets/fonts/` are cut down so slow connections download as little as possible. To regenerate them, run `pnpm fonts` (it needs fonttools: `pip install fonttools brotli`). If you add text with a Latin letter outside the current set (for example ń), add it to `YO_EXT` in [`scripts/build-fonts.mjs`](scripts/build-fonts.mjs) and to the matching `unicode-range` in [`src/styles/fonts.css`](src/styles/fonts.css) first.
 
+## PR previews (Cloudflare)
+
+Every pull request gets its own preview of the site, so changes can be tried on a phone before merging. [`.github/workflows/preview.yml`](.github/workflows/preview.yml) builds the PR and deploys it as a [Cloudflare Worker Preview](https://developers.cloudflare.com/workers/previews/), and comments the URL on the PR. The URL stays the same on later pushes. The preview is deleted when the PR is closed or merged.
+
+- **Setup:** the `odu-game` Worker is configured in [`wrangler.jsonc`](wrangler.jsonc). Previews need two repository secrets, `CLOUDFLARE_API_TOKEN` (from the **Edit Cloudflare Workers** token template) and `CLOUDFLARE_ACCOUNT_ID`.
+- **Wrangler:** it runs with `npx` at the version in `WRANGLER_VERSION` in the workflow, so it is not a project dependency. Update that version there.
+- **Analytics and search:** previews are public to anyone with the link. They don't count in analytics (Umami only runs on odugame.com), and search engines are told not to index them.
+- **Not run for forks or Dependabot:** those PRs don't get the Cloudflare secrets.
+- **Not a required check:** if a preview fails, the PR can still merge.
+
+To remove a preview by hand, run `npx wrangler preview delete --name pr-<number>` or delete it under **Workers & Pages → odu-game → Previews** in the Cloudflare dashboard.
+
 ## Project layout
 
 ```
