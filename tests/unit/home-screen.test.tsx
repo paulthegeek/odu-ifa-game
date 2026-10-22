@@ -108,8 +108,8 @@ describe('Home: choices', () => {
 
 describe('Home: start button', () => {
   function startButton(): HTMLButtonElement {
-    const button = [...container.querySelectorAll<HTMLButtonElement>('button[aria-labelledby]')].find(
-      (b) => document.getElementById(b.getAttribute('aria-labelledby')!)?.textContent === 'Start round',
+    const button = [...container.querySelectorAll<HTMLButtonElement>('button')].find((b) =>
+      b.textContent?.startsWith('Start round'),
     );
     if (!button) throw new Error('no Start round button');
     return button;
@@ -136,8 +136,8 @@ describe('Home: start button', () => {
     expect(onStart).toHaveBeenCalledWith('read');
   });
 
-  function summary(): string | null | undefined {
-    return document.getElementById(startButton().getAttribute('aria-describedby')!)?.textContent;
+  function summary(): string | undefined {
+    return startButton().textContent?.replace(/^Start round/, '');
   }
 
   it('sums up the round it will start, including its real length', () => {

@@ -45,7 +45,7 @@ export async function answerWithKey(page: Page, key: string) {
 /** Start a round from Home: choose Read or Build, then press Start round. */
 export async function startRound(page: Page, direction: 'Read' | 'Build') {
   await page.getByRole('radio', { name: new RegExp(`^${direction}\\b`) }).check();
-  await page.getByRole('button', { name: 'Start round', exact: true }).click();
+  await page.getByRole('button', { name: /^Start round\b/ }).click();
 }
 
 /** Go to a screen from the main navigation (tab bar on phones, sidebar on wide screens). */
