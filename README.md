@@ -69,7 +69,7 @@ Study content is in [`src/data/ese.ts`](src/data/ese.ts), separate from the Odù
    - `yoruba`: full orthography, NFC-normalized
    - `english`: the translation
    - `source`: e.g. `"Book title, p. 42"` or `"from [teacher/house], oral teaching"`
-4. Set `reviewed: true` once the entry has been checked. **Entries with `reviewed: false` are never shown.** Odù without reviewed content show "Study notes for this Odù haven't been added yet."
+4. Set `reviewed: true` once the entry has been checked. **Entries with `reviewed: false` are never shown.** Odù without reviewed content show only their name and sign.
 
 ```ts
 {
@@ -79,8 +79,6 @@ Study content is in [`src/data/ese.ts`](src/data/ese.ts), separate from the Odù
   reviewed: true,
 },
 ```
-
-The file also contains one example entry marked `PLACEHOLDER — replace before release`. It appears only in `pnpm dev` and is stripped from production builds.
 
 ## Deploying (GitHub Pages)
 

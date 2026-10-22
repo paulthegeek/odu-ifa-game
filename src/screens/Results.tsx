@@ -6,6 +6,7 @@ import { StudyCard } from '../components/StudyCard';
 import { describeDiff, diffMarks } from '../logic/build';
 import { roundDuration, seenOdu, type RoundState } from '../logic/game';
 import { getOdu } from '../logic/odu';
+import { getStudyEntries } from '../logic/study';
 import { button, card, eyebrow, linkButton, oduButton, oduList, page, panel } from '../components/ui';
 
 const MODE_NAME = { opele: 'Opẹ̀lẹ̀', opon: 'Ọpọ́n Ifá' } as const;
@@ -145,13 +146,16 @@ export function Results({
                       )}
                     </div>
                   </div>
-                  <details>
-                    <summary>
-                      Study notes for&nbsp;
-                      <OduName id={m.oduId} />
-                    </summary>
-                    <StudyCard oduId={m.oduId} />
-                  </details>
+                  {/* Without notes the card would only repeat the sign and name above. */}
+                  {getStudyEntries(m.oduId).length > 0 && (
+                    <details>
+                      <summary>
+                        Study notes for&nbsp;
+                        <OduName id={m.oduId} />
+                      </summary>
+                      <StudyCard oduId={m.oduId} />
+                    </details>
+                  )}
                 </li>
               );
             })}

@@ -23,8 +23,7 @@ for (const theme of THEMES) {
       await expectNoA11yViolations(page, `reference 256 (${theme.name})`);
 
       await page.getByRole('button', { name: /Study Ọ̀sá Ìrẹtẹ̀/ }).click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-      await expect(page.getByText('Study notes for this Odù haven’t been added yet.')).toBeVisible();
+      await expect(page.getByRole('dialog', { name: 'Ọ̀sá Ìrẹtẹ̀' })).toBeVisible();
       await expectNoA11yViolations(page, `study card (${theme.name})`);
       await page.getByRole('button', { name: 'Close', exact: true }).click();
 
