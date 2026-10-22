@@ -254,7 +254,8 @@ export function Progress({
       <section aria-labelledby="data-h" className={cn(card(), stack)}>
         <h2 id="data-h">Your data</h2>
         <p className="text-muted">
-          Progress is stored only on this device. Export it to keep a backup or move it to another device.
+          Progress is stored only on this device. Export it to keep a backup or move it to another device. Odù
+          Game also counts anonymous usage, like rounds played, without cookies.
         </p>
         <div className={BUTTON_ROW}>
           <button type="button" className={button()} onClick={doExport}>

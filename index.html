@@ -41,13 +41,20 @@
           if (!loading || !failed) return false;
           loading.hidden = true;
           failed.hidden = false;
+          // Count the failure if the analytics script made it through.
+          var umamiScript = document.getElementById('umami-script');
+          if (window.umami) window.umami.track('boot-failed');
+          else if (umamiScript)
+            umamiScript.addEventListener('load', function () {
+              if (window.umami) window.umami.track('boot-failed');
+            });
           return true;
         }
         window.addEventListener(
           'error',
           function (e) {
             var t = e.target;
-            if (!t || t.tagName !== 'SCRIPT') return;
+            if (!t || t.tagName !== 'SCRIPT' || t.id === 'umami-script') return;
             if (!showRetry()) document.addEventListener('DOMContentLoaded', showRetry);
           },
           true,
@@ -60,6 +67,16 @@
         display: none;
       }
     </style>
+    <!-- Anonymous usage counts (umami.is). No cookies. Only runs on odugame.com. -->
+    <script
+      async
+      id="umami-script"
+      src="https://cloud.umami.is/script.js"
+      data-website-id="7a28f396-a9c2-4f54-a38c-ac70d16ec996"
+      data-domains="odugame.com"
+      data-auto-pageview="false"
+      data-exclude-search="true"
+    ></script>
   </head>
   <body>
     <!-- React replaces this when the app starts. -->
