@@ -24,31 +24,31 @@ All Yoruba words follow standard Yoruba orthography as used in Ìṣẹ̀ṣẹ 
 
 Each principal Odù is a column of four marks, read top to bottom. `I` = single mark, `II` = double mark.
 
-| # | Odù | Pattern (top → bottom) |
-|---|-----|------------------------|
-| 1 | Ogbè | I · I · I · I |
-| 2 | Ọ̀yẹ̀kú | II · II · II · II |
-| 3 | Ìwòrì | II · I · I · II |
-| 4 | Òdí | I · II · II · I |
-| 5 | Ìrosùn | I · I · II · II |
-| 6 | Ọ̀wọ́nrín | II · II · I · I |
-| 7 | Ọ̀bàrà | I · II · II · II |
-| 8 | Ọ̀kànràn | II · II · II · I |
-| 9 | Ògúndá | I · I · I · II |
-| 10 | Ọ̀sá | II · I · I · I |
-| 11 | Ìká | II · I · II · II |
-| 12 | Òtúrúpọ̀n (also written Òtúúrúpọ̀n) | II · II · I · II |
-| 13 | Òtúrá (also written Òtúá) | I · II · I · I |
-| 14 | Ìrẹtẹ̀ | I · I · II · I |
-| 15 | Ọ̀sẹ́ | I · II · I · II |
-| 16 | Òfún | II · I · II · I |
+| #   | Odù                               | Pattern (top → bottom) |
+| --- | --------------------------------- | ---------------------- |
+| 1   | Ogbè                              | I · I · I · I          |
+| 2   | Ọ̀yẹ̀kú                             | II · II · II · II      |
+| 3   | Ìwòrì                             | II · I · I · II        |
+| 4   | Òdí                               | I · II · II · I        |
+| 5   | Ìrosùn                            | I · I · II · II        |
+| 6   | Ọ̀wọ́nrín                           | II · II · I · I        |
+| 7   | Ọ̀bàrà                             | I · II · II · II       |
+| 8   | Ọ̀kànràn                           | II · II · II · I       |
+| 9   | Ògúndá                            | I · I · I · II         |
+| 10  | Ọ̀sá                               | II · I · I · I         |
+| 11  | Ìká                               | II · I · II · II       |
+| 12  | Òtúrúpọ̀n (also written Òtúúrúpọ̀n) | II · II · I · II       |
+| 13  | Òtúrá (also written Òtúá)         | I · II · I · I         |
+| 14  | Ìrẹtẹ̀                             | I · I · II · I         |
+| 15  | Ọ̀sẹ́                               | I · II · I · II        |
+| 16  | Òfún                              | II · I · II · I        |
 
 ### The 256 Odù
 
 - A full sign has two legs: the **right leg** (read first) and the **left leg**.
 - **Naming rule for the 16 principal Odù (same Odù on both legs):** the name changes. It is **not** written as the leg name twice (never "Ogbè Ogbè" or "Òtúrá Òtúrá").
   - Ogbè on both legs → **Èjì Ogbè** (the only exception to the Méjì pattern)
-  - Every other principal Odù → *[Odù] **Méjì***, e.g. Òtúrá on both legs → **Òtúrá Méjì**, Ọ̀yẹ̀kú on both legs → **Ọ̀yẹ̀kú Méjì**
+  - Every other principal Odù → _[Odù] **Méjì**_, e.g. Òtúrá on both legs → **Òtúrá Méjì**, Ọ̀yẹ̀kú on both legs → **Ọ̀yẹ̀kú Méjì**
   - The 16 principal names are: Èjì Ogbè, Ọ̀yẹ̀kú Méjì, Ìwòrì Méjì, Òdí Méjì, Ìrosùn Méjì, Ọ̀wọ́nrín Méjì, Ọ̀bàrà Méjì, Ọ̀kànràn Méjì, Ògúndá Méjì, Ọ̀sá Méjì, Ìká Méjì, Òtúrúpọ̀n Méjì, Òtúrá Méjì, Ìrẹtẹ̀ Méjì, Ọ̀sẹ́ Méjì, Òfún Méjì.
   - Implement this in one naming function used everywhere names appear (answer choices, results, screen-reader text), so the rule can't be missed in one place.
   - Store "Ogbè Méjì" as an alias of Èjì Ogbè for search and future use, but always display Èjì Ogbè.
@@ -126,8 +126,8 @@ The player sees an Odù name (e.g. **Ọ̀sá Ìrẹtẹ̀**) and builds its sig
 - Scoring follows the same game loop: correct = +1 and go to the next name; wrong = no point, record the miss, and go to the next name. The timer, round lengths, and Odù sets are the same as in reading.
 - For the 16 Méjì set, the player can build one leg and the game mirrors it to the other leg (the "Mirror legs" option, on by default for Méjì only).
 - **Keyboard:** arrow keys move between positions; `Space` cycles the focused position; `1` sets single and `2` sets double; `Enter` checks; `Backspace` clears the focused position.
-- **Screen reader:** each position is a button with a label such as *"Right leg, mark 2 of 4: double"*. Announce the new value when it changes.
-- **Results:** for each miss, show the target sign next to the sign the player built. Mark the wrong positions with an outline and an icon, not color alone, and describe them in text (e.g. *"Left leg, mark 3: you placed single, correct is double"*).
+- **Screen reader:** each position is a button with a label such as _"Right leg, mark 2 of 4: double"_. Announce the new value when it changes.
+- **Results:** for each miss, show the target sign next to the sign the player built. Mark the wrong positions with an outline and an icon, not color alone, and describe them in text (e.g. _"Left leg, mark 3: you placed single, correct is double"_).
 - Keep personal bests separate for Read and Build.
 
 ---
@@ -199,7 +199,7 @@ The game records every answer on the device so players can see how they're impro
 **Charts:**
 
 - Draw charts as hand-built SVG React components using the theme variables (no heavy chart library), so they work in Light, Dark, Night, and High-contrast.
-- Every chart has a text or table alternative (a "Show as table" toggle) and a one-sentence summary for screen readers (e.g. *"Accuracy rose from 55% to 78% over your last 12 rounds."*).
+- Every chart has a text or table alternative (a "Show as table" toggle) and a one-sentence summary for screen readers (e.g. _"Accuracy rose from 55% to 78% over your last 12 rounds."_).
 - Never use color alone to show accuracy: tiles and cells also show the percentage or a pattern, and the grid has a legend.
 
 ---
@@ -222,7 +222,7 @@ The game records every answer on the device so players can see how they're impro
 ## Accessibility (WCAG 2.2 AA minimum)
 
 - Fully keyboard-operable with visible focus indicators; logical tab order.
-- Every sign has a text alternative for screen readers, e.g. *"Opẹ̀lẹ̀. Right leg, top to bottom: open, open, open, closed. Left leg: closed, open, open, open."*
+- Every sign has a text alternative for screen readers, e.g. _"Opẹ̀lẹ̀. Right leg, top to bottom: open, open, open, closed. Left leg: closed, open, open, open."_
 - Announce score changes, correct/incorrect feedback, and "30 seconds left" and "10 seconds left" through a polite ARIA live region. Don't announce every second.
 - Never rely on color alone: correct/incorrect feedback also uses an icon and text.
 - Color contrast of at least 4.5:1 for text and 3:1 for the sign marks and UI components.
@@ -243,22 +243,22 @@ The game records every answer on the device so players can see how they're impro
 
 ### Tech stack
 
-| Part | Choice |
-|---|---|
-| Language | **TypeScript** (strict mode) |
-| UI framework | **React** (function components and hooks) |
-| Build tool | **Vite** |
-| Sign drawings | **SVG** React components, generated from the Odù data rather than stored as fixed images |
-| Styling | **Plain CSS** with CSS custom properties for theme tokens (Light, Dark, Night, High-contrast); CSS Modules or plain stylesheets, no UI component library |
-| Odù data | A standalone typed data file (`src/data/odu.ts`) |
-| Study content | A separate typed data file for ẹsẹ and meanings (`src/data/ese.ts`) |
-| Progress storage | **IndexedDB** via `idb-keyval`; `localStorage` for settings and personal bests |
-| Charts | Hand-built **SVG** React components (no chart library) |
-| Unit tests | **Vitest** |
-| End-to-end and accessibility tests | **Playwright** with **@axe-core/playwright** |
-| Offline / installable | **PWA** via `vite-plugin-pwa` (manifest, icons, offline caching) |
-| Code quality | ESLint + Prettier |
-| Hosting | **GitHub Pages**, deployed with GitHub Actions |
+| Part                               | Choice                                                                                                                                                   |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language                           | **TypeScript** (strict mode)                                                                                                                             |
+| UI framework                       | **React** (function components and hooks)                                                                                                                |
+| Build tool                         | **Vite**                                                                                                                                                 |
+| Sign drawings                      | **SVG** React components, generated from the Odù data rather than stored as fixed images                                                                 |
+| Styling                            | **Plain CSS** with CSS custom properties for theme tokens (Light, Dark, Night, High-contrast); CSS Modules or plain stylesheets, no UI component library |
+| Odù data                           | A standalone typed data file (`src/data/odu.ts`)                                                                                                         |
+| Study content                      | A separate typed data file for ẹsẹ and meanings (`src/data/ese.ts`)                                                                                      |
+| Progress storage                   | **IndexedDB** via `idb-keyval`; `localStorage` for settings and personal bests                                                                           |
+| Charts                             | Hand-built **SVG** React components (no chart library)                                                                                                   |
+| Unit tests                         | **Vitest**                                                                                                                                               |
+| End-to-end and accessibility tests | **Playwright** with **@axe-core/playwright**                                                                                                             |
+| Offline / installable              | **PWA** via `vite-plugin-pwa` (manifest, icons, offline caching)                                                                                         |
+| Code quality                       | ESLint + Prettier                                                                                                                                        |
+| Hosting                            | **GitHub Pages**, deployed with GitHub Actions                                                                                                           |
 
 No backend, database, or user accounts. Everything runs in the browser.
 
