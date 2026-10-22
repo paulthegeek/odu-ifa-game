@@ -104,8 +104,8 @@ test('No horizontal scrolling', async ({ page }) => {
 
 test('Round length: on Practice for wide screens, in Settings for phones', async ({ page, isMobile }) => {
   await openWith(page, { theme: 'light', timing: 'standard', length: 60 });
-  const start = page.getByRole('button', { name: 'Start round', exact: true });
-  await expect(start).toHaveAccessibleDescription(/1 minute$/);
+  const start = page.getByRole('button', { name: /^Start round\b/ });
+  await expect(start).toHaveAccessibleName(/1 minute$/);
   await expect(page.getByRole('group', { name: 'Round length' })).toHaveCount(isMobile ? 0 : 1);
 
   await goTo(page, 'Settings');
@@ -114,5 +114,5 @@ test('Round length: on Practice for wide screens, in Settings for phones', async
   await expect(page.getByRole('radio', { name: '4 minutes' })).toBeChecked();
 
   await goTo(page, 'Practice');
-  await expect(start).toHaveAccessibleDescription(/4 minutes$/);
+  await expect(start).toHaveAccessibleName(/4 minutes$/);
 });

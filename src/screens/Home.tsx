@@ -7,7 +7,6 @@
  * to keep Start above the tab bar; the Start button always shows the length.
  * Display options live in Settings on every screen size.
  */
-import { useId } from 'react';
 import { useApp } from '../app/AppContext';
 import { useMediaQuery, WIDE_QUERY } from '../app/useMediaQuery';
 import { Choices } from '../components/Choices';
@@ -35,9 +34,11 @@ const SHORT_HIDDEN = '@max-wide/app:short:sr-only';
 /** A sample sign for the stage. */
 const STAGE_SIGN = getOdu('obara_obara').marks;
 
-/** The one button that starts a round; its second line sums up the round. */
+/**
+ * The one button that starts a round; its second line sums up the round.
+ * Both lines make up its accessible name, so it contains all the visible text (WCAG 2.5.3).
+ */
 function StartButton({ summary, onClick }: { summary: string; onClick: () => void }) {
-  const id = useId();
   return (
     <button
       type="button"
@@ -46,20 +47,16 @@ function StartButton({ summary, onClick }: { summary: string; onClick: () => voi
         'motion-safe:transition-[background-color,color] motion-safe:duration-120 motion-safe:ease-[ease] motion-safe:active:translate-y-[2px] motion-safe:active:shadow-pressed-accent',
         '@wide/app:min-h-[4.75rem]',
       )}
-      aria-labelledby={`${id}-t`}
-      aria-describedby={`${id}-d`}
       onClick={onClick}
     >
       <span className="grid size-9 flex-none place-items-center rounded-full bg-on-accent text-accent @wide/app:size-10">
         <Icon name="play" className="size-4" />
       </span>
       <span className="text-left">
-        <span id={`${id}-t`} className="block text-[1.2rem] leading-tight font-bold @wide/app:text-[1.3rem]">
+        <span className="block text-[1.2rem] leading-tight font-bold @wide/app:text-[1.3rem]">
           Start round
         </span>
-        <span id={`${id}-d`} className="block text-[0.85rem] font-medium">
-          {summary}
-        </span>
+        <span className="block text-[0.85rem] font-medium">{summary}</span>
       </span>
     </button>
   );
