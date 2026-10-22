@@ -47,13 +47,15 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          # Wrangler writes one JSON line per result here. Its stdout also has progress
+          # messages, even with --json, so it can't be parsed reliably.
+          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-output.json
         run: |
-          npx --yes "wrangler@$WRANGLER_VERSION" preview --name "$PREVIEW_NAME" \
-            --message "$HEAD_SHA" --json > preview.json
-          url=$(jq -r '.preview.urls[0] // empty' preview.json)
+          npx --yes "wrangler@$WRANGLER_VERSION" preview --name "$PREVIEW_NAME" --message "$HEAD_SHA"
+          url=$(jq -r 'select(.type == "preview") | .preview_urls[0] // empty' "$WRANGLER_OUTPUT_FILE_PATH" | tail -n 1)
           if [ -z "$url" ]; then
             echo "::error::No preview URL in the Wrangler output"
-            cat preview.json
+            cat "$WRANGLER_OUTPUT_FILE_PATH"
             exit 1
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
