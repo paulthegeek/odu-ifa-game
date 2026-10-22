@@ -2,14 +2,17 @@ name: CI
 
 on:
   pull_request:
+  # deploy.yml runs the same checks before every deploy.
+  workflow_call:
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# A new push to the same PR cancels the run in progress.
+# A new push to the same PR cancels the run in progress. When deploy.yml calls this,
+# github.workflow is the deploy's name, so PR runs and deploys never cancel each other.
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
