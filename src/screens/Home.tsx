@@ -11,6 +11,7 @@ import { useApp } from '../app/AppContext';
 import { useMediaQuery, WIDE_QUERY } from '../app/useMediaQuery';
 import { Choices } from '../components/Choices';
 import { Icon } from '../components/Icon';
+import { Yo } from '../components/OduName';
 import { ScreenTitle } from '../components/ScreenTitle';
 import { Sign } from '../components/Sign';
 import { ROUND_LENGTHS, WEAK_SET_MIN_ANSWERS } from '../data/config';
@@ -82,7 +83,10 @@ export function Home({
       {/* On phones the stage says it all; the intro stays for screen readers. */}
       <div className="@max-wide/app:sr-only @wide/app:pt-2 @wide/app:[grid-area:intro]">
         <ScreenTitle className="m-0">Start a round</ScreenTitle>
-        <p className="mt-2 mb-0 text-muted">Pick a mode, choose what to practice, then press Start.</p>
+        <p className="mt-2 mb-0 text-muted">
+          Learn to recognize <Yo>Odù Ifá</Yo> signs quickly. Pick a mode, choose what to practice, then press
+          Start.
+        </p>
       </div>
 
       {/* Phones get a compact stage (small sign beside its name) so Start stays above the tab bar. */}

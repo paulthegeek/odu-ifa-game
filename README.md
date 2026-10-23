@@ -104,7 +104,15 @@ The base path is set in one place: `BASE` in [`vite.config.ts`](vite.config.ts).
 
 The PWA manifest and service worker use the same value, so the app installs and works offline under either path.
 
-To regenerate the PNG app icons from `public/favicon.svg`, run `pnpm icons`.
+To regenerate the PNG app icons and the social preview image (`public/social-preview.png`) from `public/favicon.svg`, run `pnpm icons`.
+
+## Search engines
+
+odugame.com is verified in [Google Search Console](https://search.google.com/search-console) and [Bing Webmaster Tools](https://www.bing.com/webmasters). Bing was imported from Search Console and checks ownership through it, so leave that connection in place. Keep the `google-site-verification` TXT record in the domain's DNS at Porkbun: Google removes access if it is deleted.
+
+- **Search and link-preview tags** (title, description, canonical URL, Open Graph and structured data) are in [`index.html`](index.html). The description also gives the plain spellings (Odu Ifa, opele), because most searches are typed without tone marks.
+- **[`public/robots.txt`](public/robots.txt)** points crawlers to **[`public/sitemap.xml`](public/sitemap.xml)**, which lists the site's one URL.
+- **[`public/404.html`](public/404.html)** is shown by GitHub Pages for addresses that don't exist.
 
 The fonts in `src/assets/fonts/` are cut down so slow connections download as little as possible. To regenerate them, run `pnpm fonts` (it needs fonttools: `pip install fonttools brotli`). If you add text with a Latin letter outside the current set (for example ń), add it to `YO_EXT` in [`scripts/build-fonts.mjs`](scripts/build-fonts.mjs) and to the matching `unicode-range` in [`src/styles/fonts.css`](src/styles/fonts.css) first.
 
