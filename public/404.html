@@ -1,0 +1,84 @@
+<!doctype html>
+<!--
+  GitHub Pages serves this, with a 404 status, for any address that doesn't exist.
+  It can be shown at any depth, so every link starts with "/". Colors are the app's
+  Light and Dark theme tokens from src/styles/themes.css.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found · Odù Game</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #ffffff;
+        --text: #25281f;
+        --text-muted: #62665a;
+        --accent: #3e7c2f;
+        --on-accent: #ffffff;
+        --focus: #2a5a1f;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #121711;
+          --text: #edf1e7;
+          --text-muted: #a3ad9b;
+          --accent: #8fd16a;
+          --on-accent: #0f160c;
+          --focus: #b9e89a;
+        }
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        box-sizing: border-box;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          1rem/1.5 system-ui,
+          sans-serif;
+        text-align: center;
+      }
+      img {
+        width: 96px;
+        height: 96px;
+      }
+      h1 {
+        margin: 1rem 0 0.5rem;
+        font-size: 1.75rem;
+      }
+      p {
+        margin: 0 0 1.5rem;
+        color: var(--text-muted);
+      }
+      a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 1.25rem;
+        border-radius: 999px;
+        background: var(--accent);
+        color: var(--on-accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      a:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/favicon.svg" alt="" />
+      <h1>Page not found</h1>
+      <p>There’s nothing at this address. It may have been moved, or the link may be mistyped.</p>
+      <a href="/">Go to Odù Game</a>
+    </main>
+  </body>
+</html>

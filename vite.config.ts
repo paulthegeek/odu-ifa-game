@@ -38,7 +38,9 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         // The OS keeps its own copy of install icons; no need to precache the large ones.
-        globIgnores: ['pwa-512x512.png', 'pwa-maskable-512x512.png'],
+        // The social preview image is only fetched by link-preview bots, and offline
+        // visits never reach 404.html because of navigateFallback.
+        globIgnores: ['pwa-512x512.png', 'pwa-maskable-512x512.png', 'social-preview.png', '404.html'],
         navigateFallback: `${BASE}index.html`,
       },
     }),
